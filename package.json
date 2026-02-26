@@ -1,0 +1,27 @@
+{
+  "name": "zamashop-back",
+  "version": "1.0.0",
+  "description": "Proyecto Backend Tienda Virtual",
+  "homepage": "https://github.com/jdzapata1224/zamashop-back#readme",
+  "bugs": {
+    "url": "https://github.com/jdzapata1224/zamashop-back/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdzapata1224/zamashop-back.git"
+  },
+  "license": "ISC",
+  "author": "Jairo Zapata Fandiño",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.2.2"
+  }
+}
