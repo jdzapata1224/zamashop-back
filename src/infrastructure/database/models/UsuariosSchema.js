@@ -1,0 +1,62 @@
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+
+const UsuariosSchema = new mongoose.Schema(
+  {
+    usr_Nombres: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    usr_Apellidos: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    usr_Usuario: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    usr_Password: {
+      type: String,
+      required: true,
+    },
+    usr_Identificacion: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    usr_Correo: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+    },
+    usr_Telefono: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    usr_Estado: {
+      type: Boolean,
+      default: true,
+    },
+    usr_Fecha_Creacion: {
+      type: Date,
+      default: Date.now,
+    },
+    usr_Creacion: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',        // self-reference: who created this user
+    },
+  },
+  {
+    collection: 'Usuarios',  // explicit collection name
+    versionKey: false,    // removes __v field
+  }
+  
+);
+module.exports = mongoose.model('Usuarios', UsuariosSchema);
