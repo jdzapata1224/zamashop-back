@@ -28,7 +28,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       return null;
     }
     const doc = await UsuariosSchema.findById(new Types.ObjectId(id));
-    return doc ? this._toDomain(doc) : null;
+    return doc ? this._toEntity(doc) : null;
   }
 
 
