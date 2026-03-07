@@ -19,5 +19,9 @@ class ConsultarUsuariosOutDTO {
   static fromEntity(user) {
     return new ConsultarUsuariosOutDTO(user);
   }
+
+static fromEntities(users) {
+  return users.map(user => new ConsultarUsuariosOutDTO(user));
+}
 }
 module.exports = ConsultarUsuariosOutDTO;

@@ -36,7 +36,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
   }
 
   async find() {
-    const doc = await UsuariosSchema.find({
+    const docs = await UsuariosSchema.find({
     $or: [
       { usr_Fecha_Eliminacion: null },
       { usr_Fecha_Eliminacion: { $exists: false } }
