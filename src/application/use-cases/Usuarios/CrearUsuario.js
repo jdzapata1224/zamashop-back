@@ -8,7 +8,7 @@ class CrearUsuario {
     this.usuarioRepository = usuarioRepository;
   }
 
-  async execute() {
+  async execute(rawInput) {
     const inputDto = new CrearUsuarioIn(rawInput);
     const existe = await this.usuarioRepository.findByUsuarioOrIdentificacion(
       inputDto.usuario,
