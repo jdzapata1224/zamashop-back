@@ -15,6 +15,7 @@ class ConsultarUsuariosIdController {
 
       return res.status(200).json({
         codigo: 200,
+        mensaje:"Consulta Ejecutada Satisfactoriamente",
         data: output,
       });
     } catch (err) {

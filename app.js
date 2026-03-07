@@ -9,7 +9,9 @@ const usuarioRoutes = require('./src/interfaces/http/routes/UsuariosRoutes');
 const app = express();
 app.use(express.json());
 
-app.use('/api/Usuarios', usuarioRoutes);
+const apiRouter = express.Router();
+apiRouter.use('/Usuarios', usuarioRoutes);
+app.use('/api', apiRouter);
 
 app.use((req, res) => {
   res.status(404).json({
