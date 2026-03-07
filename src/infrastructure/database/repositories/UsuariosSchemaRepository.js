@@ -38,6 +38,14 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     return doc ? this._toEntity(doc) : null;
   }
 
+   async update(id) {
+    if (!Types.ObjectId.isValid(id)) {
+      return null;
+    }
+    const doc = await UsuariosSchema.findById(new Types.ObjectId(id));
+    return doc ? this._toEntity(doc) : null;
+  }
+
   async find() {
     const docs = await UsuariosSchema.find({
       $or: [
