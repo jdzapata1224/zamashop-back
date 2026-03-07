@@ -21,7 +21,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       usuarioCreacion:       doc.usr_Creacion?.toString(),
       fechaActualizacion:  doc.usr_Fecha_Actualizacion,
       usuarioActualizacion:       doc.usr_Actualizacion?.toString(), 
-      fechaActualizacion:  doc.usr_Fecha_Actualizacion,
+      fechaEliminacion:  doc.usr_Fecha_Eliminacion,
       usuarioEliminacion:       doc.usr_Eliminacion?.toString(),
     });
   }
