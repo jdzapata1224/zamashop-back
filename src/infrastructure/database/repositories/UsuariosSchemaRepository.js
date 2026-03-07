@@ -74,6 +74,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
                             ? new Types.ObjectId(data.usuarioCreacion)
                             : undefined,
     });
+    if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
 
     return this._toEntity(doc);
   }

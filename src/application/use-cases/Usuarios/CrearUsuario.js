@@ -16,8 +16,9 @@ class CrearUsuario {
     );
     if (existe) throw new UserAlreadyExistsError();
 
-    const nuevoUsuario = await this.usuarioRepository.create(inputDto);
-    return CrearUsuarioOut.fromEntity(nuevoUsuario);
+    const creado =await this.usuarioRepository.create(inputDto);
+    if (!creado) throw new Error('No se pudo crear el usuario');
+
   }
 }
 
