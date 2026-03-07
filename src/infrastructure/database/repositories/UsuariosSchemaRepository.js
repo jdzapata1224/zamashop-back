@@ -37,12 +37,12 @@ class UsuariosSchemaRepository extends UsuariosRepository {
 
   async find() {
     const docs = await UsuariosSchema.find({
-    $or: [
-      { usr_Fecha_Eliminacion: null },
-      { usr_Fecha_Eliminacion: { $exists: false } }
-    ]
-  });
-     return docs.map(doc => this._toEntity(doc));
+      $or: [
+        { usr_Fecha_Eliminacion: null },
+        { usr_Fecha_Eliminacion: { $exists: false } }
+      ]
+    });
+     return docs;
   }
 
 
