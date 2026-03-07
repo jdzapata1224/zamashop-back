@@ -14,7 +14,7 @@ class ConsultarUsuariosIdController {
       const output = await this.consultarUsuariosIdUseCase.execute(req.params.id);  
 
       return res.status(200).json({
-        success: true,
+        codigo: 200,
         data: output,
       });
     } catch (err) {
