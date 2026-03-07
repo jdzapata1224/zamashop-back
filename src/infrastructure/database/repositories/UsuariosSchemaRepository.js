@@ -42,7 +42,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
         { usr_Fecha_Eliminacion: { $exists: false } }
       ]
     });
-     return docs;
+     return docs.map(doc => this._toEntity(doc));
   }
 
 
