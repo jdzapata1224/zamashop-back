@@ -8,7 +8,17 @@ const usuarioRoutes = require('./src/interfaces/http/routes/UsuariosRoutes');
 
 const app = express();
 app.use(express.json());
+
 app.use('/api/Usuarios', usuarioRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({
+    codigo:404,
+    mensaje: "Ruta no encontrada",
+    ruta: req.originalUrl,
+    metodo: req.method,
+  });
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 connectDB();
