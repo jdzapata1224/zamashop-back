@@ -2,6 +2,7 @@ const UsuariosRepository  = require('../../../domain/repositories/IUsuariosRepos
 const UsuariosSchema  = require('../models/UsuariosSchema');
 const Usuarios            = require('../../../domain/entities/Usuarios');
 const { Types } = require('mongoose');
+const bcrypt             = require('bcrypt');
 
 class UsuariosSchemaRepository extends UsuariosRepository {
 
