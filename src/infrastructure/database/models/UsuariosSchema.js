@@ -52,6 +52,22 @@ const UsuariosSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',        // self-reference: who created this user
     },
+    usr_Fecha_Eliminacion: {
+      type: Date,
+      default: Date.now,
+    },
+    usr_Eliminacion: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',        // self-reference: who created this user
+    },
+    usr_Fecha_Actualizacion: {
+      type: Date,
+      default: Date.now,
+    },
+    usr_Actualizacion: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',        // self-reference: who created this user
+    },
   },
   {
     collection: 'Usuarios',  // explicit collection name

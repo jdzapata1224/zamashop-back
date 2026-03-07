@@ -18,7 +18,11 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       telefono:       doc.usr_Telefono,
       estado:         doc.usr_Estado,
       fechaCreacion:  doc.usr_Fecha_Creacion,
-      creacion:       doc.usr_Creacion?.toString(),
+      usuarioCreacion:       doc.usr_Creacion?.toString(),
+      fechaActualizacion:  doc.usr_Fecha_Actualizacion,
+      usuarioActualizacion:       doc.usr_Actualizacion?.toString(), 
+      fechaActualizacion:  doc.usr_Fecha_Actualizacion,
+      usuarioEliminacion:       doc.usr_Eliminacion?.toString(),
     });
   }
 

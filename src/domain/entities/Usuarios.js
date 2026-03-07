@@ -10,7 +10,11 @@ class Usuarios {
     telefono,
     estado,
     fechaCreacion,
-    creacion,
+    usuarioCreacion,
+    usuarioActualizacion,
+    fechaActualizacion,
+    usuarioEliminacion,
+    fechaEliminacion,
   }) {
     this.id             = id;
     this.nombres        = nombres;
@@ -22,7 +26,11 @@ class Usuarios {
     this.telefono       = telefono;
     this.estado         = estado;
     this.fechaCreacion  = fechaCreacion;
-    this.creacion       = creacion;
+    this.usuarioCreacion       = usuarioCreacion;
+    this.fechaActualizacion  = fechaActualizacion;
+    this.usuarioActualizacion       = usuarioActualizacion;
+    this.fechaEliminacion  = fechaEliminacion;
+    this.usuarioEliminacion       = usuarioEliminacion;
   }
 
 }

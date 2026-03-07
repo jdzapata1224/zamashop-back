@@ -1,0 +1,27 @@
+const ConsultarUsuariosIn = require('../../../application/dtos/Usuarios/in/ConsultarUsuariosIn.dto');
+
+class ConsultarUsuariosController {
+  constructor(consultarUsuariosUseCase) {
+
+    this.consultarUsuariosUseCase = consultarUsuariosUseCase;
+  }
+
+  
+
+  consultarUsuarios = async (req, res) => {
+    try {
+      console.log(req.params.id);
+      const output = await this.consultarUsuariosUseCase.execute(req.params.id);  
+
+      return res.status(200).json({
+        codigo: 200,
+        mensaje:"Consulta Ejecutada Satisfactoriamente",
+        data: output,
+      });
+    } catch (err) {
+      res.status(err.statusCode || 400).json({ success: false, message: err.message });
+    }
+  };
+}
+
+module.exports = ConsultarUsuariosController;
