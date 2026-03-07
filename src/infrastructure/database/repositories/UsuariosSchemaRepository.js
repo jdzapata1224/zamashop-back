@@ -37,7 +37,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
 
   async find() {
     const doc = await UsuariosSchema.find({"usr_Fecha_Eliminacion": null});
-    return doc ? this._toEntity(doc) : null;
+     return docs.map(doc => this._toEntity(doc));
   }
 
 
