@@ -36,9 +36,6 @@ class UsuariosSchemaRepository extends UsuariosRepository {
   }
 
   async find() {
-    if (!Types.ObjectId.isValid(id)) {
-      return null;
-    }
     const doc = await UsuariosSchema.find({"usr_Fecha_Eliminacion": null});
     return doc ? this._toEntity(doc) : null;
   }
