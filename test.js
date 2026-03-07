@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // Reemplaza con TU string de conexión
-const uri = 'mongodb+srv://zamashop-user:9LCjZ5LYWh6JwP@clusterdev.bn4cwwc.mongodb.net/?appName=ClusterDev';
+const uri = 'mongodb+srv://zamashop-user:Ap69WONrxbnGUrUI@clusterdev.bn4cwwc.mongodb.net/?appName=ClusterDev';
 console.log('Intentando conectar a:', uri.substring(0, 30) + '...');
 const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 
