@@ -62,11 +62,9 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     const saltRounds   = 10;
     const passwordHash = await bcrypt.hash(data.password, saltRounds);
 
-    const doc = await UsuariosSchema.create({
+   const payload={
       usr_Primer_Nombre:        data.primer_nombre,
-      usr_Segundo_Nombre:       data.segundo_nombre,
       usr_Primer_Apellido:      data.primer_apellido,
-      usr_Segundo_Apellido:     data.segundo_apellido,
       usr_Usuario:        data.usuario,
       usr_Password:       passwordHash,
       usr_Identificacion: data.identificacion,
@@ -74,10 +72,17 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       usr_Telefono:       data.telefono,
       usr_Estado:         true,
       usr_Fecha_Creacion: new Date(),
-      usr_Creacion:       data.usuarioCreacion
-                            ? new Types.ObjectId(data.usuarioCreacion)
-                            : undefined,
-    });
+    };
+
+    if (data.segundo_nombre)   payload.usr_Segundo_Nombre   = data.segundo_nombre;
+    if (data.segundo_apellido) payload.usr_Segundo_Apellido = data.segundo_apellido;
+    if (data.usuarioCreacion && Types.ObjectId.isValid(data.usuarioCreacion)) {
+      payload.usr_Creacion = new Types.ObjectId(data.usuarioCreacion);
+    }
+
+    const doc = await UsuariosSchema.create(payload);
+
+
     if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
 
     return this._toEntity(doc);
