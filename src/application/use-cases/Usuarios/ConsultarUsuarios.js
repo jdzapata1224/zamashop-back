@@ -10,7 +10,7 @@ class ConsultarUsuarios {
 
   async execute(rawInput) {
     
-    const user = await this.usuarioRepository.find({"use_Fecha_Eliminacion": null});
+    const user = await this.usuarioRepository.find();
     if (!user) throw new UserNotFoundError(rawInput);
     return ConsultarUsuariosOut.fromEntity(user);
   }
