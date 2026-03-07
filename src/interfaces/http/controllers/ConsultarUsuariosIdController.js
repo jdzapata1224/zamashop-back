@@ -1,4 +1,4 @@
-const ConsultarUsuariosIn = require('../../../application/dtos/Usuarios/in/ConsultarUsuariosIdIn.dto');
+const ConsultarUsuarioIdInDTO = require('../../../application/dtos/Usuarios/in/ConsultarUsuarioIdIn.dto');
 
 class ConsultarUsuariosIdController {
   constructor(consultarUsuariosIdUseCase) {

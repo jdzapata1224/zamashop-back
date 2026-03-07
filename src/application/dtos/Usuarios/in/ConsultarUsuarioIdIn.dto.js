@@ -4,11 +4,11 @@ const { Types } = require('mongoose');
 class ConsultarUsuariosIdInDTO {
   constructor(id) {
     if (!id) {
-      throw new Error('id must be a non-empty string');
+      throw new Error('El campo id es requerido');
     }
     const trimmedId = String(id).trim();
     if (!Types.ObjectId.isValid(trimmedId)) { 
-      throw new Error(`Invalid ObjectId format: ${trimmedId}`);
+      throw new Error(`Formato Id incorrecto: ${trimmedId}`);
     }
     this.id = new Types.ObjectId(trimmedId);
   }
