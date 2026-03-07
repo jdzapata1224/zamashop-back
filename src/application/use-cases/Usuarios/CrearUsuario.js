@@ -1,4 +1,4 @@
-const { UserNotFoundError } = require('../../../domain/exceptions/UsuariosErrors');
+const { UserAlreadyExistsError } = require('../../../domain/exceptions/UsuariosErrors');
 const CrearUsuarioIn = require('../../dtos/Usuarios/in/CrearUsuarioIn.dto');
 
 
