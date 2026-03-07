@@ -1,5 +1,3 @@
-const ConsultarUsuariosIn = require('../../../application/dtos/Usuarios/in/ConsultarUsuariosIn.dto');
-
 class ConsultarUsuariosController {
   constructor(consultarUsuariosUseCase) {
 
