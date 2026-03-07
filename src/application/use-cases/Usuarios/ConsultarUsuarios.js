@@ -8,10 +8,10 @@ class ConsultarUsuarios {
     this.usuarioRepository = usuarioRepository;
   }
 
-  async execute(rawInput) {
+  async execute() {
     
     const user = await this.usuarioRepository.find();
-    if (!user) throw new UserNotFoundError(rawInput);
+    if (!user) throw new UserNotFoundError();
     return ConsultarUsuariosOut.fromEntity(user);
   }
 }
