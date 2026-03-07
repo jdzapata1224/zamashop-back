@@ -3,14 +3,22 @@ const bcrypt = require('bcrypt');
 
 const UsuariosSchema = new mongoose.Schema(
   {
-    usr_Nombres: {
+    usr_Primer_Nombre: {
       type: String,
       required: true,
       trim: true,
     },
-    usr_Apellidos: {
+    usr_Segundo_Nombre: {
+      type: String,
+      trim: true,
+    },
+    usr_Primer_Apellido: {
       type: String,
       required: true,
+      trim: true,
+    },
+    usr_Segundo_Apellido: {
+      type: String,
       trim: true,
     },
     usr_Usuario: {

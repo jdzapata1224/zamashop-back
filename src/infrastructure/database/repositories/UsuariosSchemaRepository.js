@@ -10,8 +10,10 @@ class UsuariosSchemaRepository extends UsuariosRepository {
   _toEntity(doc) {
     return new Usuarios({
       id:             doc._id.toString(),
-      nombres:        doc.usr_Nombres,
-      apellidos:      doc.usr_Apellidos,
+      primer_nombre:  doc.usr_Primer_Nombre,
+      segundo_nombre:       doc.usr_Segundo_Nombre,
+      primer_apellido:      doc.usr_Primer_Apellido,
+      segundo_apellido:     doc.usr_Segundo_Apellido,
       usuario:        doc.usr_Usuario,
       password:       doc.usr_Password,
       identificacion: doc.usr_Identificacion,
@@ -61,8 +63,10 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     const passwordHash = await bcrypt.hash(data.password, saltRounds);
 
     const doc = await UsuariosSchema.create({
-      usr_Nombres:        data.nombres,
-      usr_Apellidos:      data.apellidos,
+      usr_Primer_Nombre:        data.primer_nombre,
+      usr_Segundo_Nombre:       data.segundo_nombre,
+      usr_Primer_Apellido:      data.primer_apellido,
+      usr_Segundo_Apellido:     data.segundo_apellido,
       usr_Usuario:        data.usuario,
       usr_Password:       passwordHash,
       usr_Identificacion: data.identificacion,

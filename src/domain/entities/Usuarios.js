@@ -1,8 +1,10 @@
 class Usuarios {
   constructor({
     id,
-    nombres,
-    apellidos,
+    primer_nombre,
+    segundo_nombre,
+    primer_apellido,
+    segundo_apellido,
     usuario,
     password,
     identificacion,
@@ -17,8 +19,10 @@ class Usuarios {
     fechaEliminacion,
   }) {
     this.id             = id;
-    this.nombres        = nombres;
-    this.apellidos      = apellidos;
+    this.primer_nombre        = primer_nombre;
+    this.segundo_nombre     = segundo_nombre;
+    this.primer_apellido    = primer_apellido;
+    this.segundo_apellido   = segundo_apellido;
     this.usuario        = usuario;
     this.password       = password;
     this.identificacion = identificacion;

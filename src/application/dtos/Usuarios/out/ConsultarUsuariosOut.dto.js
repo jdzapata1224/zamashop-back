@@ -1,8 +1,10 @@
 class ConsultarUsuariosOutDTO {
   constructor(user) {
     this.id       = user.id;
-    this.nombres     = user.nombres;
-    this.apellidos    = user.apellidos;
+    this.primer_nombre     = user.primer_nombre;
+    this.segundo_nombre     = user.segundo_nombre;
+    this.primer_apellido    = user.primer_apellido;
+    this.segundo_apellido   = user.segundo_apellido;
     this.identificacion =user.identificacion;
     this.correo    = user.correo;
     this.telefono    = user.telefono;
