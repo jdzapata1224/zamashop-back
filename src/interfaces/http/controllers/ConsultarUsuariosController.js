@@ -8,8 +8,7 @@ class ConsultarUsuariosController {
 
   consultarUsuarios = async (req, res) => {
     try {
-      console.log(req.params.id);
-      const output = await this.consultarUsuariosUseCase.execute(req.params.id);  
+      const output = await this.consultarUsuariosUseCase.execute();  
 
       return res.status(200).json({
         codigo: 200,
