@@ -17,7 +17,7 @@ class EliminarUsuarioInDTO {
         ? token.slice(7).trim()
         : token.trim();
       if (Types.ObjectId.isValid(bearer)) {
-        this.usuarioEliminacion = bearer;
+        this.usuarioEliminacion =  new Types.ObjectId(bearer);
       }
     }
   }
