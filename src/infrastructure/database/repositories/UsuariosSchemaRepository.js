@@ -38,12 +38,29 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     return doc ? this._toEntity(doc) : null;
   }
 
-   async update(id) {
-    if (!Types.ObjectId.isValid(id)) {
-      return null;
+  async delete(data) {
+    if (!Types.ObjectId.isValid(data.id)) return null;
+    
+    const payload = {
+      usr_Estado:              data.estado,
+      usr_Fecha_Actualizacion: new Date(),
+    };
+
+    // usr_Actualizacion solo se guarda si es un ObjectId válido
+    if (data.usuarioActualizacion && Types.ObjectId.isValid(data.usuarioActualizacion)) {
+      payload.usr_Actualizacion = new Types.ObjectId(data.usuarioActualizacion);
     }
-    const doc = await UsuariosSchema.findById(new Types.ObjectId(id));
-    return doc ? this._toEntity(doc) : null;
+
+    const doc = await UsuariosSchema.findByIdAndUpdate(
+      new Types.ObjectId(data.id),  // ← corregido: era `id` sin definir
+      { $set: payload },
+      { new: true }                 // ← sin upsert: si no existe, no crea
+    );
+
+    if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+    return this._toEntity(doc);
+
+   
   }
 
   async find() {

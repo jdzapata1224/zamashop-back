@@ -7,6 +7,7 @@ class IUsuariosRepository {
   async create(data)  { throw new NotImplementedError(); }
   async findByUsuarioOrIdentificacion(usuario, identificacion) { throw new NotImplementedError(); }
 
+  async delete(id) { throw new NotImplementedError(); }
 
 }
 

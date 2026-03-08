@@ -1,7 +1,5 @@
-const { UserAlreadyExistsError } = require('../../../domain/exceptions/UsuariosErrors');
-const EstructuraUsuarioIdIn = require('../../dtos/Usuarios/in/EstructuraUsuarioIdIn.dto');
-
-
+const { UserNotFoundError } = require('../../../domain/exceptions/UsuariosErrors');
+const EliminarUsuarioIn     = require('../../dtos/Usuarios/in/EliminarUsuarioIn.dto');
 
 class EliminarUsuario {
   constructor(usuarioRepository) {
@@ -9,16 +7,22 @@ class EliminarUsuario {
   }
 
   async execute(rawInput) {
-    const inputDto = new EstructuraUsuarioIdIn(rawInput);
-    const existe = await this.usuarioRepository.findByUsuarioOrIdentificacion(
-      inputDto.usuario,
-      inputDto.identificacion,
-    );
-    if (existe) throw new UserAlreadyExistsError();
+    const inputDto = new EliminarUsuarioIn(rawInput);
 
-    const creado =await this.usuarioRepository.create(inputDto);
-    if (!creado) throw new Error('No se pudo crear el usuario');
+    // Verificar que el usuario exista
+    const existe = await this.usuarioRepository.findById(inputDto.id);
+    if (!existe) throw new UserNotFoundError(rawInput.id);
 
+    // Toggle de estado: true → false / false → true
+    const nuevoEstado = !existe.estado;
+
+    const eliminado = await this.usuarioRepository.delete({
+      id:                 inputDto.id,
+      estado:             nuevoEstado,
+      usuarioEliminacion: inputDto.usuarioEliminacion,
+    });
+
+    if (!eliminado) throw new Error('No se pudo actualizar el usuario');
   }
 }
 
