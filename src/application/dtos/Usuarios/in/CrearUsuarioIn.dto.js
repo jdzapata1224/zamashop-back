@@ -27,7 +27,7 @@ class CrearUsuarioInDTO {
         ? token.slice(7).trim()
         : token.trim();
       if (Types.ObjectId.isValid(bearer)) {
-        this.usuarioCreacion = bearer;
+        this.usuarioCreacion = new Types.ObjectId(bearer);;
       }
     }
   }
