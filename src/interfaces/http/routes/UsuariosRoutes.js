@@ -19,6 +19,8 @@ const EliminarUsuarioController      = require('../controllers/EliminarUsuarioCo
 const CambiarEstadoUsuarioUseCase         = require('../../../application/use-cases/Usuarios/CambiarEstadoUsuario');
 const CambiarEstadoUsuarioController      = require('../controllers/CambiarEstadoUsuarioController');
 
+const ActualizarUsuarioUseCase    = require('../../../application/use-cases/Usuarios/ActualizarUsuario');
+const ActualizarUsuarioController = require('../controllers/ActualizarUsuarioController');
 
 const userRepository  = new UsuariosSchemaRepository();
 
@@ -37,9 +39,13 @@ const eliminarUsuarioController     = new EliminarUsuarioController(eliminarUsua
 const cambiarEstadoUsuarioUseCase      = new CambiarEstadoUsuarioUseCase(userRepository);
 const cambiarEstadoUsuarioController     = new CambiarEstadoUsuarioController(cambiarEstadoUsuarioUseCase);
 
+const actualizarUsuarioUseCase      = new ActualizarUsuarioUseCase(userRepository);
+const actualizarUsuarioController      = new ActualizarUsuarioController(actualizarUsuarioUseCase);
+
 router.get('/ConsultarUsuariosId/:id',(req, res) => consultarUsuariosIdController.consultarUsuariosId(req, res));
 router.get('/ConsultarUsuarios',(req, res) => consultarUsuariosController.consultarUsuarios(req, res));
 router.post('/CrearUsuario',(req, res) => crearUsuarioController.crearUsuario(req, res));
+router.post('/ActualizarUsuario/:id',(req, res) => actualizarUsuarioController.actualizarUsuario(req, res));
 router.patch('/EliminarUsuario/:id',(req, res) => eliminarUsuarioController.eliminarUsuario(req, res));
 router.patch('/CambiarEstadoUsuario/:id',(req, res) => cambiarEstadoUsuarioController.cambiarEstadoUsuario(req, res));
 

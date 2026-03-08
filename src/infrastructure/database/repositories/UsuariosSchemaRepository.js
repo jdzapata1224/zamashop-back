@@ -100,13 +100,13 @@ class UsuariosSchemaRepository extends UsuariosRepository {
      return docs.map(doc => this._toEntity(doc));
   }
 
-    async findByUsuario(usuario) {
-      const doc = await UsuariosSchema.findOne({ usr_Usuario: usuario });
-      return doc ? this._toEntity(doc) : null;
-    }
+  async findByUsuario(usuario) {
+    const doc = await UsuariosSchema.findOne({ usr_Usuario: usuario });
+    return doc ? this._toEntity(doc) : null;
+  }
   
-    async findByIdentificacion(identificacion) {
-      const doc = await UsuariosSchema.findOne({ usr_Identificacion: identificacion });
+  async findByIdentificacion(identificacion) {
+    const doc = await UsuariosSchema.findOne({ usr_Identificacion: identificacion });
       return doc ? this._toEntity(doc) : null;
     }
 
@@ -149,6 +149,34 @@ class UsuariosSchemaRepository extends UsuariosRepository {
 
     return this._toEntity(doc);
   }
+
+ async update(data) {
+    // usuario y password NO se actualizan
+    const payload = {
+      usr_Primer_Nombre:       data.primer_nombre,
+      usr_Primer_Apellido:     data.primer_apellido,
+      usr_Identificacion:      data.identificacion,
+      usr_Correo:              data.correo,
+      usr_Telefono:            data.telefono,
+      usr_Fecha_Actualizacion: new Date(),
+    };
+
+    if (data.segundo_nombre)   payload.usr_Segundo_Nombre   = data.segundo_nombre;
+    if (data.segundo_apellido) payload.usr_Segundo_Apellido = data.segundo_apellido;
+    if (data.usuarioActualizacion && Types.ObjectId.isValid(data.usuarioActualizacion)) {
+      payload.usr_Actualizacion = new Types.ObjectId(data.usuarioActualizacion);
+    }
+
+    const doc = await UsuariosSchema.findByIdAndUpdate(
+      data.id,
+      { $set: payload },
+      { new: true }
+    );
+
+    if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+    return this._toEntity(doc);
+  }
+
 
 
 }
