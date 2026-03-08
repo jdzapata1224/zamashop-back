@@ -6,7 +6,6 @@ class ActualizarUsuarioInDTO {
 
     if (!primer_nombre        || typeof primer_nombre        !== 'string' || !primer_nombre.trim())        throw new Error('Primer Nombre es requerido');   
     if (!primer_apellido      || typeof primer_apellido      !== 'string' || !primer_apellido.trim())      throw new Error('apellidos es requerido');
-    if (!password       || typeof password       !== 'string' || !password.trim())       throw new Error('password es requerido');
     if (!identificacion || typeof identificacion !== 'string' || !identificacion.trim()) throw new Error('identificacion es requerida');
     if (!correo         || typeof correo         !== 'string' || !correo.trim())         throw new Error('correo es requerido');
     if (!telefono       || typeof telefono       !== 'string' || !telefono.trim())       throw new Error('telefono es requerido');
@@ -19,7 +18,6 @@ class ActualizarUsuarioInDTO {
     this.segundo_nombre   = segundo_nombre?.trim().toUpperCase()   || null;
     this.primer_apellido    = primer_apellido.trim().toUpperCase();
     this.segundo_apellido = segundo_apellido?.trim().toUpperCase() || null;
-    this.password       = password.trim();
     this.identificacion = identificacion.trim();
     this.correo         = correo.trim().toLowerCase();
     this.telefono       = telefono.trim();
