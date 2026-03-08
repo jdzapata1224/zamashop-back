@@ -1,3 +1,5 @@
+const { Types } = require('mongoose');
+
 class CrearUsuarioInDTO {
   constructor({ primer_nombre,segundo_nombre, primer_apellido,segundo_apellido, usuario, password, identificacion, correo, telefono, token }) {
     if (!primer_nombre        || typeof primer_nombre        !== 'string' || !primer_nombre.trim())        throw new Error('Primer Nombre es requerido');
