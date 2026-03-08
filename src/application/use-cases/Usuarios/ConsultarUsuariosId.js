@@ -1,6 +1,6 @@
 const { UserNotFoundError } = require('../../../domain/exceptions/UsuariosErrors');
 const ConsultarUsuariosOut = require('../../dtos/Usuarios/out/ConsultarUsuariosOut.dto');
-const ConsultarUsuarioIdInDTO = require('../../dtos/Usuarios/in/ConsultarUsuarioIdInDTO.dto');
+const ConsultarUsuarioIdIn = require('../../dtos/Usuarios/in/ConsultarUsuarioIdIn.dto');
 
 
 
@@ -10,7 +10,7 @@ class ConsultarUsuariosId {
   }
 
   async execute(rawInput) {
-    const inputDto = new ConsultarUsuarioIdInDTO(rawInput);
+    const inputDto = new ConsultarUsuarioIdIn(rawInput);
     
     const user = await this.usuarioRepository.findById(inputDto.id);
     if (!user) throw new UserNotFoundError(rawInput);
