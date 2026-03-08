@@ -1,7 +1,7 @@
 const { Types } = require('mongoose');
 
 
-class ConsultarUsuariosIdInDTO {
+class ConsultarUsuarioIdInDTO {
   constructor(id) {
     if (!id) {
       throw new Error('El campo id es requerido');
@@ -13,4 +13,4 @@ class ConsultarUsuariosIdInDTO {
     this.id = new Types.ObjectId(trimmedId);
   }
 }
-module.exports = ConsultarUsuariosIdInDTO;
+module.exports = ConsultarUsuarioIdInDTO;
