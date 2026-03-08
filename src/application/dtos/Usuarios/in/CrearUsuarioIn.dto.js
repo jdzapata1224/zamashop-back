@@ -14,10 +14,10 @@ class CrearUsuarioInDTO {
     if (segundo_nombre  !== undefined && segundo_nombre  !== null && typeof segundo_nombre  !== 'string') throw new Error('Segundo nombre debe ser texto');
     if (segundo_apellido !== undefined && segundo_apellido !== null && typeof segundo_apellido !== 'string') throw new Error('Segundo apellido debe ser texto');
 
-    this.primer_nombre      = primer_nombre.trim();
-    this.segundo_nombre   = segundo_nombre?.trim()   || null;
-    this.primer_apellido    = primer_apellido.trim();
-    this.segundo_apellido = segundo_apellido?.trim() || null;
+    this.primer_nombre      = primer_nombre.trim().toUpperCase();
+    this.segundo_nombre   = segundo_nombre?.trim().toUpperCase()   || null;
+    this.primer_apellido    = primer_apellido.trim().toUpperCase();
+    this.segundo_apellido = segundo_apellido?.trim().toUpperCase() || null;
     this.usuario        = usuario.trim();
     this.password       = password.trim();
     this.identificacion = identificacion.trim();
