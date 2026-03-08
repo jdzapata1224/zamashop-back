@@ -22,7 +22,7 @@ class CambiarEstadoUsuario {
       usuarioActualizacion: inputDto.usuarioActualizacion,
     });
 
-    if (!eliminado) throw new Error('No se pudo actualizar el usuario');
+    if (!actualizado) throw new Error('No se pudo actualizar el usuario');
   }
 }
 
