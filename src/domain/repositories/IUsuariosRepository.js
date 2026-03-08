@@ -5,6 +5,8 @@ class IUsuariosRepository {
   async findById(id) { throw new NotImplementedError(); }
   async find() { throw new NotImplementedError(); }
   async create(data)  { throw new NotImplementedError(); }
+  async findByUsuario(usuario)                                     { throw new NotImplementedError(); }
+  async findByIdentificacion(identificacion)                       { throw new NotImplementedError(); }
   async findByUsuarioOrIdentificacion(usuario, identificacion) { throw new NotImplementedError(); }
   async changeStatus(id) { throw new NotImplementedError(); }
 

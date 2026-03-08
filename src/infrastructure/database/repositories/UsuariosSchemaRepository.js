@@ -100,6 +100,16 @@ class UsuariosSchemaRepository extends UsuariosRepository {
      return docs.map(doc => this._toEntity(doc));
   }
 
+    async findByUsuario(usuario) {
+      const doc = await UsuariosSchema.findOne({ usr_Usuario: usuario });
+      return doc ? this._toEntity(doc) : null;
+    }
+  
+    async findByIdentificacion(identificacion) {
+      const doc = await UsuariosSchema.findOne({ usr_Identificacion: identificacion });
+      return doc ? this._toEntity(doc) : null;
+    }
+
   async findByUsuarioOrIdentificacion(usuario, identificacion) {
     const doc = await UsuariosSchema.findOne({
       $or: [
