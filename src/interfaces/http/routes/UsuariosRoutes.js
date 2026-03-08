@@ -16,9 +16,6 @@ const CrearUsuarioController        = require('../controllers/CrearUsuarioContro
 const EliminarUsuarioUseCase         = require('../../../application/use-cases/Usuarios/EliminarUsuario');
 const EliminarUsuarioController      = require('../controllers/EliminarUsuarioController');
 
-const EliminarUsuarioUseCase         = require('../../../application/use-cases/Usuarios/EliminarUsuario');
-const EliminarUsuarioController      = require('../controllers/EliminarUsuarioController');
-
 const CambiarEstadoUsuarioUseCase         = require('../../../application/use-cases/Usuarios/CambiarEstadoUsuario');
 const CambiarEstadoUsuarioController      = require('../controllers/CambiarEstadoUsuarioController');
 
