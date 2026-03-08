@@ -45,13 +45,12 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     if (!Types.ObjectId.isValid(data.id)) return null;
     
     const payload = {
-      usr_Estado:              data.estado,
-      usr_Fecha_Actualizacion: new Date(),
+      usr_Fecha_Eliminacion: new Date(),
     };
 
-    // usr_Actualizacion solo se guarda si es un ObjectId válido
-    if (data.usuarioActualizacion && Types.ObjectId.isValid(data.usuarioActualizacion)) {
-      payload.usr_Actualizacion = new Types.ObjectId(data.usuarioActualizacion);
+    // usr_Eliminacion solo se guarda si es un ObjectId válido
+    if (data.usuarioEliminacion && Types.ObjectId.isValid(data.usuarioEliminacion)) {
+      payload.usr_Eliminacion = new Types.ObjectId(data.usuarioEliminacion);
     }
 
     const doc = await UsuariosSchema.findByIdAndUpdate(
