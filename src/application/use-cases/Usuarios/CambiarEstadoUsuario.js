@@ -1,27 +1,29 @@
 const { UserNotFoundError } = require('../../../domain/exceptions/UsuariosErrors');
-const EliminarUsuarioIn     = require('../../dtos/Usuarios/in/EliminarUsuarioIn.dto');
+const CambiarEstadoUsuarioIn     = require('../../dtos/Usuarios/in/CambiarEstadoUsuarioIn.dto');
 
-class EliminarUsuario {
+class CambiarEstadoUsuario {
   constructor(usuarioRepository) {
     this.usuarioRepository = usuarioRepository;
   }
 
   async execute(rawInput) {
-    const inputDto = new EliminarUsuarioIn(rawInput);
+    const inputDto = new CambiarEstadoUsuarioIn(rawInput);
 
     // Verificar que el usuario exista
     const existe = await this.usuarioRepository.findById(inputDto.id);
     if (!existe) throw new UserNotFoundError(rawInput.id);
 
     // Toggle de estado: true → false / false → true
+    const nuevoEstado = !existe.estado;
 
-    const eliminado = await this.usuarioRepository.delete({
+    const actualizado = await this.usuarioRepository.changeStatus({
       id:                 inputDto.id,
-      usuarioEliminacion: inputDto.usuarioEliminacion,
+      estado:             nuevoEstado,
+      usuarioActualizacion: inputDto.usuarioActualizacion,
     });
 
     if (!eliminado) throw new Error('No se pudo actualizar el usuario');
   }
 }
 
-module.exports = EliminarUsuario;
+module.exports = CambiarEstadoUsuario;

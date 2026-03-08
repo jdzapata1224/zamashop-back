@@ -24,7 +24,7 @@ class UserInactiveError extends Error {
 
 class UserNotFoundError extends Error {
   constructor(id) {
-    super(`Usuario with id ${id} not found`);
+    super(`Usuario con id ${id} no encontrado`);
     this.name       = 'UserNotFoundError';
     this.statusCode = 404;
   }
