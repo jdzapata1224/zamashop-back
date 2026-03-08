@@ -34,7 +34,10 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     if (!Types.ObjectId.isValid(id)) {
       return null;
     }
-    const doc = await UsuariosSchema.findById(new Types.ObjectId(id));
+    const doc = await UsuariosSchema.findOne({
+      _id: new Types.ObjectId(id),
+      usr_Fecha_Eliminacion: { $in: [null, undefined] },
+    });
     return doc ? this._toEntity(doc) : null;
   }
 
