@@ -5,23 +5,23 @@ const authMiddleware        = require('../../../infrastructure/middlewares/authM
 const UsuariosSchemaRepository   = require('../../../infrastructure/database/repositories/UsuariosSchemaRepository');
 
 const ConsultarUsuariosIdUseCase = require('../../../application/use-cases/Usuarios/ConsultarUsuariosId');
-const ConsultarUsuariosIdController        = require('../controllers/ConsultarUsuariosIdController');
+const ConsultarUsuariosIdController        = require('../controllers/Usuarios/ConsultarUsuariosIdController');
 
 const ConsultarUsuariosUseCase = require('../../../application/use-cases/Usuarios/ConsultarUsuarios');
-const ConsultarUsuariosController        = require('../controllers/ConsultarUsuariosController');
+const ConsultarUsuariosController        = require('../controllers/Usuarios/ConsultarUsuariosController');
 
 
 const CrearUsuarioUseCase = require('../../../application/use-cases/Usuarios/CrearUsuario');
-const CrearUsuarioController        = require('../controllers/CrearUsuarioController');
+const CrearUsuarioController        = require('../controllers/Usuarios/CrearUsuarioController');
 
 const EliminarUsuarioUseCase         = require('../../../application/use-cases/Usuarios/EliminarUsuario');
-const EliminarUsuarioController      = require('../controllers/EliminarUsuarioController');
+const EliminarUsuarioController      = require('../controllers/Usuarios/EliminarUsuarioController');
 
 const CambiarEstadoUsuarioUseCase         = require('../../../application/use-cases/Usuarios/CambiarEstadoUsuario');
-const CambiarEstadoUsuarioController      = require('../controllers/CambiarEstadoUsuarioController');
+const CambiarEstadoUsuarioController      = require('../controllers/Usuarios/CambiarEstadoUsuarioController');
 
 const ActualizarUsuarioUseCase    = require('../../../application/use-cases/Usuarios/ActualizarUsuario');
-const ActualizarUsuarioController = require('../controllers/ActualizarUsuarioController');
+const ActualizarUsuarioController = require('../controllers/Usuarios/ActualizarUsuarioController');
 
 
 const userRepository  = new UsuariosSchemaRepository();

@@ -5,20 +5,20 @@ const authMiddleware        = require('../../../infrastructure/middlewares/authM
 const OpcionesSchemaRepository   = require('../../../infrastructure/database/repositories/OpcionesSchemaRepository');
 
 const ConsultarOpcionesIdUseCase = require('../../../application/use-cases/Opciones/ConsultarOpcionesId');
-const ConsultarOpcionesIdController        = require('../controllers/ConsultarOpcionesIdController');
+const ConsultarOpcionesIdController        = require('../controllers/Opciones/ConsultarOpcionesIdController');
 
 const ConsultarOpcionesUseCase = require('../../../application/use-cases/Opciones/ConsultarOpciones');
-const ConsultarOpcionesController        = require('../controllers/ConsultarOpcionesController');
+const ConsultarOpcionesController        = require('../controllers/Opciones/ConsultarOpcionesController');
 
 
 const CrearOpcionesUseCase = require('../../../application/use-cases/Opciones/CrearOpciones');
-const CrearOpcionesController        = require('../controllers/CrearOpcionesController');
+const CrearOpcionesController        = require('../controllers/Opciones/CrearOpcionesController');
 
 const EliminarOpcionesUseCase         = require('../../../application/use-cases/Opciones/EliminarOpciones');
-const EliminarOpcionesController      = require('../controllers/EliminarOpcionesController');
+const EliminarOpcionesController      = require('../controllers/Opciones/EliminarOpcionesController');
 
 const CambiarEstadoOpcionesUseCase         = require('../../../application/use-cases/Opciones/CambiarEstadoOpciones');
-const CambiarEstadoOpcionesController      = require('../controllers/CambiarEstadoOpcionesController');
+const CambiarEstadoOpcionesController      = require('../controllers/Opciones/CambiarEstadoOpcionesController');
 
 
 const opcionesRepository  = new OpcionesSchemaRepository();
