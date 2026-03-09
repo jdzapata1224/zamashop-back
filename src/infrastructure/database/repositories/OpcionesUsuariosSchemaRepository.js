@@ -6,10 +6,10 @@ class OpcionesUsuariosSchemaRepository {
 
   _toEntity(doc) {
     return new OpcionesUsuarios({
-      id:              doc._id.toString(),
+       id:              doc._id.toString(),
       usuarioId:       doc.ous_Usr_Id ? doc.ous_Usr_Id.toString() : null,
-      opcionId:        doc.ous_Opc_Id ? doc.ous_Opc_Id.toString() : null,
-      opcionNombre:    doc.ous_Opc_Id ? doc.ous_Opc_Id.opc_Nombre : null,
+      opcionId:        doc.opcionId ? doc.opcionId.toString() : null,
+      opcionNombre:    doc.opcionNombre || null,
       fechaCreacion:   doc.ous_Fecha_Creacion,
       usuarioCreacion: doc.ous_Usr_Creacion ? doc.ous_Usr_Creacion.toString() : null,
     });
@@ -35,6 +35,9 @@ class OpcionesUsuariosSchemaRepository {
       { $unwind: { path: '$opcion', preserveNullAndEmptyArrays: true } },
       {
         $project: {
+          ous_Usr_Id:         1,
+          ous_Usr_Creacion:   1,
+          ous_Fecha_Creacion: 1,
           opcionId:           '$opcion._id',
           opcionNombre:       '$opcion.opc_Nombre',
         }
