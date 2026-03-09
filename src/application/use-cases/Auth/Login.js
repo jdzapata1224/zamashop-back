@@ -1,7 +1,7 @@
 const bcrypt   = require('bcrypt');
 const jwt      = require('jsonwebtoken');
-const LoginInDTO  = require('../../dtos/Usuarios/in/LoginIn.dto');
-const LoginOutDTO = require('../../dtos/Usuarios/out/LoginOut.dto');
+const LoginInDTO  = require('../../dtos/Auth/in/LoginIn.dto');
+const LoginOutDTO = require('../../dtos/Auth/out/LoginOut.dto');
 const { InvalidCredentialsError, UserInactiveError } = require('../../../domain/exceptions/UsuariosErrors');
 
 class Login {

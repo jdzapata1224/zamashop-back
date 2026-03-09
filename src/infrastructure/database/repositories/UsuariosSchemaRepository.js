@@ -108,7 +108,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
   async findByIdentificacion(identificacion) {
     const doc = await UsuariosSchema.findOne({ usr_Identificacion: identificacion });
       return doc ? this._toEntity(doc) : null;
-    }
+  }
 
   async findByUsuarioOrIdentificacion(usuario, identificacion) {
     const doc = await UsuariosSchema.findOne({
@@ -119,7 +119,6 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     });
     return doc ? this._toEntity(doc) : null;
   }
-
   async create(data) {
     const saltRounds   = 10;
     const passwordHash = await bcrypt.hash(data.password, saltRounds);

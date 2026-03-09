@@ -58,21 +58,21 @@ const UsuariosSchema = new mongoose.Schema(
     },
     usr_Creacion: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',        // self-reference: who created this user
+      ref: 'Usuarios',        // self-reference: who created this user
     },
     usr_Fecha_Eliminacion: {
       type: Date
     },
     usr_Eliminacion: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',        // self-reference: who created this user
+      ref: 'Usuarios',        // self-reference: who created this user
     },
     usr_Fecha_Actualizacion: {
       type: Date
     },
     usr_Actualizacion: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',        // self-reference: who created this user
+      ref: 'Usuarios',        // self-reference: who created this user
     },
   },
   {
