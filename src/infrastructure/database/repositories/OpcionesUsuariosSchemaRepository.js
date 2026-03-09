@@ -32,7 +32,7 @@ class OpcionesUsuariosSchemaRepository {
           ous_Fecha_Eliminacion: { $in: [null, undefined] },
         }
       },
-      // 2. Cruzar con Opciones para obtener la opcion asignada
+      // 2. Traer la opcion asignada (puede ser padre o hijo)
       {
         $lookup: {
           from:         'Opciones',
@@ -41,81 +41,81 @@ class OpcionesUsuariosSchemaRepository {
           as:           'opcion'
         }
       },
-      { $unwind: { path: '$opcion', preserveNullAndEmptyArrays: true } },
-      // 3. Cruzar la opcion con su TipoOpcion
+      { $unwind: '$opcion' },
+      // 3. Traer TipoOpcion de la opcion asignada
       {
         $lookup: {
           from:         'TipoOpcion',
           localField:   'opcion.opc_Top_Id',
           foreignField: '_id',
-          as:           'opcion.tipoOpcionArr'
+          as:           'opcionTipo'
         }
       },
-      { $unwind: { path: '$opcion.tipoOpcionArr', preserveNullAndEmptyArrays: true } },
-      // 4. Cruzar la opcion con su Padre
+      { $unwind: { path: '$opcionTipo', preserveNullAndEmptyArrays: true } },
+      // 4. Traer el padre si existe
       {
         $lookup: {
           from:         'Opciones',
           localField:   'opcion.opc_Padre_Id',
           foreignField: '_id',
-          as:           'opcion.padreArr'
+          as:           'padre'
         }
       },
-      { $unwind: { path: '$opcion.padreArr', preserveNullAndEmptyArrays: true } },
-      // 5. Cruzar el padre con su TipoOpcion
+      { $unwind: { path: '$padre', preserveNullAndEmptyArrays: true } },
+      // 5. Traer TipoOpcion del padre
       {
         $lookup: {
           from:         'TipoOpcion',
-          localField:   'opcion.padreArr.opc_Top_Id',
+          localField:   'padre.opc_Top_Id',
           foreignField: '_id',
-          as:           'opcion.padreTipoArr'
+          as:           'padreTipo'
         }
       },
-      { $unwind: { path: '$opcion.padreTipoArr', preserveNullAndEmptyArrays: true } },
-      // 6. Proyectar campos normalizados
+      { $unwind: { path: '$padreTipo', preserveNullAndEmptyArrays: true } },
+      // 6. Normalizar: definir quién es el padre del grupo y quién es hijo
       {
         $project: {
-          hijoId:           '$opcion._id',
-          hijoNombre:       '$opcion.opc_Nombre',
-          hijoCodigo:       '$opcion.opc_Codigo',
-          hijoTipoOpcion: {
-            _id:    '$opcion.tipoOpcionArr._id',
-            nombre: '$opcion.tipoOpcionArr.top_Nombre',
+          // Si tiene padre -> la opcion es hijo; si no -> la opcion es el padre del grupo
+          tienepadre: { $cond: [{ $ifNull: ['$opcion.opc_Padre_Id', false] }, true, false] },
+
+          // Datos del padre del grupo
+          grupoId:     { $ifNull: ['$padre._id',         '$opcion._id']         },
+          grupoNombre: { $ifNull: ['$padre.opc_Nombre',  '$opcion.opc_Nombre']  },
+          grupoCodigo: { $ifNull: ['$padre.opc_Codigo',  '$opcion.opc_Codigo']  },
+          grupoTipo: {
+            _id:    { $ifNull: ['$padreTipo._id',         '$opcionTipo._id']         },
+            nombre: { $ifNull: ['$padreTipo.top_Nombre',  '$opcionTipo.top_Nombre']  },
           },
-          padreId:          { $ifNull: ['$opcion.padreArr._id',         '$opcion._id']         },
-          padreNombre:      { $ifNull: ['$opcion.padreArr.opc_Nombre',  '$opcion.opc_Nombre']  },
-          padreCodigo:      { $ifNull: ['$opcion.padreArr.opc_Codigo',  '$opcion.opc_Codigo']  },
-          padreTipoOpcion: {
-            _id:    { $ifNull: ['$opcion.padreTipoArr._id',         '$opcion.tipoOpcionArr._id']         },
-            nombre: { $ifNull: ['$opcion.padreTipoArr.top_Nombre',  '$opcion.tipoOpcionArr.top_Nombre']  },
+
+          // Datos del hijo (solo aplica si tienepadre = true)
+          hijoId:     '$opcion._id',
+          hijoNombre: '$opcion.opc_Nombre',
+          hijoCodigo: '$opcion.opc_Codigo',
+          hijoTipo: {
+            _id:    '$opcionTipo._id',
+            nombre: '$opcionTipo.top_Nombre',
           },
-          // Si no tiene padre, la opcion misma es el padre -> no es hijo
-          esHijo: { $cond: [{ $ifNull: ['$opcion.opc_Padre_Id', false] }, true, false] },
         }
       },
-      // 7. Agrupar por padre
+      // 7. Agrupar por padre, acumulando hijos
       {
         $group: {
-          _id:      '$padreId',
-          nombre:   { $first: '$padreNombre' },
-          codigo:   { $first: '$padreCodigo' },
-          tipoOpcion: { $first: '$padreTipoOpcion' },
+          _id:      '$grupoId',
+          nombre:   { $first: '$grupoNombre' },
+          codigo:   { $first: '$grupoCodigo' },
+          tipoOpcion: { $first: '$grupoTipo' },
           hijos: {
             $push: {
               $cond: [
-                '$esHijo',
-                {
-                  _id:       '$hijoId',
-                  nombre:    '$hijoNombre',
-                  codigo:    '$hijoCodigo',
-                  tipoOpcion:'$hijoTipoOpcion',
-                },
+                '$tienepadre',
+                { _id: '$hijoId', nombre: '$hijoNombre', codigo: '$hijoCodigo', tipoOpcion: '$hijoTipo' },
                 '$$REMOVE'
               ]
             }
           }
         }
       },
+      { $sort: { nombre: 1 } }
     ]);
 
     return docs.map(doc => this._toEntity(doc));
