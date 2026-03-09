@@ -26,20 +26,17 @@ const opcionesRepository  = new OpcionesSchemaRepository();
 const consultarOpcionesIdUseCase      = new ConsultarOpcionesIdUseCase(opcionesRepository);
 const consultarOpcionesIdController      = new ConsultarOpcionesIdController(consultarOpcionesIdUseCase);
 
-const consultarOpcionesUseCase      = new ConsultarOpcionesUseCase(OpcionesopcionesRepository);
+const consultarOpcionesUseCase      = new ConsultarOpcionesUseCase(opcionesRepository);
 const consultarOpcionesController      = new ConsultarOpcionesController(consultarOpcionesUseCase);
 
-const crearOpcionesUseCase      = new CrearOpcionesUseCase(OpcionesopcionesRepository);
+const crearOpcionesUseCase      = new CrearOpcionesUseCase(opcionesRepository);
 const crearOpcionesController      = new CrearOpcionesController(crearOpcionesUseCase);
 
-const eliminarOpcionesUseCase      = new EliminarOpcionesUseCase(OpcionesopcionesRepository);
+const eliminarOpcionesUseCase      = new EliminarOpcionesUseCase(opcionesRepository);
 const eliminarOpcionesController     = new EliminarOpcionesController(eliminarOpcionesUseCase);
 
-const cambiarEstadoOpcionesUseCase      = new CambiarEstadoOpcionesUseCase(OpcionesopcionesRepository);
+const cambiarEstadoOpcionesUseCase      = new CambiarEstadoOpcionesUseCase(opcionesRepository);
 const cambiarEstadoOpcionesController     = new CambiarEstadoOpcionesController(cambiarEstadoOpcionesUseCase);
-
-const actualizarOpcionesUseCase      = new ActualizarOpcionesUseCase(OpcionesopcionesRepository);
-const actualizarOpcionesController      = new ActualizarOpcionesController(actualizarOpcionesUseCase);
 
 router.use(authMiddleware);
 
