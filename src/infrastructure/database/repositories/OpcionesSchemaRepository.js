@@ -23,16 +23,7 @@ class OpcionesSchemaRepository extends OpcionesRepository {
     });
   }
 
-   async findOpcionesByUsuarioId(id) {
-      if (!Types.ObjectId.isValid(id)) {
-        return null;
-      }
-      const doc = await OpcionesUsuariosSchema.findOne({
-        ous_Usr_Id: new Types.ObjectId(id),
-        ous_Fecha_Eliminacion: { $in: [null, undefined] },
-      });
-      return doc ? this._toEntity(doc) : null;
-  }
+
   async findById(id) {
       if (!Types.ObjectId.isValid(id)) {
         return null;

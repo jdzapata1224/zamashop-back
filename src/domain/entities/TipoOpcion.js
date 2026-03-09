@@ -1,7 +1,8 @@
 class TipoOpcion {
-  constructor({ id, nombre, fechaCreacion, usuarioCreacion }) {
+  constructor({ id, nombre,codigo, fechaCreacion, usuarioCreacion }) {
     this.id              = id;
     this.nombre       = nombre;
+    this.codigo       = codigo;
     this.fechaCreacion   = fechaCreacion;
     this.usuarioCreacion = usuarioCreacion;
   }
