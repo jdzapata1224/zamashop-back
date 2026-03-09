@@ -1,6 +1,6 @@
 const { UserNotFoundError } = require('../../../domain/exceptions/OpcionesErrors');
 const ConsultarOpcionesOut = require('../../dtos/Opciones/out/ConsultarOpcionesOut.dto');
-const ConsultarOpcionesIdIn = require('../../dtos/Usuarios/in/ConsultarOpcionesIdIn.dto');
+const ConsultarOpcionesIdIn = require('../../dtos/Opciones/in/ConsultarOpcionesIdIn.dto');
 
 
 
