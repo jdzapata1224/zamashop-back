@@ -1,4 +1,6 @@
 const { Types }              = require('mongoose');
+const OpcionesUsuariosSchema = require('../models/OpcionesUsuariosSchema');
+const OpcionesUsuarios       = require('../../../domain/entities/OpcionesUsuarios');
 
 class OpcionesUsuariosSchemaRepository {
 

@@ -3,6 +3,7 @@ const router                = express.Router();
 const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
 
 const OpcionesSchemaRepository   = require('../../../infrastructure/database/repositories/OpcionesSchemaRepository');
+const OpcionesUsuariosSchemaRepository = require('../../../infrastructure/database/repositories/OpcionesUsuariosSchemaRepository');
 
 const ConsultarOpcionesIdUseCase = require('../../../application/use-cases/Opciones/ConsultarOpcionesId');
 const ConsultarOpcionesIdController        = require('../controllers/Opciones/ConsultarOpcionesIdController');
@@ -28,6 +29,7 @@ const CambiarEstadoOpcionesController      = require('../controllers/Opciones/Ca
 
 
 const opcionesRepository  = new OpcionesSchemaRepository();
+const opcionesUsuariosRepository  = new OpcionesUsuariosSchemaRepository();
 
 const consultarOpcionesIdUseCase      = new ConsultarOpcionesIdUseCase(opcionesRepository);
 const consultarOpcionesIdController      = new ConsultarOpcionesIdController(consultarOpcionesIdUseCase);
@@ -44,7 +46,7 @@ const eliminarOpcionesController     = new EliminarOpcionesController(eliminarOp
 const cambiarEstadoOpcionesUseCase      = new CambiarEstadoOpcionesUseCase(opcionesRepository);
 const cambiarEstadoOpcionesController     = new CambiarEstadoOpcionesController(cambiarEstadoOpcionesUseCase);
 
-const consultarOpcionesUsuarioUseCase      = new ConsultarOpcionesUsuarioUseCase(opcionesRepository);
+const consultarOpcionesUsuarioUseCase      = new ConsultarOpcionesUsuarioUseCase(opcionesUsuariosRepository);
 const consultarOpcionesUsuarioController      = new ConsultarOpcionesUsuarioController(consultarOpcionesUsuarioUseCase);
 
 const consultarOpcionesPerfilUseCase      = new ConsultarOpcionesPerfilUseCase(opcionesRepository);
@@ -57,8 +59,8 @@ router.get('/ConsultarOpciones',(req, res) => consultarOpcionesController.consul
 router.post('/CrearOpciones',(req, res) => crearOpcionesController.crearOpciones(req, res));
 router.patch('/EliminarOpciones/:id',(req, res) => eliminarOpcionesController.eliminarOpciones(req, res));
 router.patch('/CambiarEstadoOpciones/:id',(req, res) => cambiarEstadoOpcionesController.cambiarEstadoOpciones(req, res));
-router.patch('/ConsultarOpcionesUsuario/:id',(req, res) => consultarOpcionesUsuarioController.consultarOpcionesUsuario(req, res));
-router.patch('/ConsultarOpcionesPerfil/:id',(req, res) => consultarOpcionesPerfilController.consultarOpcionesPerfil(req, res));
+router.post('/ConsultarOpcionesUsuario/:id',(req, res) => consultarOpcionesUsuarioController.consultarOpcionesUsuario(req, res));
+router.post('/ConsultarOpcionesPerfil/:id',(req, res) => consultarOpcionesPerfilController.consultarOpcionesPerfil(req, res));
 
 
 module.exports = router;

@@ -1,6 +1,8 @@
 const OpcionesRepository  = require('../../../domain/repositories/IOpcionesRepository');
 const OpcionesSchema  = require('../models/OpcionesSchema');
+const OpcionesUsuariosSchema  = require('../models/OpcionesUsuariosSchema');
 const Opciones            = require('../../../domain/entities/Opciones');
+const OpcionesUsuarios            = require('../../../domain/entities/OpcionesUsuarios');
 const { Types } = require('mongoose');
 
 class OpcionesSchemaRepository extends OpcionesRepository {
@@ -21,6 +23,16 @@ class OpcionesSchemaRepository extends OpcionesRepository {
     });
   }
 
+   async findOpcionesByUsuarioId(id) {
+      if (!Types.ObjectId.isValid(id)) {
+        return null;
+      }
+      const doc = await OpcionesUsuariosSchema.findOne({
+        ous_Usr_Id: new Types.ObjectId(id),
+        ous_Fecha_Eliminacion: { $in: [null, undefined] },
+      });
+      return doc ? this._toEntity(doc) : null;
+  }
   async findById(id) {
       if (!Types.ObjectId.isValid(id)) {
         return null;
