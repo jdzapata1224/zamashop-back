@@ -9,7 +9,11 @@ class ActualizarUsuario {
   }
 
   async execute(rawInput) {
-    const inputDto = new ActualizarUsuarioIn(rawInput);
+    const { id: tokenId } = rawInput.usuarioToken;
+
+    if (!tokenId) throw new Error('Token inválido: id de usuario no encontrado');
+
+    const inputDto = new ActualizarUsuarioIn({ ...rawInput, usuarioActualizacion: tokenId });
 
     const existe = await this.usuarioRepository.findById(inputDto.id.toString());
     if (!existe) throw new UserNotFoundError();

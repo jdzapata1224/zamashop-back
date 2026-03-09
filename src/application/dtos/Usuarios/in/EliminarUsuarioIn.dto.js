@@ -1,7 +1,7 @@
 const { Types } = require('mongoose');
 
 class EliminarUsuarioInDTO {
-  constructor({ id, token }) {
+  constructor({ id, usuarioEliminacion }) {
 
     // Validar id desde la URL
     if (!id) throw new Error('El campo id es requerido');
@@ -11,15 +11,9 @@ class EliminarUsuarioInDTO {
 
     // Extraer usuarioEliminacion del Bearer token (opcional)
     // Header esperado: Authorization: Bearer <ObjectId>
-    this.usuarioEliminacion = null;
-    if (token) {
-      const bearer = String(token).startsWith('Bearer ')
-        ? token.slice(7).trim()
-        : token.trim();
-      if (Types.ObjectId.isValid(bearer)) {
-        this.usuarioEliminacion =  new Types.ObjectId(bearer);
-      }
-    }
+    this.usuarioEliminacion  = (usuarioEliminacion && Types.ObjectId.isValid(usuarioEliminacion))
+      ? new Types.ObjectId(usuarioEliminacion)
+      : null;
   }
 }
 

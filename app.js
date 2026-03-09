@@ -5,12 +5,15 @@ const express = require("express");
 
 const connectDB = require("./src/infrastructure/config/database");
 const usuarioRoutes = require('./src/interfaces/http/routes/UsuariosRoutes');
+const authRoutes = require('./src/interfaces/http/routes/AuthRoutes');
 
 const app = express();
 app.use(express.json());
 
 const apiRouter = express.Router();
 apiRouter.use('/Usuarios', usuarioRoutes);
+apiRouter.use('/Auth', authRoutes);
+
 app.use('/api', apiRouter);
 
 app.use((req, res) => {

@@ -1,7 +1,7 @@
 const { Types } = require('mongoose');
 
 class ActualizarUsuarioInDTO {
-  constructor({ id,primer_nombre,segundo_nombre, primer_apellido,segundo_apellido, password, identificacion, correo, telefono, token }) {
+  constructor({ id,primer_nombre,segundo_nombre, primer_apellido,segundo_apellido, identificacion, correo, telefono, usuarioActualizacion }) {
     if (!id || !Types.ObjectId.isValid(id)) throw new Error('ID de usuario inválido o requerido');
 
     if (!primer_nombre        || typeof primer_nombre        !== 'string' || !primer_nombre.trim())        throw new Error('Primer Nombre es requerido');   
@@ -21,15 +21,9 @@ class ActualizarUsuarioInDTO {
     this.identificacion = identificacion.trim();
     this.correo         = correo.trim().toLowerCase();
     this.telefono       = telefono.trim();
-    this.usuarioActualizacion = null;
-    if (token) {
-      const bearer = String(token).startsWith('Bearer ')
-        ? token.slice(7).trim()
-        : token.trim();
-      if (Types.ObjectId.isValid(bearer)) {
-        this.usuarioActualizacion = new Types.ObjectId(bearer);
-      }
-    }
+    this.usuarioActualizacion = (usuarioActualizacion && Types.ObjectId.isValid(usuarioActualizacion))
+      ? new Types.ObjectId(usuarioActualizacion)
+      : null;
   }
 }
 

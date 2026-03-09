@@ -1,7 +1,7 @@
 const { Types } = require('mongoose');
 
 class CrearUsuarioInDTO {
-  constructor({ primer_nombre,segundo_nombre, primer_apellido,segundo_apellido, usuario, password, identificacion, correo, telefono, token }) {
+  constructor({ primer_nombre,segundo_nombre, primer_apellido,segundo_apellido, password, identificacion, correo, telefono, usuarioCreacion }) {
     if (!primer_nombre        || typeof primer_nombre        !== 'string' || !primer_nombre.trim())        throw new Error('Primer Nombre es requerido');   
     if (!primer_apellido      || typeof primer_apellido      !== 'string' || !primer_apellido.trim())      throw new Error('apellidos es requerido');
     if (!password       || typeof password       !== 'string' || !password.trim())       throw new Error('password es requerido');
@@ -22,15 +22,9 @@ class CrearUsuarioInDTO {
     this.identificacion = identificacion.trim();
     this.correo         = correo.trim().toLowerCase();
     this.telefono       = telefono.trim();
-    this.usuarioCreacion = null;
-    if (token) {
-      const bearer = String(token).startsWith('Bearer ')
-        ? token.slice(7).trim()
-        : token.trim();
-      if (Types.ObjectId.isValid(bearer)) {
-        this.usuarioCreacion = new Types.ObjectId(bearer);
-      }
-    }
+    this.usuarioCreacion  = (usuarioCreacion && Types.ObjectId.isValid(usuarioCreacion))
+      ? new Types.ObjectId(usuarioCreacion)
+      : null;
   }
 }
 

@@ -15,7 +15,7 @@ class ActualizarUsuarioController {
       await this.actualizarUsuarioUseCase.execute({
         ...req.body,
         id:    req.params.id,           // id viene de la URL
-        token: req.headers.authorization ?? null,
+        usuarioToken: req.usuario,
       });
 
       return res.status(200).json({

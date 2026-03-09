@@ -9,9 +9,13 @@ class CrearUsuario {
   }
 
   async execute(rawInput) {
-    const inputDto = new CrearUsuarioIn(rawInput);
-   const existeIdentificacion = await this.usuarioRepository.findByIdentificacion(inputDto.identificacion);
-       if (existeIdentificacion) throw new UserAlreadyExistsError();
+    const { id: tokenId } = rawInput.usuarioToken;
+
+    if (!tokenId) throw new Error('Token inválido: id de usuario no encontrado');
+
+    const inputDto = new CrearUsuarioIn({ ...rawInput, usuarioCreacion: tokenId });
+    const existeIdentificacion = await this.usuarioRepository.findByIdentificacion(inputDto.identificacion);
+    if (existeIdentificacion) throw new UserAlreadyExistsError();
    
        // Generar usuario único: jzapata → jzapata1 → jzapata2 ...
        let usuarioFinal = inputDto.usuarioBase;

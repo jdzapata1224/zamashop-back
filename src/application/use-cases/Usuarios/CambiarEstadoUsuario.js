@@ -7,7 +7,11 @@ class CambiarEstadoUsuario {
   }
 
   async execute(rawInput) {
-    const inputDto = new CambiarEstadoUsuarioIn(rawInput);
+    const { id: tokenId } = rawInput.usuarioToken;
+
+    if (!tokenId) throw new Error('Token inválido: id de usuario no encontrado');
+
+    const inputDto = new CambiarEstadoUsuarioIn({ ...rawInput, usuarioActualizacion: tokenId });
 
     // Verificar que el usuario exista
     const existe = await this.usuarioRepository.findById(inputDto.id);

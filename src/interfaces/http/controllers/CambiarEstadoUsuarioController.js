@@ -7,7 +7,7 @@ class CambiarEstadoUsuarioController {
     try {
       await this.cambiarEstadoUsuarioUseCase.execute({
         id:    req.params.id,
-        token: req.headers.authorization ?? null,
+        usuarioToken: req.usuario, 
       });
 
       return res.status(200).json({

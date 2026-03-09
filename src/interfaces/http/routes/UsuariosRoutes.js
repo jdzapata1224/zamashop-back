@@ -1,5 +1,6 @@
 const express               = require('express');
 const router                = express.Router();
+const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
 
 const UsuariosSchemaRepository   = require('../../../infrastructure/database/repositories/UsuariosSchemaRepository');
 
@@ -22,6 +23,7 @@ const CambiarEstadoUsuarioController      = require('../controllers/CambiarEstad
 const ActualizarUsuarioUseCase    = require('../../../application/use-cases/Usuarios/ActualizarUsuario');
 const ActualizarUsuarioController = require('../controllers/ActualizarUsuarioController');
 
+
 const userRepository  = new UsuariosSchemaRepository();
 
 const consultarUsuariosIdUseCase      = new ConsultarUsuariosIdUseCase(userRepository);
@@ -41,6 +43,8 @@ const cambiarEstadoUsuarioController     = new CambiarEstadoUsuarioController(ca
 
 const actualizarUsuarioUseCase      = new ActualizarUsuarioUseCase(userRepository);
 const actualizarUsuarioController      = new ActualizarUsuarioController(actualizarUsuarioUseCase);
+
+router.use(authMiddleware);
 
 router.get('/ConsultarUsuariosId/:id',(req, res) => consultarUsuariosIdController.consultarUsuariosId(req, res));
 router.get('/ConsultarUsuarios',(req, res) => consultarUsuariosController.consultarUsuarios(req, res));
