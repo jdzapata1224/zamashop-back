@@ -1,6 +1,6 @@
 class CambiarEstadoOpcionesController {
   constructor(cambiarEstadoOpcionesUseCase) {
-    this.cambiarEstadoUsuarioUseCase = cambiarEstadoUsuarioUseCase;
+    this.cambiarEstadoOpcionesUseCase = cambiarEstadoOpcionesUseCase;
   }
 
   cambiarEstadoOpciones = async (req, res) => {
