@@ -1,18 +1,25 @@
 class ConsultarOpcionesPerfilOutDTO {
   constructor(opcionPerfil) {
     this.id               = opcionPerfil.id;
-    this.perfilId        = opcionPerfil.perfilId;
-    this.opcionId         = opcionPerfil.opcionId;
-    this.fechaCreacion    = opcionPerfil.fechaCreacion;
-    this.usuarioCreacion  = opcionPerfil.usuarioCreacion;
+    this.nombre           = opcionPerfil.nombre;
+    this.codigo           = opcionPerfil.codigo;
+    this.tipoOpcionId     = opcionPerfil.tipoOpcionId;
+    this.tipoOpcionNombre = opcionPerfil.tipoOpcionNombre;
+    this.hijos            = (opcionPerfil.hijos || []).map(h => ({
+      id:               h.id,
+      nombre:           h.nombre,
+      codigo:           h.codigo,
+      tipoOpcionId:     h.tipoOpcionId,
+      tipoOpcionNombre: h.tipoOpcionNombre,
+    }));
   }
 
   static fromEntity(opcionPerfil) {
     return new ConsultarOpcionesPerfilOutDTO(opcionPerfil);
   }
 
-  static fromEntities(opcionPerfil) {
-    return opcionPerfil.map(ou => new ConsultarOpcionesPerfilOutDTO(ou));
+  static fromEntities(opcionesUsuario) {
+    return opcionesUsuario.map(ou => new ConsultarOpcionesPerfilOutDTO(ou));
   }
 }
 
