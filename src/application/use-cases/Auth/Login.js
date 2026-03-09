@@ -31,7 +31,7 @@ class Login {
       primer_apellido: usuario.primer_apellido,
       correo:          usuario.correo,
     };
-
+    
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN || '8h',
     });
