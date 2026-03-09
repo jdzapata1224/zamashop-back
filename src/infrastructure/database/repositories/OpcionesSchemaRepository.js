@@ -60,7 +60,7 @@ class OpcionesSchemaRepository extends OpcionesRepository {
       return this._toEntity(doc);
   }
 
-   async delete(data) {
+  async delete(data) {
       if (!Types.ObjectId.isValid(data.id)) return null;
       
       const payload = {
@@ -82,9 +82,9 @@ class OpcionesSchemaRepository extends OpcionesRepository {
       return this._toEntity(doc);
   
      
-    }
+  }
   
-     async changeStatus(data) {
+  async changeStatus(data) {
       if (!Types.ObjectId.isValid(data.id)) return null;
       
       const payload = {
@@ -107,6 +107,7 @@ class OpcionesSchemaRepository extends OpcionesRepository {
       return this._toEntity(doc);
   
      
-    }
+  }
 }
        
+module.exports = OpcionesSchemaRepository;

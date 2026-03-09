@@ -9,7 +9,7 @@ class ConsultarUsuarios {
   }
 
   async execute({ usuarioToken }) {
-    const { id, usuario, primer_nombre, primer_apellido, correo } = usuarioToken;
+    const { id} = usuarioToken;
     
     if (!id) throw new Error('Token inválido: id de usuario no encontrado');
 

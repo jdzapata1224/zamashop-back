@@ -1,5 +1,3 @@
-const ConsultarUsuarioIdInDTO = require('../../../application/dtos/Usuarios/in/ConsultarUsuarioIdIn.dto');
-
 class ConsultarUsuariosIdController {
   constructor(consultarUsuariosIdUseCase) {
 

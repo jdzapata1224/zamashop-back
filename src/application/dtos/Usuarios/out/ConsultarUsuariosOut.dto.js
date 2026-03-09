@@ -7,6 +7,7 @@ class ConsultarUsuariosOutDTO {
     this.segundo_apellido   = user.segundo_apellido;
     this.identificacion =user.identificacion;
     this.correo    = user.correo;
+    this.estado    = user.estado;
     this.telefono    = user.telefono;
     this.usuario    = user.usuario;
     this.usuarioCreacion    = user.usuarioCreacion;
