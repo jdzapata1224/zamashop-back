@@ -6,17 +6,17 @@ class OpcionesUsuariosSchemaRepository {
 
   _toEntity(doc) {
     return new OpcionesUsuarios({
-      id:              doc._id.toString(),
-      nombre:          doc.nombre,
-      codigo:          doc.codigo,
-      tipoOpcionId:    doc.tipoOpcion ? doc.tipoOpcion._id.toString() : null,
-      tipoOpcionNombre:doc.tipoOpcion ? doc.tipoOpcion.nombre : null,
+      id:               doc._id.toString(),
+      nombre:           doc.nombre,
+      codigo:           doc.codigo,
+      tipoOpcionId:     doc.tipoOpcion?._id?.toString() || null,
+      tipoOpcionNombre: doc.tipoOpcion?.nombre || null,
       hijos: (doc.hijos || []).map(h => ({
         id:               h._id.toString(),
         nombre:           h.nombre,
         codigo:           h.codigo,
-        tipoOpcionId:     h.tipoOpcion ? h.tipoOpcion._id.toString() : null,
-        tipoOpcionNombre: h.tipoOpcion ? h.tipoOpcion.nombre : null,
+        tipoOpcionId:     h.tipoOpcion?._id?.toString() || null,
+        tipoOpcionNombre: h.tipoOpcion?.nombre || null,
       })),
     });
   }
@@ -121,4 +121,5 @@ class OpcionesUsuariosSchemaRepository {
     return docs.map(doc => this._toEntity(doc));
   }
 }
+
 module.exports = OpcionesUsuariosSchemaRepository;

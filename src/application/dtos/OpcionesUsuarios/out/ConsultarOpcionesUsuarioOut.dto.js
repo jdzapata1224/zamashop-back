@@ -1,13 +1,17 @@
 class ConsultarOpcionesUsuarioOutDTO {
   constructor(opcionUsuario) {
     this.id               = opcionUsuario.id;
-    this.usuarioId        = opcionUsuario.usuarioId;
-    this.opcionId         = opcionUsuario.opcionId;
-    this.opcionNombre         = opcionUsuario.opcionNombre;
-    this.tipoOpcionId         = opcionUsuario.tipoOpcionId;
-    this.tipoOpcionNombre         = opcionUsuario.tipoOpcionNombre;
-    this.fechaCreacion    = opcionUsuario.fechaCreacion;
-    this.usuarioCreacion  = opcionUsuario.usuarioCreacion;
+    this.nombre           = opcionUsuario.nombre;
+    this.codigo           = opcionUsuario.codigo;
+    this.tipoOpcionId     = opcionUsuario.tipoOpcionId;
+    this.tipoOpcionNombre = opcionUsuario.tipoOpcionNombre;
+    this.hijos            = (opcionUsuario.hijos || []).map(h => ({
+      id:               h.id,
+      nombre:           h.nombre,
+      codigo:           h.codigo,
+      tipoOpcionId:     h.tipoOpcionId,
+      tipoOpcionNombre: h.tipoOpcionNombre,
+    }));
   }
 
   static fromEntity(opcionUsuario) {
