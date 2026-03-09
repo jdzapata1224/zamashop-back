@@ -3,6 +3,7 @@ class ConsultarOpcionesUsuarioOutDTO {
     this.id               = opcionUsuario.id;
     this.usuarioId        = opcionUsuario.usuarioId;
     this.opcionId         = opcionUsuario.opcionId;
+    this.opcionNombre         = opcionUsuario.opcionNombre;
     this.fechaCreacion    = opcionUsuario.fechaCreacion;
     this.usuarioCreacion  = opcionUsuario.usuarioCreacion;
   }
