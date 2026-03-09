@@ -14,19 +14,9 @@ class CrearOpciones {
     if (!tokenId) throw new Error('Token inválido: id de usuario no encontrado');
 
     const inputDto = new CrearOpcionesIn({ ...rawInput, usuarioCreacion: tokenId });
-    const existeIdentificacion = await this.opcionesRepository.findByIdentificacion(inputDto.identificacion);
-    if (existeIdentificacion) throw new OpcionesAlreadyExistsError();
+    const existeCodigo = await this.opcionesRepository.findByCodigo(inputDto.codigo);
+    if (existeCodigo) throw new OpcionesAlreadyExistsError();
    
-       // Generar usuario único: jzapata → jzapata1 → jzapata2 ...
-       let usuarioFinal = inputDto.usuarioBase;
-       let contador = 0;
-   
-       while (await this.opcionesRepository.findByUsuario(usuarioFinal)) {
-         contador++;
-         usuarioFinal = `${inputDto.usuarioBase}${contador}`;
-       }
-   
-    inputDto.usuario = usuarioFinal;
     const creado =await this.opcionesRepository.create(inputDto);
     if (!creado) throw new Error('No se pudo crear la opción');
 

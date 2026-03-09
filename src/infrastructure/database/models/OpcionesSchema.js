@@ -15,6 +15,14 @@ const OpcionesSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    opc_Top_Id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'TipoOpcion',        // self-reference: who created this user
+    },
+    opc_Padre_Id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Opciones',        // self-reference: who created this user
+    },
     opc_Fecha_Creacion: {
       type: Date,
       default: Date.now,

@@ -30,6 +30,14 @@ class UserNotFoundError extends Error {
   }
 }
 
+class UserEmptyError extends Error {
+  constructor(id) {
+    super(`No hay informacin para mostrar`);
+    this.name       = 'UserEmptyError';
+    this.statusCode = 404;
+  }
+}
+
 class NotImplementedError extends Error {
   constructor() {
     super('Método no implementado');
@@ -39,6 +47,7 @@ class NotImplementedError extends Error {
 }
 
 module.exports = {
+  UserEmptyError,
   UserAlreadyExistsError,
   InvalidCredentialsError,
   UserInactiveError,

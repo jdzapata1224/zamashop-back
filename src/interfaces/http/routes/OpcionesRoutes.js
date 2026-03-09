@@ -10,6 +10,12 @@ const ConsultarOpcionesIdController        = require('../controllers/Opciones/Co
 const ConsultarOpcionesUseCase = require('../../../application/use-cases/Opciones/ConsultarOpciones');
 const ConsultarOpcionesController        = require('../controllers/Opciones/ConsultarOpcionesController');
 
+const ConsultarOpcionesUsuarioUseCase = require('../../../application/use-cases/Opciones/ConsultarOpcionesUsuario');
+const ConsultarOpcionesUsuarioController        = require('../controllers/Opciones/ConsultarOpcionesUsuarioController');
+
+const ConsultarOpcionesPerfilUseCase = require('../../../application/use-cases/Opciones/ConsultarOpcionesPerfil');
+const ConsultarOpcionesPerfilController        = require('../controllers/Opciones/ConsultarOpcionesPerfilController');
+
 
 const CrearOpcionesUseCase = require('../../../application/use-cases/Opciones/CrearOpciones');
 const CrearOpcionesController        = require('../controllers/Opciones/CrearOpcionesController');
@@ -38,6 +44,12 @@ const eliminarOpcionesController     = new EliminarOpcionesController(eliminarOp
 const cambiarEstadoOpcionesUseCase      = new CambiarEstadoOpcionesUseCase(opcionesRepository);
 const cambiarEstadoOpcionesController     = new CambiarEstadoOpcionesController(cambiarEstadoOpcionesUseCase);
 
+const consultarOpcionesUsuarioUseCase      = new ConsultarOpcionesUsuarioUseCase(opcionesRepository);
+const consultarOpcionesUsuarioController      = new ConsultarOpcionesUsuarioController(consultarOpcionesUsuarioUseCase);
+
+const consultarOpcionesPerfilUseCase      = new ConsultarOpcionesPerfilUseCase(opcionesRepository);
+const consultarOpcionesPerfilController      = new ConsultarOpcionesPerfilController(consultarOpcionesPerfilUseCase);
+
 router.use(authMiddleware);
 
 router.get('/ConsultarOpcionesId/:id',(req, res) => consultarOpcionesIdController.consultarOpcionesId(req, res));
@@ -45,6 +57,8 @@ router.get('/ConsultarOpciones',(req, res) => consultarOpcionesController.consul
 router.post('/CrearOpciones',(req, res) => crearOpcionesController.crearOpciones(req, res));
 router.patch('/EliminarOpciones/:id',(req, res) => eliminarOpcionesController.eliminarOpciones(req, res));
 router.patch('/CambiarEstadoOpciones/:id',(req, res) => cambiarEstadoOpcionesController.cambiarEstadoOpciones(req, res));
+router.patch('/ConsultarOpcionesUsuario/:id',(req, res) => consultarOpcionesUsuarioController.consultarOpcionesUsuario(req, res));
+router.patch('/ConsultarOpcionesPerfil/:id',(req, res) => consultarOpcionesPerfilController.consultarOpcionesPerfil(req, res));
 
 
 module.exports = router;

@@ -23,6 +23,14 @@ class OpcionesNotFoundError extends Error {
   }
 }
 
+class OpcionesEmptyError extends Error {
+  constructor(id) {
+    super(`No hay informacion para mostrar`);
+    this.name       = 'OpcionesEmptyError';
+    this.statusCode = 404;
+  }
+}
+
 class NotImplementedError extends Error {
   constructor() {
     super('Método no implementado');
@@ -32,6 +40,7 @@ class NotImplementedError extends Error {
 }
 
 module.exports = {
+  OpcionesEmptyError,
   OpcionesAlreadyExistsError,
   OpcionesInactiveError,
   OpcionesNotFoundError,

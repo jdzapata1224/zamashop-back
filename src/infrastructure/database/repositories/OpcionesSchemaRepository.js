@@ -83,6 +83,11 @@ class OpcionesSchemaRepository extends OpcionesRepository {
   
      
   }
+
+    async findByCodigo(codigo) {
+      const doc = await OpcionesSchema.findOne({ opc_Codigo: codigo });
+        return doc ? this._toEntity(doc) : null;
+    }
   
   async changeStatus(data) {
       if (!Types.ObjectId.isValid(data.id)) return null;

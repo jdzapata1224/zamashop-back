@@ -1,4 +1,4 @@
-const { UserNotFoundError } = require('../../../domain/exceptions/UsuariosErrors');
+const { UserEmptyError } = require('../../../domain/exceptions/UsuariosErrors');
 const ConsultarUsuariosOut = require('../../dtos/Usuarios/out/ConsultarUsuariosOut.dto');
 
 
@@ -14,7 +14,7 @@ class ConsultarUsuarios {
     if (!id) throw new Error('Token inválido: id de usuario no encontrado');
 
     const users = await this.usuarioRepository.find();
-    if (!users || users.length === 0) throw new UserNotFoundError();
+    if (!users || users.length === 0) throw new UserEmptyError();
     return ConsultarUsuariosOut.fromEntities(users);
   }
 }
