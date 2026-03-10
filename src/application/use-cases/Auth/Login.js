@@ -3,7 +3,7 @@ const jwt      = require('jsonwebtoken');
 const LoginInDTO  = require('../../dtos/Auth/in/LoginIn.dto');
 const LoginOutDTO = require('../../dtos/Auth/out/LoginOut.dto');
 const { InvalidCredentialsError, UserInactiveError } = require('../../../domain/exceptions/UsuariosErrors');
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID } = require('crypto');
 
 const MAX_INTENTOS = 5;
 const MAX_SESIONES = 3;
@@ -51,7 +51,7 @@ class Login {
 
     
 
-    const jti = uuidv4();
+    const jti = randomUUID();
 
     const payload = {
       id:              usuario.id,

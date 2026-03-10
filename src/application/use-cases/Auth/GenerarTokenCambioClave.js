@@ -1,5 +1,5 @@
 const jwt         = require('jsonwebtoken');
-const { v4: uuidv4 } = require('uuid');
+const { randomUUID } = require('crypto');
 
 class GenerarTokenCambioClave {
   constructor(usuarioRepository, tokensRepository) {
@@ -20,7 +20,7 @@ class GenerarTokenCambioClave {
     // Invalida tokens de cambio de clave anteriores
     await this.tokensRepository.invalidateByUsuarioYAction(usuarioId, 'CAMBIO_CLAVE');
 
-    const jti   = uuidv4();
+    const jti   = randomUUID();
     const token = jwt.sign(
       { id: usuario.id, jti, action: 'CAMBIO_CLAVE' },
       process.env.JWT_SECRET,
