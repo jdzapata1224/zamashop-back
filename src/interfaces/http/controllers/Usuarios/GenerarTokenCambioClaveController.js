@@ -5,11 +5,12 @@ class GenerarTokenCambioClaveController {
 
   generarToken = async (req, res) => {
     try {
-      if (!req.body?.usuarioId) {
+     const { id: usuarioId } = req.params;
+      if (!usuarioId) {
         return res.status(200).json({ codigo: 400, mensaje: 'usuarioId es requerido' });
       }
       const result = await this.generarTokenCambioClaveUseCase.execute({
-        usuarioId: req.body.usuarioId,
+        usuarioId,
         ip:        req.ip || req.headers['x-forwarded-for'] || null,
         userAgent: req.headers['user-agent'] || null,
       });

@@ -74,7 +74,7 @@ router.post('/ActualizarUsuario/:id',(req, res) => actualizarUsuarioController.a
 router.patch('/EliminarUsuario/:id',(req, res) => eliminarUsuarioController.eliminarUsuario(req, res));
 router.patch('/CambiarEstadoUsuario/:id',(req, res) => cambiarEstadoUsuarioController.cambiarEstadoUsuario(req, res));
 router.post('/CambiarClave', (req, res) => cambiarClaveController.cambiarClave(req, res));
-router.post('/GenerarTokenCambioClave', authMiddleware, (req, res) => generarTokenCambioClaveController.generarToken(req, res));
+router.patch('/GenerarTokenCambioClave/:id',  (req, res) => generarTokenCambioClaveController.generarToken(req, res));
 
 
 module.exports = router;
