@@ -6,6 +6,8 @@ class ConsultarUsuariosOutDTO {
     this.primer_apellido    = user.primer_apellido;
     this.segundo_apellido   = user.segundo_apellido;
     this.identificacion =user.identificacion;
+    this.perfilId     = user.perfilId;
+    this.perfilNombre = user.perfilNombre;
     this.correo    = user.correo;
     this.estado    = user.estado;
     this.telefono    = user.telefono;
@@ -16,7 +18,6 @@ class ConsultarUsuariosOutDTO {
     this.fechaActualizacion    = user.fechaActualizacion;
     this.usuarioEliminacion    = user.usuarioEliminacion;
     this.fechaEliminacion    = user.fechaEliminacion;
-    // password never exposed
   }
 
   static fromEntity(user) {

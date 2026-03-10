@@ -1,12 +1,11 @@
 const UsuariosRepository  = require('../../../domain/repositories/IUsuariosRepository');
 const UsuariosSchema  = require('../models/UsuariosSchema');
 const Usuarios            = require('../../../domain/entities/Usuarios');
+const { hashPassword } = require('../../utils/hash.util');
 const { Types } = require('mongoose');
-const bcrypt             = require('bcrypt');
 
 class UsuariosSchemaRepository extends UsuariosRepository {
 
-  // Mongoose doc → Domain Entity
   _toEntity(doc) {
     return new Usuarios({
       id:             doc._id.toString(),
@@ -20,6 +19,8 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       correo:         doc.usr_Correo,
       telefono:       doc.usr_Telefono,
       estado:         doc.usr_Estado,
+      perfilId:       doc.perfilId     ?? null,
+      perfilNombre:         doc.perfilNombre ?? null,
       fechaCreacion:  doc.usr_Fecha_Creacion,
       usuarioCreacion:       doc.usr_Creacion ? doc.usr_Creacion.toString() : null,
       fechaActualizacion:  doc.usr_Fecha_Actualizacion ?? null,
@@ -34,11 +35,38 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     if (!Types.ObjectId.isValid(id)) {
       return null;
     }
-    const doc = await UsuariosSchema.findOne({
-      _id: new Types.ObjectId(id),
-      usr_Fecha_Eliminacion: { $in: [null, undefined] },
-    });
-    return doc ? this._toEntity(doc) : null;
+     const docs = await UsuariosSchema.aggregate([
+      {
+        $match: {
+          _id: new Types.ObjectId(id),
+          $or: [
+            { usr_Fecha_Eliminacion: null },
+            { usr_Fecha_Eliminacion: { $exists: false } },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from:         'Perfiles',
+          localField:   'usr_Prf_Id',
+          foreignField: '_id',
+          as:           'perfil',
+        },
+      },
+      {
+        $unwind: { path: '$perfil', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $set: {
+          perfilId:     '$perfil._id',
+          perfilNombre: '$perfil.prf_Nombre',
+        },
+      },
+    ]);
+
+    
+   
+    return docs.length ? this._toEntity(docs[0]) : null;
   }
 
   async delete(data) {
@@ -91,38 +119,147 @@ class UsuariosSchemaRepository extends UsuariosRepository {
   }
 
   async find() {
-    const docs = await UsuariosSchema.find({
-      $or: [
-        { usr_Fecha_Eliminacion: null },
-        { usr_Fecha_Eliminacion: { $exists: false } }
-      ]
-    });
-     return docs.map(doc => this._toEntity(doc));
+    const docs = await UsuariosSchema.aggregate([
+      {
+        $match: {
+          $or: [
+            { usr_Fecha_Eliminacion: null },
+            { usr_Fecha_Eliminacion: { $exists: false } },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from:         'Perfiles',
+          localField:   'usr_Prf_Id',
+          foreignField: '_id',
+          as:           'perfil',
+        },
+      },
+      {
+        $unwind: { path: '$perfil', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $set: {
+          perfilId:     '$perfil._id',
+          perfilNombre: '$perfil.prf_Nombre',
+        },
+      },
+    ]);
+    return docs.map(doc => this._toEntity(doc));
   }
 
   async findByUsuario(usuario) {
-    const doc = await UsuariosSchema.findOne({ usr_Usuario: usuario });
-    return doc ? this._toEntity(doc) : null;
+    const docs = await UsuariosSchema.aggregate([
+      {
+         $match: {
+          usr_Usuario: usuario,
+          $or: [
+            { usr_Fecha_Eliminacion: null },
+            { usr_Fecha_Eliminacion: { $exists: false } },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from:         'Perfiles',
+          localField:   'usr_Prf_Id',
+          foreignField: '_id',
+          as:           'perfil',
+        },
+      },
+      {
+        $unwind: { path: '$perfil', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $set: {
+          perfilId:     '$perfil._id',
+          perfilNombre: '$perfil.prf_Nombre',
+        },
+      },
+    ]);
+    return docs.length ? this._toEntity(docs[0]) : null;
   }
   
   async findByIdentificacion(identificacion) {
-    const doc = await UsuariosSchema.findOne({ usr_Identificacion: identificacion });
-      return doc ? this._toEntity(doc) : null;
+    const docs = await UsuariosSchema.aggregate([
+      {
+        $match: {
+          usr_Identificacion: identificacion,
+          $or: [
+            { usr_Fecha_Eliminacion: null },
+            { usr_Fecha_Eliminacion: { $exists: false } },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from:         'Perfiles',
+          localField:   'usr_Prf_Id',
+          foreignField: '_id',
+          as:           'perfil',
+        },
+      },
+      {
+        $unwind: { path: '$perfil', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $set: {
+          perfilId:     '$perfil._id',
+          perfilNombre: '$perfil.prf_Nombre',
+        },
+      },
+    ]);
+    return docs.length ? this._toEntity(docs[0]) : null;
   }
 
   async findByUsuarioOrIdentificacion(usuario, identificacion) {
-    const doc = await UsuariosSchema.findOne({
-      $or: [
-        { usr_Usuario:        usuario        },
-        { usr_Identificacion: identificacion },
-      ],
-    });
-    return doc ? this._toEntity(doc) : null;
+     const docs = await UsuariosSchema.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              $or: [
+                { usr_Usuario:        usuario        },
+                { usr_Identificacion: identificacion },
+              ],
+            },
+            {
+              $or: [
+                { usr_Fecha_Eliminacion: null },
+                { usr_Fecha_Eliminacion: { $exists: false } },
+              ],
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from:         'Perfiles',
+          localField:   'usr_Prf_Id',
+          foreignField: '_id',
+          as:           'perfil',
+        },
+      },
+      {
+        $unwind: { path: '$perfil', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $set: {
+          perfilId:     '$perfil._id',
+          perfilNombre: '$perfil.prf_Nombre',
+        },
+      },
+    ]);
+    
+    return docs.length ? this._toEntity(docs[0]) : null;
   }
+
   async create(data) {
     const saltRounds   = 10;
-    const passwordHash = await bcrypt.hash(data.password, saltRounds);
+    const passwordHash = await hashPassword(data.password);
 
+    if (!Types.ObjectId.isValid(data.perfil)) return null;
    const payload={
       usr_Primer_Nombre:        data.primer_nombre,
       usr_Primer_Apellido:      data.primer_apellido,
@@ -132,6 +269,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       usr_Correo:         data.correo,
       usr_Telefono:       data.telefono,
       usr_Estado:         true,
+      usr_Prf_Id:       new Types.ObjectId(data.perfil),
       usr_Fecha_Creacion: new Date(),
     };
 
@@ -151,6 +289,8 @@ class UsuariosSchemaRepository extends UsuariosRepository {
 
  async update(data) {
     // usuario y password NO se actualizan
+    if (!Types.ObjectId.isValid(data.perfil)) return null;
+
     const payload = {
       usr_Primer_Nombre:       data.primer_nombre,
       usr_Primer_Apellido:     data.primer_apellido,
@@ -158,6 +298,8 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       usr_Correo:              data.correo,
       usr_Telefono:            data.telefono,
       usr_Fecha_Actualizacion: new Date(),
+      usr_Prf_Id:       new Types.ObjectId(data.perfil),
+
     };
 
     if (data.segundo_nombre)   payload.usr_Segundo_Nombre   = data.segundo_nombre;

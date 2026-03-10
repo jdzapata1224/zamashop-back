@@ -1,10 +1,11 @@
 class OpcionesPerfiles {
-  constructor({ id, perfilId, opcionId, fechaCreacion, usuarioCreacion }) {
-    this.id              = id;
-    this.perfilId       = perfilId;
-    this.opcionId        = opcionId;
-    this.fechaCreacion   = fechaCreacion;
-    this.usuarioCreacion = usuarioCreacion;
+  constructor({ id, nombre, codigo, tipoOpcionId, tipoOpcionNombre, hijos }) {
+    this.id               = id;
+    this.nombre           = nombre;
+    this.codigo           = codigo;
+    this.tipoOpcionId     = tipoOpcionId;
+    this.tipoOpcionNombre = tipoOpcionNombre;
+    this.hijos            = hijos || [];
   }
 }
 

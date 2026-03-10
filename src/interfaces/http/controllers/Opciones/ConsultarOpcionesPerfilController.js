@@ -3,7 +3,7 @@ class ConsultarOpcionesPerfilController {
     this.consultarOpcionesPerfilUseCase = consultarOpcionesPerfilUseCase;
   }
 
-  consultarOpcionesUsuario = async (req, res) => {
+  consultarOpcionesPerfil = async (req, res) => {
     try {
       const output = await this.consultarOpcionesPerfilUseCase.execute({
         id:           req.params.id,
@@ -16,7 +16,7 @@ class ConsultarOpcionesPerfilController {
         data:    output,
       });
     } catch (err) {
-      res.status(err.statusCode || 400).json({ success: false, message: err.message });
+      res.status(err.statusCode || 400).json({ codigo: 400, mensaje: err.message });
     }
   };
 }
