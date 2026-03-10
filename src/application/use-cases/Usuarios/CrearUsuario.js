@@ -1,11 +1,11 @@
 const { UserAlreadyExistsError } = require('../../../domain/exceptions/UsuariosErrors');
 const CrearUsuarioIn = require('../../dtos/Usuarios/in/CrearUsuarioIn.dto');
 
-
-
 class CrearUsuario {
-  constructor(usuarioRepository) {
-    this.usuarioRepository = usuarioRepository;
+  constructor(usuarioRepository, opcionesPerfilesRepository, opcionesUsuariosRepository) {
+    this.usuarioRepository          = usuarioRepository;
+    this.opcionesPerfilesRepository = opcionesPerfilesRepository;
+    this.opcionesUsuariosRepository = opcionesUsuariosRepository;
   }
 
   async execute(rawInput) {
@@ -18,17 +18,26 @@ class CrearUsuario {
     if (existeIdentificacion) throw new UserAlreadyExistsError();
    
        // Generar usuario único: jzapata → jzapata1 → jzapata2 ...
-       let usuarioFinal = inputDto.usuarioBase;
-       let contador = 0;
+    let usuarioFinal = inputDto.usuarioBase;
+    let contador = 0;
    
-       while (await this.usuarioRepository.findByUsuario(usuarioFinal)) {
-         contador++;
-         usuarioFinal = `${inputDto.usuarioBase}${contador}`;
-       }
+    while (await this.usuarioRepository.findByUsuario(usuarioFinal)) {
+      contador++;
+      usuarioFinal = `${inputDto.usuarioBase}${contador}`;
+    }
    
     inputDto.usuario = usuarioFinal;
     const creado =await this.usuarioRepository.create(inputDto);
     if (!creado) throw new Error('No se pudo crear el usuario');
+
+    const opcionesPerfil = await this.opcionesPerfilesRepository.findByPerfilId(inputDto.perfil);
+    if (opcionesPerfil.length > 0) {
+      await this.opcionesUsuariosRepository.createMany(
+        creado.id,
+        opcionesPerfil,
+        tokenId
+      );
+    }
 
   }
 }

@@ -23,8 +23,13 @@ const CambiarEstadoUsuarioController      = require('../controllers/Usuarios/Cam
 const ActualizarUsuarioUseCase    = require('../../../application/use-cases/Usuarios/ActualizarUsuario');
 const ActualizarUsuarioController = require('../controllers/Usuarios/ActualizarUsuarioController');
 
+const OpcionesPerfilesSchemaRepository  = require('../../../infrastructure/database/repositories/OpcionesPerfilesSchemaRepository');
+const OpcionesUsuariosSchemaRepository  = require('../../../infrastructure/database/repositories/OpcionesUsuariosSchemaRepository');
+
 
 const userRepository  = new UsuariosSchemaRepository();
+const opcionesPerfilesRepository = new OpcionesPerfilesSchemaRepository();
+const opcionesUsuariosRepository = new OpcionesUsuariosSchemaRepository();
 
 const consultarUsuariosIdUseCase      = new ConsultarUsuariosIdUseCase(userRepository);
 const consultarUsuariosIdController      = new ConsultarUsuariosIdController(consultarUsuariosIdUseCase);
@@ -32,7 +37,7 @@ const consultarUsuariosIdController      = new ConsultarUsuariosIdController(con
 const consultarUsuariosUseCase      = new ConsultarUsuariosUseCase(userRepository);
 const consultarUsuariosController      = new ConsultarUsuariosController(consultarUsuariosUseCase);
 
-const crearUsuarioUseCase      = new CrearUsuarioUseCase(userRepository);
+const crearUsuarioUseCase      = new CrearUsuarioUseCase(userRepository, opcionesPerfilesRepository, opcionesUsuariosRepository);
 const crearUsuarioController      = new CrearUsuarioController(crearUsuarioUseCase);
 
 const eliminarUsuarioUseCase      = new EliminarUsuarioUseCase(userRepository);

@@ -120,6 +120,38 @@ class OpcionesUsuariosSchemaRepository {
 
     return docs.map(doc => this._toEntity(doc));
   }
+
+  async createMany(usuarioId, opcionesPerfil, usuarioCreacion) {
+    const { Types } = require('mongoose');
+    
+    const docs = [];
+    for (const opcion of opcionesPerfil) {
+      // padre
+      docs.push({
+        ous_Usr_Id:        new Types.ObjectId(usuarioId),
+        ous_Opc_Id:        new Types.ObjectId(opcion.id),
+        ous_Fecha_Creacion: new Date(),
+        ...(Types.ObjectId.isValid(usuarioCreacion) && {
+          ous_Usr_Creacion: new Types.ObjectId(usuarioCreacion),
+        }),
+      });
+      // hijos
+      for (const hijo of opcion.hijos) {
+        docs.push({
+          ous_Usr_Id:        new Types.ObjectId(usuarioId),
+          ous_Opc_Id:        new Types.ObjectId(hijo.id),
+          ous_Fecha_Creacion: new Date(),
+          ...(Types.ObjectId.isValid(usuarioCreacion) && {
+            ous_Usr_Creacion: new Types.ObjectId(usuarioCreacion),
+          }),
+        });
+      }
+    }
+
+    if (docs.length > 0) {
+      await OpcionesUsuariosSchema.insertMany(docs);
+    }
+  }
 }
 
 module.exports = OpcionesUsuariosSchemaRepository;
