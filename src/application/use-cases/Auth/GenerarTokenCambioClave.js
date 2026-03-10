@@ -11,6 +11,12 @@ class GenerarTokenCambioClave {
     const usuario = await this.usuarioRepository.findById(usuarioId);
     if (!usuario) throw new Error('Usuario no encontrado');
 
+    const tokenActivo = await this.tokensRepository.findActivoByUsuarioYAction(usuarioId, 'CAMBIO_CLAVE');
+    if (tokenActivo) {
+      const expira = new Date(tokenActivo.tkn_ExpiredAt).toISOString();
+      throw new Error(`Ya existe un token de cambio de clave activo. Expira: ${expira}`);
+    }
+
     // Invalida tokens de cambio de clave anteriores
     await this.tokensRepository.invalidateByUsuarioYAction(usuarioId, 'CAMBIO_CLAVE');
 

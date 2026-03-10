@@ -6,6 +6,7 @@ const { InvalidCredentialsError, UserInactiveError } = require('../../../domain/
 const { v4: uuidv4 } = require('uuid');
 
 const MAX_INTENTOS = 5;
+const MAX_SESIONES = 3;
 
 class Login {
   constructor(usuarioRepository, tokensRepository) {
@@ -16,28 +17,39 @@ class Login {
   async execute(rawInput) {
     const inputDto = new LoginInDTO(rawInput);
 
-    // Buscar usuario
     const usuario = await this.usuarioRepository.findByUsuario(inputDto.usuario);
     if (!usuario) throw new InvalidCredentialsError();
 
-    // Verificar password
     const passwordValido = await comparePassword(inputDto.password, usuario.password);
-     if (!passwordValido) {
-          const intentos = (usuario.intentosFallidos || 0) + 1;
-          if (intentos >= MAX_INTENTOS) {
-            await this.usuarioRepository.marcarRequiereCambioClave(usuario.id);
-            throw new Error('Demasiados intentos fallidos. Debe cambiar su clave antes de continuar.');
-          }
-          await this.usuarioRepository.incrementarIntentosFallidos(usuario.id);
-          throw new InvalidCredentialsError();
-        }
+    if (!passwordValido) {
+      const intentos = (usuario.intentosFallidos || 0) + 1;
+      if (intentos >= MAX_INTENTOS) {
+        await this.usuarioRepository.marcarRequiereCambioClave(usuario.id);
+        throw new Error('Demasiados intentos fallidos. Debe cambiar su clave antes de continuar.');
+      }
+      await this.usuarioRepository.incrementarIntentosFallidos(usuario.id);
+      throw new InvalidCredentialsError();
+    }
 
-    // Verificar estado activo
     if (!usuario.estado) throw new UserInactiveError();
     
     if (usuario.requiereCambioClave) {
       throw new Error('Debe cambiar su clave antes de iniciar sesión.');
     }
+
+    await this.usuarioRepository.resetearIntentosFallidos(usuario.id)
+
+    const sesionesActivas = await this.tokensRepository.contarActivasPorUsuario(usuario.id);
+    if (sesionesActivas >= MAX_SESIONES) {
+      const masAntigua = await this.tokensRepository.findMasAntiguaByUsuario(usuario.id);
+      if (masAntigua) await this.tokensRepository.invalidateByJti(masAntigua.tkn_Jti);
+    }
+
+    if (sesionesActivas >= MAX_SESIONES) {
+      throw new Error('Límite de sesiones alcanzado. Cierre una sesión antes de continuar.');
+    }
+
+    
 
     const jti = uuidv4();
 
