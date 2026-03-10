@@ -3,6 +3,7 @@ const router                = express.Router();
 const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
 
 const UsuariosSchemaRepository   = require('../../../infrastructure/database/repositories/UsuariosSchemaRepository');
+const TokensSchemaRepository         = require('../../../infrastructure/database/repositories/TokensSchemaRepository');
 
 const ConsultarUsuariosIdUseCase = require('../../../application/use-cases/Usuarios/ConsultarUsuariosId');
 const ConsultarUsuariosIdController        = require('../controllers/Usuarios/ConsultarUsuariosIdController');
@@ -26,8 +27,14 @@ const ActualizarUsuarioController = require('../controllers/Usuarios/ActualizarU
 const OpcionesPerfilesSchemaRepository  = require('../../../infrastructure/database/repositories/OpcionesPerfilesSchemaRepository');
 const OpcionesUsuariosSchemaRepository  = require('../../../infrastructure/database/repositories/OpcionesUsuariosSchemaRepository');
 
+const CambiarClaveUseCase             = require('../../../application/use-cases/Usuarios/CambiarClave');
+const CambiarClaveController            = require('../controllers/Usuarios/CambiarClaveController');
+
 
 const userRepository  = new UsuariosSchemaRepository();
+const tokensRepository = new TokensSchemaRepository();
+
+
 const opcionesPerfilesRepository = new OpcionesPerfilesSchemaRepository();
 const opcionesUsuariosRepository = new OpcionesUsuariosSchemaRepository();
 
@@ -49,6 +56,9 @@ const cambiarEstadoUsuarioController     = new CambiarEstadoUsuarioController(ca
 const actualizarUsuarioUseCase      = new ActualizarUsuarioUseCase(userRepository, opcionesPerfilesRepository, opcionesUsuariosRepository);
 const actualizarUsuarioController      = new ActualizarUsuarioController(actualizarUsuarioUseCase);
 
+const cambiarClaveUseCase               = new CambiarClaveUseCase(userRepository, tokensRepository);
+const cambiarClaveController            = new CambiarClaveController(cambiarClaveUseCase);
+
 router.use(authMiddleware);
 
 router.get('/ConsultarUsuariosId/:id',(req, res) => consultarUsuariosIdController.consultarUsuariosId(req, res));
@@ -57,6 +67,7 @@ router.post('/CrearUsuario',(req, res) => crearUsuarioController.crearUsuario(re
 router.post('/ActualizarUsuario/:id',(req, res) => actualizarUsuarioController.actualizarUsuario(req, res));
 router.patch('/EliminarUsuario/:id',(req, res) => eliminarUsuarioController.eliminarUsuario(req, res));
 router.patch('/CambiarEstadoUsuario/:id',(req, res) => cambiarEstadoUsuarioController.cambiarEstadoUsuario(req, res));
+router.post('/CambiarClave', (req, res) => cambiarClaveController.cambiarClave(req, res));
 
 
 module.exports = router;

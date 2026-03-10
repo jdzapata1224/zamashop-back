@@ -1,13 +1,16 @@
-const { comparePassword } = require('../../utils/hash.util');
+const { comparePassword } = require('../../../infrastructure/utils/hash.util');
 const jwt      = require('jsonwebtoken');
 const LoginInDTO  = require('../../dtos/Auth/in/LoginIn.dto');
 const LoginOutDTO = require('../../dtos/Auth/out/LoginOut.dto');
 const { InvalidCredentialsError, UserInactiveError } = require('../../../domain/exceptions/UsuariosErrors');
 const { v4: uuidv4 } = require('uuid');
 
+const MAX_INTENTOS = 5;
+
 class Login {
-  constructor(usuarioRepository) {
+  constructor(usuarioRepository, tokensRepository) {
     this.usuarioRepository = usuarioRepository;
+    this.tokensRepository  = tokensRepository;
   }
 
   async execute(rawInput) {
@@ -35,7 +38,9 @@ class Login {
     if (usuario.requiereCambioClave) {
       throw new Error('Debe cambiar su clave antes de iniciar sesión.');
     }
-    // Generar token
+
+    const jti = uuidv4();
+
     const payload = {
       id:              usuario.id,
       usuario:         usuario.usuario,
@@ -45,7 +50,7 @@ class Login {
       jti,
     };
     
-    const token = jwt.sign({ ...payload, jti }, process.env.JWT_SECRET, {
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN || '8h',
     });
 
