@@ -1,6 +1,9 @@
-const jwt = require('jsonwebtoken');
+const jwt                    = require('jsonwebtoken');
+const TokensSchemaRepository = require('../database/repositories/TokensSchemaRepository');
 
-const authMiddleware = (req, res, next) => {
+const tokensRepository = new TokensSchemaRepository();
+
+const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers['authorization'];
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -10,14 +13,22 @@ const authMiddleware = (req, res, next) => {
   const token = authHeader.slice(7).trim();
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.usuario = decoded; 
+    const decoded  = jwt.verify(token, process.env.JWT_SECRET);
+    const tokenDoc = await tokensRepository.findByJtiYAction(decoded.jti, 'LOGIN');
+    if (!tokenDoc) {
+      return res.status(401).json({ codigo: 401, mensaje: 'Token inválido o sesión cerrada' });
+    }
+    req.usuario = decoded;
     next();
   } catch (err) {
-    const mensaje = err.name === 'TokenExpiredError'
-      ? 'Token expirado'
-      : 'Token inválido';
-    return res.status(401).json({ codigo: 401, mensaje });
+    if (err.name === 'TokenExpiredError') {
+          try {
+            const decoded = jwt.decode(token);
+            if (decoded?.jti) await tokensRepository.invalidateByJti(decoded.jti).catch(() => {});
+          } catch (_) {}
+          return res.status(401).json({ codigo: 401, mensaje: 'Token expirado' });
+        }
+        return res.status(401).json({ codigo: 401, mensaje: 'Token inválido' });
   }
 };
 

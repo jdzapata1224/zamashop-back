@@ -19,6 +19,8 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       correo:         doc.usr_Correo,
       telefono:       doc.usr_Telefono,
       estado:         doc.usr_Estado,
+      intentosFallidos:    doc.usr_Intentos_Fallidos    ?? 0,
+      requiereCambioClave: doc.usr_Requiere_Cambio_Clave ?? false,
       perfilId:       doc.perfilId     ?? null,
       perfilNombre:         doc.perfilNombre ?? null,
       fechaCreacion:  doc.usr_Fecha_Creacion,
@@ -29,6 +31,37 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       usuarioEliminacion:       doc.usr_Eliminacion ? doc.usr_Eliminacion.toString() : null,
     });
   }
+
+    async incrementarIntentosFallidos(id) {
+      if (!Types.ObjectId.isValid(id)) return;
+      await UsuariosSchema.findByIdAndUpdate(id, { $inc: { usr_Intentos_Fallidos: 1 } });
+    }
+  
+    async resetearIntentosFallidos(id) {
+      if (!Types.ObjectId.isValid(id)) return;
+      await UsuariosSchema.findByIdAndUpdate(id, {
+        $set: { usr_Intentos_Fallidos: 0, usr_Requiere_Cambio_Clave: false },
+      });
+    }
+  
+    async marcarRequiereCambioClave(id) {
+      if (!Types.ObjectId.isValid(id)) return;
+      await UsuariosSchema.findByIdAndUpdate(id, {
+        $set: { usr_Requiere_Cambio_Clave: true, usr_Intentos_Fallidos: 0 },
+      });
+    }
+  
+    async cambiarClave(id, nuevaClave) {
+      if (!Types.ObjectId.isValid(id)) return;
+      const hash = await hashPassword(nuevaClave);
+      await UsuariosSchema.findByIdAndUpdate(id, {
+        $set: {
+          usr_Password:              hash,
+          usr_Requiere_Cambio_Clave: false,
+          usr_Intentos_Fallidos:     0,
+        },
+      });
+    }
 
 
   async findById(id) {

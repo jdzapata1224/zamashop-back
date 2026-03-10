@@ -11,6 +11,8 @@ class Usuarios {
     correo,
     telefono,
     estado,
+    intentosFallidos,
+    requiereCambioClave,
     perfilId,
     perfilNombre,
     fechaCreacion,
@@ -31,6 +33,8 @@ class Usuarios {
     this.correo         = correo;
     this.telefono       = telefono;
     this.estado         = estado;
+    this.intentosFallidos    = intentosFallidos    ?? 0;
+    this.requiereCambioClave = requiereCambioClave ?? false;
     this.perfilId           = perfilId   ?? null;
     this.perfilNombre       = perfilNombre ?? null;
     this.fechaCreacion  = fechaCreacion;
