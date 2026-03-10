@@ -120,6 +120,32 @@ class OpcionesPerfilesSchemaRepository {
 
     return docs.map(doc => this._toEntity(doc));
   }
+
+  async findByPerfilYOpcion(perfilId, opcionId) {
+  return OpcionesPerfilesSchema.findOne({
+    opr_Prf_Id: new Types.ObjectId(perfilId),
+    opr_Opc_Id: new Types.ObjectId(opcionId),
+    opr_Fecha_Eliminacion: { $in: [null, undefined] },
+  });
+}
+
+async createOne(perfilId, opcionId, usuarioCreacion) {
+  await OpcionesPerfilesSchema.create({
+    opr_Prf_Id:         new Types.ObjectId(perfilId),
+    opr_Opc_Id:         new Types.ObjectId(opcionId),
+    opr_Fecha_Creacion: new Date(),
+    ...(Types.ObjectId.isValid(usuarioCreacion) && {
+      opr_Usr_Creacion: new Types.ObjectId(usuarioCreacion),
+    }),
+  });
+}
+
+async deleteOne(perfilId, opcionId) {
+  await OpcionesPerfilesSchema.deleteOne({
+    opr_Prf_Id: new Types.ObjectId(perfilId),
+    opr_Opc_Id: new Types.ObjectId(opcionId)
+  });
+}
 }
 
 module.exports = OpcionesPerfilesSchemaRepository;

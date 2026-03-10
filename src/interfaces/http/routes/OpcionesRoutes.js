@@ -6,6 +6,13 @@ const OpcionesSchemaRepository   = require('../../../infrastructure/database/rep
 const OpcionesUsuariosSchemaRepository = require('../../../infrastructure/database/repositories/OpcionesUsuariosSchemaRepository');
 const OpcionesPerfilesSchemaRepository = require('../../../infrastructure/database/repositories/OpcionesPerfilesSchemaRepository');
 
+
+const AsignarOpcionUsuarioUseCase      = require('../../../application/use-cases/Opciones/AsignarOpcionUsuario');
+const AsignarOpcionUsuarioController   = require('../controllers/Opciones/AsignarOpcionUsuarioController');
+
+const AsignarOpcionPerfilUseCase       = require('../../../application/use-cases/Opciones/AsignarOpcionPerfil');
+const AsignarOpcionPerfilController    = require('../controllers/Opciones/AsignarOpcionPerfilController');
+
 const ConsultarOpcionesIdUseCase = require('../../../application/use-cases/Opciones/ConsultarOpcionesId');
 const ConsultarOpcionesIdController        = require('../controllers/Opciones/ConsultarOpcionesIdController');
 
@@ -18,7 +25,6 @@ const ConsultarOpcionesUsuarioController        = require('../controllers/Opcion
 const ConsultarOpcionesPerfilUseCase = require('../../../application/use-cases/Opciones/ConsultarOpcionesPerfil');
 const ConsultarOpcionesPerfilController        = require('../controllers/Opciones/ConsultarOpcionesPerfilController');
 
-
 const CrearOpcionesUseCase = require('../../../application/use-cases/Opciones/CrearOpciones');
 const CrearOpcionesController        = require('../controllers/Opciones/CrearOpcionesController');
 
@@ -28,10 +34,16 @@ const EliminarOpcionesController      = require('../controllers/Opciones/Elimina
 const CambiarEstadoOpcionesUseCase         = require('../../../application/use-cases/Opciones/CambiarEstadoOpciones');
 const CambiarEstadoOpcionesController      = require('../controllers/Opciones/CambiarEstadoOpcionesController');
 
-
 const opcionesRepository  = new OpcionesSchemaRepository();
 const opcionesUsuariosRepository  = new OpcionesUsuariosSchemaRepository();
 const opcionesPerfilesRepository  = new OpcionesPerfilesSchemaRepository();
+
+const asignarOpcionUsuarioUseCase    = new AsignarOpcionUsuarioUseCase(opcionesUsuariosRepository);
+const asignarOpcionUsuarioController = new AsignarOpcionUsuarioController(asignarOpcionUsuarioUseCase);
+
+const asignarOpcionPerfilUseCase     = new AsignarOpcionPerfilUseCase(opcionesPerfilesRepository);
+const asignarOpcionPerfilController  = new AsignarOpcionPerfilController(asignarOpcionPerfilUseCase);
+
 
 const consultarOpcionesIdUseCase      = new ConsultarOpcionesIdUseCase(opcionesRepository);
 const consultarOpcionesIdController      = new ConsultarOpcionesIdController(consultarOpcionesIdUseCase);
@@ -63,6 +75,7 @@ router.patch('/EliminarOpciones/:id',(req, res) => eliminarOpcionesController.el
 router.patch('/CambiarEstadoOpciones/:id',(req, res) => cambiarEstadoOpcionesController.cambiarEstadoOpciones(req, res));
 router.patch('/ConsultarOpcionesUsuario/:id',(req, res) => consultarOpcionesUsuarioController.consultarOpcionesUsuario(req, res));
 router.patch('/ConsultarOpcionesPerfil/:id',(req, res) => consultarOpcionesPerfilController.consultarOpcionesPerfil(req, res));
-
+router.post('/AsignarOpcionUsuario', (req, res) => asignarOpcionUsuarioController.asignarOpcion(req, res));
+router.post('/AsignarOpcionPerfil',  (req, res) => asignarOpcionPerfilController.asignarOpcion(req, res));
 
 module.exports = router;

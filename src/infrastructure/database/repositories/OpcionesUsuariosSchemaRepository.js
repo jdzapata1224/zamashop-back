@@ -171,6 +171,33 @@ class OpcionesUsuariosSchemaRepository {
       { $set: payload }
     );
   }
+
+  async findByUsuarioYOpcion(usuarioId, opcionId) {
+  return OpcionesUsuariosSchema.findOne({
+    ous_Usr_Id: new Types.ObjectId(usuarioId),
+    ous_Opc_Id: new Types.ObjectId(opcionId),
+    ous_Fecha_Eliminacion: { $in: [null, undefined] },
+  });
+}
+
+async createOne(usuarioId, opcionId, usuarioCreacion) {
+  await OpcionesUsuariosSchema.create({
+    ous_Usr_Id:         new Types.ObjectId(usuarioId),
+    ous_Opc_Id:         new Types.ObjectId(opcionId),
+    ous_Fecha_Creacion: new Date(),
+    ...(Types.ObjectId.isValid(usuarioCreacion) && {
+      ous_Usr_Creacion: new Types.ObjectId(usuarioCreacion),
+    }),
+  });
+}
+
+async deleteOne(usuarioId, opcionId) {
+  await OpcionesUsuariosSchema.deleteOne({
+    ous_Usr_Id: new Types.ObjectId(usuarioId),
+    ous_Opc_Id: new Types.ObjectId(opcionId),
+    
+  });
+}
 }
 
 module.exports = OpcionesUsuariosSchemaRepository;
