@@ -65,15 +65,15 @@ const cambiarClaveController            = new CambiarClaveController(cambiarClav
 const generarTokenCambioClaveUseCase    = new GenerarTokenCambioClaveUseCase(userRepository, tokensRepository);
 const generarTokenCambioClaveController = new GenerarTokenCambioClaveController(generarTokenCambioClaveUseCase);
 
-router.use(authMiddleware);
+router.patch('/CambiarClave/:id', (req, res) => cambiarClaveController.cambiarClave(req, res));
 
+router.use(authMiddleware);
 router.get('/ConsultarUsuariosId/:id',(req, res) => consultarUsuariosIdController.consultarUsuariosId(req, res));
 router.get('/ConsultarUsuarios',(req, res) => consultarUsuariosController.consultarUsuarios(req, res));
 router.post('/CrearUsuario',(req, res) => crearUsuarioController.crearUsuario(req, res));
 router.post('/ActualizarUsuario/:id',(req, res) => actualizarUsuarioController.actualizarUsuario(req, res));
 router.patch('/EliminarUsuario/:id',(req, res) => eliminarUsuarioController.eliminarUsuario(req, res));
 router.patch('/CambiarEstadoUsuario/:id',(req, res) => cambiarEstadoUsuarioController.cambiarEstadoUsuario(req, res));
-router.patch('/CambiarClave/:id', (req, res) => cambiarClaveController.cambiarClave(req, res));
 router.patch('/GenerarTokenCambioClave/:id',  (req, res) => generarTokenCambioClaveController.generarToken(req, res));
 
 
