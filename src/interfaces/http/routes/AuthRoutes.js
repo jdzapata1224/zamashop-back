@@ -14,8 +14,6 @@ const LogoutController          = require('../controllers/Auth/LogoutController'
 const ValidarTokenUseCase             = require('../../../application/use-cases/Auth/ValidarToken');
 const ValidarTokenController          = require('../controllers/Auth/ValidarTokenController');
 
-const GenerarTokenCambioClaveUseCase  = require('../../../application/use-cases/Auth/GenerarTokenCambioClave');
-const GenerarTokenCambioClaveController = require('../controllers/Auth/GenerarTokenCambioClaveController');
 
 
 const userRepository   = new UsuariosSchemaRepository();
@@ -31,13 +29,9 @@ const logoutController = new LogoutController(logoutUseCase);
 const validarTokenUseCase    = new ValidarTokenUseCase(userRepository);
 const validarTokenController = new ValidarTokenController(validarTokenUseCase);
 
-const generarTokenCambioClaveUseCase    = new GenerarTokenCambioClaveUseCase(userRepository, tokensRepository);
-const generarTokenCambioClaveController = new GenerarTokenCambioClaveController(generarTokenCambioClaveUseCase);
-
 
 router.post('/Login', (req, res) => loginController.login(req, res));
 router.post('/ValidarToken', (req, res) => validarTokenController.validarToken(req, res));
 router.post('/Logout',   authMiddleware, (req, res) => logoutController.logout(req, res));
-router.post('/GenerarTokenCambioClave', authMiddleware, (req, res) => generarTokenCambioClaveController.generarToken(req, res));
 
 module.exports = router;

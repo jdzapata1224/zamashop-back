@@ -30,6 +30,8 @@ const OpcionesUsuariosSchemaRepository  = require('../../../infrastructure/datab
 const CambiarClaveUseCase             = require('../../../application/use-cases/Usuarios/CambiarClave');
 const CambiarClaveController            = require('../controllers/Usuarios/CambiarClaveController');
 
+const GenerarTokenCambioClaveUseCase  = require('../../../application/use-cases/Usuarios/GenerarTokenCambioClave');
+const GenerarTokenCambioClaveController = require('../controllers/Usuarios/GenerarTokenCambioClaveController');
 
 const userRepository  = new UsuariosSchemaRepository();
 const tokensRepository = new TokensSchemaRepository();
@@ -59,6 +61,10 @@ const actualizarUsuarioController      = new ActualizarUsuarioController(actuali
 const cambiarClaveUseCase               = new CambiarClaveUseCase(userRepository, tokensRepository);
 const cambiarClaveController            = new CambiarClaveController(cambiarClaveUseCase);
 
+
+const generarTokenCambioClaveUseCase    = new GenerarTokenCambioClaveUseCase(userRepository, tokensRepository);
+const generarTokenCambioClaveController = new GenerarTokenCambioClaveController(generarTokenCambioClaveUseCase);
+
 router.use(authMiddleware);
 
 router.get('/ConsultarUsuariosId/:id',(req, res) => consultarUsuariosIdController.consultarUsuariosId(req, res));
@@ -68,6 +74,7 @@ router.post('/ActualizarUsuario/:id',(req, res) => actualizarUsuarioController.a
 router.patch('/EliminarUsuario/:id',(req, res) => eliminarUsuarioController.eliminarUsuario(req, res));
 router.patch('/CambiarEstadoUsuario/:id',(req, res) => cambiarEstadoUsuarioController.cambiarEstadoUsuario(req, res));
 router.post('/CambiarClave', (req, res) => cambiarClaveController.cambiarClave(req, res));
+router.post('/GenerarTokenCambioClave', authMiddleware, (req, res) => generarTokenCambioClaveController.generarToken(req, res));
 
 
 module.exports = router;
