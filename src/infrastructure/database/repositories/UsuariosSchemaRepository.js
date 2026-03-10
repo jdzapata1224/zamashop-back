@@ -256,15 +256,13 @@ class UsuariosSchemaRepository extends UsuariosRepository {
   }
 
   async create(data) {
-    const saltRounds   = 10;
-    const passwordHash = await hashPassword(data.password);
 
     if (!Types.ObjectId.isValid(data.perfil)) return null;
    const payload={
       usr_Primer_Nombre:        data.primer_nombre,
       usr_Primer_Apellido:      data.primer_apellido,
       usr_Usuario:        data.usuario,
-      usr_Password:       passwordHash,
+      usr_Password:       await hashPassword(data.identificacion),
       usr_Identificacion: data.identificacion,
       usr_Correo:         data.correo,
       usr_Telefono:       data.telefono,

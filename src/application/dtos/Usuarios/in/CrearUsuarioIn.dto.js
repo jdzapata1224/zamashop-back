@@ -1,10 +1,9 @@
 const { Types } = require('mongoose');
 
 class CrearUsuarioInDTO {
-  constructor({ perfil,primer_nombre,segundo_nombre, primer_apellido,segundo_apellido, password, identificacion, correo, telefono, usuarioCreacion }) {
+  constructor({ perfil,primer_nombre,segundo_nombre, primer_apellido,segundo_apellido,  identificacion, correo, telefono, usuarioCreacion }) {
     if (!primer_nombre        || typeof primer_nombre        !== 'string' || !primer_nombre.trim())        throw new Error('Primer Nombre es requerido');   
     if (!primer_apellido      || typeof primer_apellido      !== 'string' || !primer_apellido.trim())      throw new Error('apellidos es requerido');
-    if (!password       || typeof password       !== 'string' || !password.trim())       throw new Error('password es requerido');
     if (!identificacion || typeof identificacion !== 'string' || !identificacion.trim()) throw new Error('identificacion es requerida');
     if (!correo         || typeof correo         !== 'string' || !correo.trim())         throw new Error('correo es requerido');
     if (!telefono       || typeof telefono       !== 'string' || !telefono.trim())       throw new Error('telefono es requerido');
@@ -22,7 +21,6 @@ class CrearUsuarioInDTO {
     this.segundo_apellido = segundo_apellido?.trim().toUpperCase() || null;
     this.usuarioBase = `${this.primer_nombre.charAt(0)}${this.primer_apellido}`.toLowerCase();
     this.usuario     = this.usuarioBase; // puede ser sobreescrito en el use-case
-    this.password       = password.trim();
     this.identificacion = identificacion.trim();
     this.correo         = correo.trim().toLowerCase();
     this.telefono       = telefono.trim();
