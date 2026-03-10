@@ -47,7 +47,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     async marcarRequiereCambioClave(id) {
       if (!Types.ObjectId.isValid(id)) return;
       await UsuariosSchema.findByIdAndUpdate(id, {
-        $set: { usr_Requiere_Cambio_Clave: true, usr_Intentos_Fallidos: 0 },
+        $set: { usr_Requiere_Cambio_Clave: true},
       });
     }
   
