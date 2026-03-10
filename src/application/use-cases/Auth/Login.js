@@ -22,12 +22,14 @@ class Login {
 
     const passwordValido = await comparePassword(inputDto.password, usuario.password);
     if (!passwordValido) {
-      const intentos = (usuario.intentosFallidos || 0) + 1;
-      if (intentos >= MAX_INTENTOS) {
-        await this.usuarioRepository.marcarRequiereCambioClave(usuario.id);
-        throw new Error('Demasiados intentos fallidos. Debe cambiar su clave antes de continuar.');
+      if (!usuario.requiereCambioClave) {
+        const intentos = (usuario.intentosFallidos || 0) + 1;
+        if (intentos >= MAX_INTENTOS) {
+          await this.usuarioRepository.marcarRequiereCambioClave(usuario.id);
+          throw new Error('Demasiados intentos fallidos. Debe cambiar su clave antes de continuar.');
+        }
+        await this.usuarioRepository.incrementarIntentosFallidos(usuario.id);
       }
-      await this.usuarioRepository.incrementarIntentosFallidos(usuario.id);
       throw new InvalidCredentialsError();
     }
 
