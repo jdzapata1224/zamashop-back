@@ -163,7 +163,7 @@ class OpcionesUsuariosSchemaRepository {
       }),
     };
 
-    await OpcionesUsuariosSchema.updateMany(
+    await OpcionesUsuariosSchema.deleteMany(
       {
         ous_Usr_Id:            new Types.ObjectId(usuarioId),
         ous_Fecha_Eliminacion: { $in: [null, undefined] },

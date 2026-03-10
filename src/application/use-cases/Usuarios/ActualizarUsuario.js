@@ -28,10 +28,10 @@ class ActualizarUsuario {
     const actualizado = await this.usuarioRepository.update(inputDto);
 
     if (!actualizado) throw new Error('No se pudo actualizar el usuario');
-    
+
     const perfilCambio = existe.perfilId?.toString() !== inputDto.perfil.toString();
     if (perfilCambio) {
-      await this.opcionesUsuariosRepository.deleteByUsuarioId(inputDto.id.toString(), tokenId);
+      await this.opcionesUsuariosRepository.deleteByUsuarioId(inputDto.id.toString());
 
       const opcionesPerfil = await this.opcionesPerfilesRepository.findByPerfilId(inputDto.perfil);
       if (opcionesPerfil.length > 0) {
