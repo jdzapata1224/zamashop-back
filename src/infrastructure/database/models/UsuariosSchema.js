@@ -52,6 +52,14 @@ const UsuariosSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    usr_Intentos_Fallidos: {
+      type: Number, 
+      default: 0
+    },
+    usr_Requiere_Cambio_Clave: {
+      type: Boolean,
+      default: false,
+    },
     usr_Fecha_Creacion: {
       type: Date,
       default: Date.now,
