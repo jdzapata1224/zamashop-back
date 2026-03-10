@@ -73,7 +73,7 @@ router.post('/CrearUsuario',(req, res) => crearUsuarioController.crearUsuario(re
 router.post('/ActualizarUsuario/:id',(req, res) => actualizarUsuarioController.actualizarUsuario(req, res));
 router.patch('/EliminarUsuario/:id',(req, res) => eliminarUsuarioController.eliminarUsuario(req, res));
 router.patch('/CambiarEstadoUsuario/:id',(req, res) => cambiarEstadoUsuarioController.cambiarEstadoUsuario(req, res));
-router.post('/CambiarClave', (req, res) => cambiarClaveController.cambiarClave(req, res));
+router.patch('/CambiarClave/:id', (req, res) => cambiarClaveController.cambiarClave(req, res));
 router.patch('/GenerarTokenCambioClave/:id',  (req, res) => generarTokenCambioClaveController.generarToken(req, res));
 
 
