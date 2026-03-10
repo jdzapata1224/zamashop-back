@@ -19,18 +19,22 @@ class Login {
 
     const usuario = await this.usuarioRepository.findByUsuario(inputDto.usuario);
     if (!usuario) throw new InvalidCredentialsError();
+    if (usuario.requiereCambioClave) {
+      throw new Error('Debe cambiar su clave antes de iniciar sesión.');
+    }
 
     const passwordValido = await comparePassword(inputDto.password, usuario.password);
     if (!passwordValido) {
-      if (!usuario.requiereCambioClave) {
+      
         const intentos = (usuario.intentosFallidos || 0) + 1;
         if (intentos >= MAX_INTENTOS) {
           await this.usuarioRepository.marcarRequiereCambioClave(usuario.id);
           throw new Error('Demasiados intentos fallidos. Debe cambiar su clave antes de continuar.');
         }
         await this.usuarioRepository.incrementarIntentosFallidos(usuario.id);
-      }
-      throw new InvalidCredentialsError();
+        throw new InvalidCredentialsError();
+      
+      
     }
 
     if (!usuario.estado) throw new UserInactiveError();
