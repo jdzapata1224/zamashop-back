@@ -2,11 +2,8 @@ const { Types } = require('mongoose');
 
 class ConsultarOpcionesUsuarioInDTO {
   constructor(id) {
-    if (!id) throw new Error('El campo id es requerido');
-    const trimmedId = String(id).trim();
-    if (!Types.ObjectId.isValid(trimmedId))
-      throw new Error(`Formato Id incorrecto: ${trimmedId}`);
-    this.id = new Types.ObjectId(trimmedId);
+    if (!id || !Types.ObjectId.isValid(id)) throw new Error('id es requerido y debe ser un Id válido');
+    this.id = new Types.ObjectId(id);
   }
 }
 

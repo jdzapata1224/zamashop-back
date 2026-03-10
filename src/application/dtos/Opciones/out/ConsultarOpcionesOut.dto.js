@@ -10,7 +10,6 @@ class ConsultarOpcionesOutDTO {
     this.fechaActualizacion    = opcion.fechaActualizacion;
     this.usuarioEliminacion    = opcion.usuarioEliminacion;
     this.fechaEliminacion    = opcion.fechaEliminacion;
-    // password never exposed
   }
 
   static fromEntity(opcion) {

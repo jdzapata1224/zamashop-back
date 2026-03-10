@@ -18,8 +18,8 @@ class ConsultarOpcionesPerfilOutDTO {
     return new ConsultarOpcionesPerfilOutDTO(opcionPerfil);
   }
 
-  static fromEntities(opcionesUsuario) {
-    return opcionesUsuario.map(ou => new ConsultarOpcionesPerfilOutDTO(ou));
+  static fromEntities(opcionesPerfil) {
+    return opcionesPerfil.map(ou => new ConsultarOpcionesPerfilOutDTO(ou));
   }
 }
 

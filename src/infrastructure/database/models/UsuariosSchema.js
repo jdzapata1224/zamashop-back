@@ -60,6 +60,10 @@ const UsuariosSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Usuarios',        // self-reference: who created this user
     },
+    usr_Prf_Id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Perfiles',        // self-reference: who created this user
+    },
     usr_Fecha_Eliminacion: {
       type: Date
     },

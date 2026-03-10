@@ -19,7 +19,7 @@ class ConsultarUsuariosIdController {
         data: output,
       });
     } catch (err) {
-      res.status(err.statusCode || 400).json({ success: false, message: err.message });
+      res.status(err.statusCode || 400).json({ codigo: 400, mensaje: err.message });
     }
   };
 }

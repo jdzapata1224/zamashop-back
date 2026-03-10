@@ -4,6 +4,7 @@ class Opciones {
     nombre,
     codigo,
     estado,
+    perfilId,
     fechaCreacion,
     usuarioCreacion,
     fechaActualizacion,

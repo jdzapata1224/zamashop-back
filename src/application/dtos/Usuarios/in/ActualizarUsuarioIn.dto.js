@@ -9,7 +9,9 @@ class ActualizarUsuarioInDTO {
     if (!identificacion || typeof identificacion !== 'string' || !identificacion.trim()) throw new Error('identificacion es requerida');
     if (!correo         || typeof correo         !== 'string' || !correo.trim())         throw new Error('correo es requerido');
     if (!telefono       || typeof telefono       !== 'string' || !telefono.trim())       throw new Error('telefono es requerido');
-    
+    if (!perfil || !Types.ObjectId.isValid(perfil)) throw new Error('perfil es requerido y debe ser un Id válido');
+    if (!usuarioActualizacion || !Types.ObjectId.isValid(usuarioActualizacion)) throw new Error('usuarioActualizacion es requerido y debe ser un Id válido');
+
     if (segundo_nombre  !== undefined && segundo_nombre  !== null && typeof segundo_nombre  !== 'string') throw new Error('Segundo nombre debe ser texto');
     if (segundo_apellido !== undefined && segundo_apellido !== null && typeof segundo_apellido !== 'string') throw new Error('Segundo apellido debe ser texto');
     
@@ -21,9 +23,8 @@ class ActualizarUsuarioInDTO {
     this.identificacion = identificacion.trim();
     this.correo         = correo.trim().toLowerCase();
     this.telefono       = telefono.trim();
-    this.usuarioActualizacion = (usuarioActualizacion && Types.ObjectId.isValid(usuarioActualizacion))
-      ? new Types.ObjectId(usuarioActualizacion)
-      : null;
+    this.perfil = new Types.ObjectId(perfil);
+    this.usuarioActualizacion = new Types.ObjectId(usuarioActualizacion);
   }
 }
 

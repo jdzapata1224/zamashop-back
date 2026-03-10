@@ -11,6 +11,8 @@ class Usuarios {
     correo,
     telefono,
     estado,
+    perfilId,
+    perfilNombre,
     fechaCreacion,
     usuarioCreacion,
     usuarioActualizacion,
@@ -29,6 +31,8 @@ class Usuarios {
     this.correo         = correo;
     this.telefono       = telefono;
     this.estado         = estado;
+    this.perfilId           = perfilId   ?? null;
+    this.perfilNombre       = perfilNombre ?? null;
     this.fechaCreacion  = fechaCreacion;
     this.usuarioCreacion       = usuarioCreacion;
     this.fechaActualizacion  = fechaActualizacion;
