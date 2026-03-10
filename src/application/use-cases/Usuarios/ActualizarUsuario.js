@@ -4,8 +4,10 @@ const ActualizarUsuarioIn = require('../../dtos/Usuarios/in/ActualizarUsuarioIn.
 
 
 class ActualizarUsuario {
-  constructor(usuarioRepository) {
-    this.usuarioRepository = usuarioRepository;
+   constructor(usuarioRepository, opcionesPerfilesRepository, opcionesUsuariosRepository) {
+    this.usuarioRepository          = usuarioRepository;
+    this.opcionesPerfilesRepository = opcionesPerfilesRepository;
+    this.opcionesUsuariosRepository = opcionesUsuariosRepository;
   }
 
   async execute(rawInput) {
@@ -26,6 +28,16 @@ class ActualizarUsuario {
     const actualizado = await this.usuarioRepository.update(inputDto);
 
     if (!actualizado) throw new Error('No se pudo actualizar el usuario');
+    
+    const perfilCambio = existe.perfilId?.toString() !== inputDto.perfil.toString();
+    if (perfilCambio) {
+      await this.opcionesUsuariosRepository.deleteByUsuarioId(inputDto.id.toString(), tokenId);
+
+      const opcionesPerfil = await this.opcionesPerfilesRepository.findByPerfilId(inputDto.perfil);
+      if (opcionesPerfil.length > 0) {
+        await this.opcionesUsuariosRepository.createMany(inputDto.id.toString(), opcionesPerfil, tokenId);
+      }
+    }
 
   }
 }

@@ -152,6 +152,25 @@ class OpcionesUsuariosSchemaRepository {
       await OpcionesUsuariosSchema.insertMany(docs);
     }
   }
+
+  async deleteByUsuarioId(usuarioId, usuarioEliminacion) {
+    if (!Types.ObjectId.isValid(usuarioId)) return;
+
+    const payload = {
+      ous_Fecha_Eliminacion: new Date(),
+      ...(Types.ObjectId.isValid(usuarioEliminacion) && {
+        ous_Usr_Eliminacion: new Types.ObjectId(usuarioEliminacion),
+      }),
+    };
+
+    await OpcionesUsuariosSchema.updateMany(
+      {
+        ous_Usr_Id:            new Types.ObjectId(usuarioId),
+        ous_Fecha_Eliminacion: { $in: [null, undefined] },
+      },
+      { $set: payload }
+    );
+  }
 }
 
 module.exports = OpcionesUsuariosSchemaRepository;

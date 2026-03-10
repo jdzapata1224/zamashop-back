@@ -46,7 +46,7 @@ const eliminarUsuarioController     = new EliminarUsuarioController(eliminarUsua
 const cambiarEstadoUsuarioUseCase      = new CambiarEstadoUsuarioUseCase(userRepository);
 const cambiarEstadoUsuarioController     = new CambiarEstadoUsuarioController(cambiarEstadoUsuarioUseCase);
 
-const actualizarUsuarioUseCase      = new ActualizarUsuarioUseCase(userRepository);
+const actualizarUsuarioUseCase      = new ActualizarUsuarioUseCase(userRepository, opcionesPerfilesRepository, opcionesUsuariosRepository);
 const actualizarUsuarioController      = new ActualizarUsuarioController(actualizarUsuarioUseCase);
 
 router.use(authMiddleware);
