@@ -1,7 +1,7 @@
 const { Types } = require('mongoose');
 
 class ActualizarUsuarioInDTO {
-  constructor({ id,primer_nombre,segundo_nombre, primer_apellido,segundo_apellido, identificacion, correo, telefono, usuarioActualizacion }) {
+  constructor({ id,primer_nombre,segundo_nombre, primer_apellido,segundo_apellido, identificacion, correo, telefono,perfil, usuarioActualizacion }) {
     if (!id || !Types.ObjectId.isValid(id)) throw new Error('ID de usuario inválido o requerido');
 
     if (!primer_nombre        || typeof primer_nombre        !== 'string' || !primer_nombre.trim())        throw new Error('Primer Nombre es requerido');   
