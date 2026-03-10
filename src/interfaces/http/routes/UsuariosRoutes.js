@@ -65,7 +65,7 @@ const cambiarClaveController            = new CambiarClaveController(cambiarClav
 const generarTokenCambioClaveUseCase    = new GenerarTokenCambioClaveUseCase(userRepository, tokensRepository);
 const generarTokenCambioClaveController = new GenerarTokenCambioClaveController(generarTokenCambioClaveUseCase);
 
-router.patch('/CambiarClave/:id', (req, res) => cambiarClaveController.cambiarClave(req, res));
+router.patch('/CambiarClave', (req, res) => cambiarClaveController.cambiarClave(req, res));
 
 router.use(authMiddleware);
 router.get('/ConsultarUsuariosId/:id',(req, res) => consultarUsuariosIdController.consultarUsuariosId(req, res));
