@@ -12,12 +12,14 @@ class ConsultarUsuariosOutDTO {
     this.estado = user.estado;
     this.telefono = user.telefono;
     this.usuario = user.usuario;
-    this.usuarioCreacion = user.usuarioCreacion;
+    this.usuarioCreacionId = user.usuarioCreacionId;
+    this.usuarioCreacionNombre = user.usuarioCreacionNombre;
     this.fechaCreacion = user.fechaCreacion;
-    this.usuarioActualizacion = user.usuarioActualizacion;
+    this.usuarioActualizacionId = user.usuarioActualizacionId;
+    this.usuarioActualizacionNombre = user.usuarioActualizacionNombre;
     this.fechaActualizacion = user.fechaActualizacion;
-    this.usuarioEliminacion = user.usuarioEliminacion;
-    this.fechaEliminacion = user.fechaEliminacion;
+    this.usuarioEliminacionId = user.usuarioEliminacionId;
+    this.usuarioEliminacionNombre = user.usuarioEliminacionNombre;
   }
 
   static fromEntity(user) {
