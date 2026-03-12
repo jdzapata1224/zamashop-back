@@ -301,7 +301,7 @@ class CategoriasSchemaRepository extends CategoriasRepository {
       cat_Descripcion:      data.descripcion,
       cat_Estado:         true,
       cat_Fecha_Creacion: new Date(),
-      cat_Usr_Actualizacion=data.usuarioActualizacion
+      cat_Usr_Actualizacion:data.usuarioActualizacion
     };
 
     const doc = await CategoriasSchema.findByIdAndUpdate(
