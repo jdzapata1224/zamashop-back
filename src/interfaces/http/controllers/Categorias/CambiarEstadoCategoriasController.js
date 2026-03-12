@@ -1,23 +1,16 @@
-class CambiarEstadoCategoriasController {
+const BaseController = require('../_base/BaseController');
+
+class CambiarEstadoCategoriasController extends BaseController {
   constructor(cambiarEstadoCategoriasUseCase) {
+    super();
     this.cambiarEstadoCategoriasUseCase = cambiarEstadoCategoriasUseCase;
   }
 
-  cambiarEstadoCategorias = async (req, res) => {
-    try {
-      await this.cambiarEstadoCategoriasUseCase.execute({
-        id:    req.params.id,
-        usuarioToken: req.usuario, 
-      });
-
-      return res.status(200).json({
-        codigo:  200,
-        mensaje: 'Registro Actualizado Satisfactoriamente',
-      });
-    } catch (err) {
-      res.status(err.statusCode || 400).json({ codigo: 400, mensaje: err.message });
-    }
-  };
+  cambiarEstadoCategorias = this.handle(async (req, res) => {
+    await this.cambiarEstadoCategoriasUseCase.execute({ id: req.params.id, infoLogin: req.infoLogin });
+    res.status(200).json({ codigo: 200, mensaje: 'Registro Actualizado Satisfactoriamente' });
+    
+  });
 }
 
 module.exports = CambiarEstadoCategoriasController;

@@ -33,44 +33,67 @@ class CategoriasSchemaRepository extends CategoriasRepository {
           ],
         },
       },
+       {
+        $lookup: {
+          from: 'Usuarios',
+          localField: 'cat_Usr_Creacion',
+          foreignField: '_id',
+          as: 'usuarioCreacion',
+        },
+      },
+      { $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true } },
+
+      // Usuario actualización (opcional)
       {
         $lookup: {
-          from:         'Categorias',
-          localField:   'cat_Usr_Creacion',
+          from: 'Usuarios',
+          localField: 'cat_Usr_Actualizacion',
           foreignField: '_id',
-          as:           'usuarioCreacion',
+          as: 'usuarioActualizacion',
+        },
+      },
+      { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
+
+      {
+        $set: {
+
+          cat_Creacion_Id: '$usuarioCreacion._id',
+          cat_Creacion_Nombre: {
+            $concat: [
+              { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
+              ' ',
+              { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] },
+            ],
+          },
+
+          cat_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
+          cat_Actualizacion_Nombre: {
+            $cond: {
+              if: { $ifNull: ['$usuarioActualizacion._id', false] },
+              then: {
+                $concat: [
+                  { $ifNull: ['$usuarioActualizacion.usr_Primer_Nombre', ''] },
+                  ' ',
+                  { $ifNull: ['$usuarioActualizacion.usr_Primer_Apellido', ''] },
+                ],
+              },
+              else: null,
+            },
+          },
         },
       },
       {
-        $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true },
-      },
-      {
-        $set: {
-          usuarioId: '$usuarioCreacion._id',
-          usuarioNombre: {
-            $trim: {
-              input: {
-                $concat: [
-                  { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
-                  {
-                    $cond: [
-                      { $gt: [{ $ifNull: ['$usuarioCreacion.usr_Segundo_Nombre', null] }, null] },
-                      { $concat: [' ', '$usuarioCreacion.usr_Segundo_Nombre'] },
-                      '',
-                    ],
-                  },
-                  { $concat: [' ', { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] }] },
-                  {
-                    $cond: [
-                      { $gt: [{ $ifNull: ['$usuarioCreacion.usr_Segundo_Apellido', null] }, null] },
-                      { $concat: [' ', '$usuarioCreacion.usr_Segundo_Apellido'] },
-                      '',
-                    ],
-                  },
-                ],
-              },
-            },
-          },
+        $project: {
+          cat_Codigo: 1,
+          cat_Nombre: 1,
+          cat_Descripcion: 1,
+          cat_Estado: 1,
+          cat_Fecha_Creacion: 1,
+          cat_Creacion_Id: 1,
+          cat_Creacion_Nombre: 1,
+          cat_Fecha_Actualizacion: 1,
+          cat_Actualizacion_Id: 1,
+          cat_Actualizacion_Nombre: 1
         },
       },
     ]);
@@ -134,21 +157,17 @@ class CategoriasSchemaRepository extends CategoriasRepository {
   }
 
   async delete(data) {
-    if (!Types.ObjectId.isValid(data.id)) return null;
     
     const payload = {
       cat_Fecha_Eliminacion: new Date(),
+      cat_Usr_Eliminacion: data.usuarioEliminacion
     };
 
-    // usr_Eliminacion solo se guarda si es un ObjectId válido
-    if (data.usuarioEliminacion && Types.ObjectId.isValid(data.usuarioEliminacion)) {
-      payload.cat_Usr_Eliminacion = new Types.ObjectId(data.usuarioEliminacion);
-    }
 
     const doc = await CategoriasSchema.findByIdAndUpdate(
-      new Types.ObjectId(data.id),  // ← corregido: era `id` sin definir
+      data.id,
       { $set: payload },
-      { new: true }                 // ← sin upsert: si no existe, no crea
+      { new: true }
     );
 
     if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
@@ -192,44 +211,67 @@ class CategoriasSchemaRepository extends CategoriasRepository {
           ],
         },
       },
+        {
+        $lookup: {
+          from: 'Usuarios',
+          localField: 'cat_Usr_Creacion',
+          foreignField: '_id',
+          as: 'usuarioCreacion',
+        },
+      },
+      { $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true } },
+
+      // Usuario actualización (opcional)
       {
         $lookup: {
-          from:         'Categorias',
-          localField:   'cat_Usr_Creacion',
+          from: 'Usuarios',
+          localField: 'cat_Usr_Actualizacion',
           foreignField: '_id',
-          as:           'usuarioCreacion',
+          as: 'usuarioActualizacion',
+        },
+      },
+      { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
+
+      {
+        $set: {
+
+          cat_Creacion_Id: '$usuarioCreacion._id',
+          cat_Creacion_Nombre: {
+            $concat: [
+              { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
+              ' ',
+              { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] },
+            ],
+          },
+
+          cat_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
+          cat_Actualizacion_Nombre: {
+            $cond: {
+              if: { $ifNull: ['$usuarioActualizacion._id', false] },
+              then: {
+                $concat: [
+                  { $ifNull: ['$usuarioActualizacion.usr_Primer_Nombre', ''] },
+                  ' ',
+                  { $ifNull: ['$usuarioActualizacion.usr_Primer_Apellido', ''] },
+                ],
+              },
+              else: null,
+            },
+          },
         },
       },
       {
-        $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true },
-      },
-      {
-        $set: {
-          usuarioId: '$usuarioCreacion._id',
-          usuarioNombre: {
-            $trim: {
-              input: {
-                $concat: [
-                  { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
-                  {
-                    $cond: [
-                      { $gt: [{ $ifNull: ['$usuarioCreacion.usr_Segundo_Nombre', null] }, null] },
-                      { $concat: [' ', '$usuarioCreacion.usr_Segundo_Nombre'] },
-                      '',
-                    ],
-                  },
-                  { $concat: [' ', { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] }] },
-                  {
-                    $cond: [
-                      { $gt: [{ $ifNull: ['$usuarioCreacion.usr_Segundo_Apellido', null] }, null] },
-                      { $concat: [' ', '$usuarioCreacion.usr_Segundo_Apellido'] },
-                      '',
-                    ],
-                  },
-                ],
-              },
-            },
-          },
+        $project: {
+          cat_Codigo: 1,
+          cat_Nombre: 1,
+          cat_Descripcion: 1,
+          cat_Estado: 1,
+          cat_Fecha_Creacion: 1,
+          cat_Creacion_Id: 1,
+          cat_Creacion_Nombre: 1,
+          cat_Fecha_Actualizacion: 1,
+          cat_Actualizacion_Id: 1,
+          cat_Actualizacion_Nombre: 1
         },
       },
     ]);
@@ -243,12 +285,8 @@ class CategoriasSchemaRepository extends CategoriasRepository {
       cat_Descripcion:      data.descripcion,
       cat_Estado:         true,
       cat_Fecha_Creacion: new Date(),
+      cat_Usr_Creacion:data.usuarioCreacion
     };
-
-    if (data.usuarioCreacion && Types.ObjectId.isValid(data.usuarioCreacion)) {
-      payload.cat_Usr_Creacion = new Types.ObjectId(data.usuarioCreacion);
-    }
-
     const doc = await CategoriasSchema.create(payload);
 
 
@@ -263,11 +301,8 @@ class CategoriasSchemaRepository extends CategoriasRepository {
       cat_Descripcion:      data.descripcion,
       cat_Estado:         true,
       cat_Fecha_Creacion: new Date(),
+      cat_Usr_Actualizacion=data.usuarioActualizacion
     };
-
-    if (data.usuarioActualizacion && Types.ObjectId.isValid(data.usuarioActualizacion)) {
-      payload.cat_Usr_Actualizacion = new Types.ObjectId(data.usuarioActualizacion);
-    }
 
     const doc = await CategoriasSchema.findByIdAndUpdate(
       data.id,

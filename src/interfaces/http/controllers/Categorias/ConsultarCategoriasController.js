@@ -1,24 +1,14 @@
-class ConsultarCategoriasController {
+const BaseController = require('../_base/BaseController');
+class ConsultarCategoriasController extends BaseController {
   constructor(consultarCategoriasUseCase) {
-
+    super();
     this.consultarCategoriasUseCase = consultarCategoriasUseCase;
   }
 
-  
-
-  consultarCategorias = async (req, res) => {
-    try {
-      const output = await this.consultarCategoriasUseCase.execute();  
-
-      return res.status(200).json({
-        codigo: 200,
-        mensaje:"Consulta Ejecutada Satisfactoriamente",
-        data: output,
-      });
-    } catch (err) {
-      res.status(err.statusCode || 400).json({ codigo: 400, mensaje: err.message });
-    }
-  };
+  consultarCategorias=  this.handle(async (req, res) => {
+    const output = await this.consultarCategoriasUseCase.execute();
+    res.status(200).json({ codigo: 200, mensaje: 'Consulta Ejecutada Satisfactoriamente', data: output });
+  });
 }
 
 module.exports = ConsultarCategoriasController;

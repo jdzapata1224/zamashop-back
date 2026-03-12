@@ -2,24 +2,31 @@ class Categorias {
   constructor({
     id,
     nombre,
-    descripcion,
+    descripcion,  
     estado,
     fechaCreacion,
-    usuarioCreacion,
+    usuarioCreacionId,
+    usuarioCreacionNombre,
     fechaActualizacion,
-    usuarioActualizacion,
+    usuarioActualizacionId,
+    usuarioActualizacionNombre,
     fechaEliminacion,
-    usuarioEliminacion,
+    usuarioEliminacionId,
+    usuarioEliminacionNombre,
   }) {
     this.id             = id;
     this.nombre        = nombre;
+    this.descripcion   = descripcion;
     this.estado   = estado;
     this.fechaCreacion  = fechaCreacion;
-    this.usuarioCreacion       = usuarioCreacion;
+    this.usuarioCreacionId       = usuarioCreacionId;
+    this.usuarioCreacionNombre       = usuarioCreacionNombre;
     this.fechaActualizacion  = fechaActualizacion;
-    this.usuarioActualizacion       = usuarioActualizacion;
+    this.usuarioActualizacionId       = usuarioActualizacionId;
+    this.usuarioActualizacionNombre       = usuarioActualizacionNombre;
     this.fechaEliminacion  = fechaEliminacion;
-    this.usuarioEliminacion       = usuarioEliminacion;
+    this.usuarioEliminacionId       = usuarioEliminacionId;
+    this.usuarioEliminacionNombre       = usuarioEliminacionNombre;
   }
 
 }
