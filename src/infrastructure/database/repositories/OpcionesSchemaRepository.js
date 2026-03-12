@@ -36,10 +36,108 @@ class OpcionesSchemaRepository extends OpcionesRepository {
   }
 
   async find() {
-        const docs = await OpcionesSchema.find({
-          opc_Fecha_Eliminacion: { $in: [null, undefined] },
-        });
-         return docs.map(doc => this._toEntity(doc));
+    const docs = await UsuariosSchema.aggregate([
+    {
+      $match: {
+        $or: [
+          { usr_Fecha_Eliminacion: null },
+          { usr_Fecha_Eliminacion: { $exists: false } },
+        ],
+      },
+    },
+    // Perfil
+    {
+      $lookup: {
+        from: 'Perfiles',
+        localField: 'usr_Prf_Id',
+        foreignField: '_id',
+        as: 'perfil',
+      },
+    },
+    { $unwind: { path: '$perfil', preserveNullAndEmptyArrays: false } },
+
+    // Usuario creación (siempre presente)
+    {
+      $lookup: {
+        from: 'Usuarios',
+        localField: 'usr_Creacion',
+        foreignField: '_id',
+        as: 'usuarioCreacion',
+      },
+    },
+    { $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true } },
+
+    // Usuario actualización (opcional)
+    {
+      $lookup: {
+        from: 'Usuarios',
+        localField: 'usr_Actualizacion',
+        foreignField: '_id',
+        as: 'usuarioActualizacion',
+      },
+    },
+    { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
+
+    // Usuario eliminación (opcional)
+    {
+      $lookup: {
+        from: 'Usuarios',
+        localField: 'usr_Eliminacion',
+        foreignField: '_id',
+        as: 'usuarioEliminacion',
+      },
+    },
+    { $unwind: { path: '$usuarioEliminacion', preserveNullAndEmptyArrays: true } },
+
+    {
+      $set: {
+        perfilId: '$perfil._id',
+        perfilNombre: '$perfil.prf_Nombre',
+        creacionId: '$usuarioCreacion._id',
+        creacionNombre: {
+          $concat: [
+            { $ifNull: ['$usuarioCreacion.usr_Nombre', ''] },
+            ' ',
+            { $ifNull: ['$usuarioCreacion.usr_Apellido', ''] },
+          ],
+        },
+
+        actualizacionId: { $ifNull: ['$usuarioActualizacion._id', null] },
+        actualizacionNombre: {
+          $cond: {
+            if: { $ifNull: ['$usuarioActualizacion._id', false] },
+            then: {
+              $concat: [
+                { $ifNull: ['$usuarioActualizacion.usr_Nombre', ''] },
+                ' ',
+                { $ifNull: ['$usuarioActualizacion.usr_Apellido', ''] },
+              ],
+            },
+            else: null,
+          },
+        },
+
+        eliminacionId: { $ifNull: ['$usuarioEliminacion._id', null] },
+        eliminacionNombre: {
+          $cond: {
+            if: { $ifNull: ['$usuarioEliminacion._id', false] },
+            then: {
+              $concat: [
+                { $ifNull: ['$usuarioEliminacion.usr_Nombre', ''] },
+                ' ',
+                { $ifNull: ['$usuarioEliminacion.usr_Apellido', ''] },
+              ],
+            },
+            else: null,
+          },
+        },
+      },
+    },
+  ]);
+
+    return docs.map(doc => this._toEntity(doc));
+
+
   }
 
   async create(data) {
