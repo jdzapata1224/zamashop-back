@@ -134,22 +134,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
               },
               else: null,
             },
-          },
-
-          usr_Eliminacion_Id: { $ifNull: ['$usuarioEliminacion._id', null] },
-          usr_Eliminacion_Nombre: {
-            $cond: {
-              if: { $ifNull: ['$usuarioEliminacion._id', false] },
-              then: {
-                $concat: [
-                  { $ifNull: ['$usuarioEliminacion.usr_Primer_Nombre', ''] },
-                  ' ',
-                  { $ifNull: ['$usuarioEliminacion.usr_Primer_Apellido', ''] },
-                ],
-              },
-              else: null,
-            },
-          },
+          }
         },
       },
       {

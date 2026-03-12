@@ -65,8 +65,8 @@ class OpcionesSchemaRepository extends OpcionesRepository {
       {
         $set: {
 
-          usr_Creacion_Id: '$usuarioCreacion._id',
-          usr_Creacion_Nombre: {
+          opc_Creacion_Id: '$usuarioCreacion._id',
+          opc_Creacion_Nombre: {
             $concat: [
               { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
               ' ',
@@ -74,8 +74,8 @@ class OpcionesSchemaRepository extends OpcionesRepository {
             ],
           },
 
-          usr_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
-          usr_Actualizacion_Nombre: {
+          opc_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
+          opc_Actualizacion_Nombre: {
             $cond: {
               if: { $ifNull: ['$usuarioActualizacion._id', false] },
               then: {
@@ -83,21 +83,6 @@ class OpcionesSchemaRepository extends OpcionesRepository {
                   { $ifNull: ['$usuarioActualizacion.usr_Primer_Nombre', ''] },
                   ' ',
                   { $ifNull: ['$usuarioActualizacion.usr_Primer_Apellido', ''] },
-                ],
-              },
-              else: null,
-            },
-          },
-
-          usr_Eliminacion_Id: { $ifNull: ['$usuarioEliminacion._id', null] },
-          usr_Eliminacion_Nombre: {
-            $cond: {
-              if: { $ifNull: ['$usuarioEliminacion._id', false] },
-              then: {
-                $concat: [
-                  { $ifNull: ['$usuarioEliminacion.usr_Primer_Nombre', ''] },
-                  ' ',
-                  { $ifNull: ['$usuarioEliminacion.usr_Primer_Apellido', ''] },
                 ],
               },
               else: null,
@@ -152,16 +137,16 @@ class OpcionesSchemaRepository extends OpcionesRepository {
       { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
       {
         $set: {
-          usr_Creacion_Id: '$usuarioCreacion._id',
-          usr_Creacion_Nombre: {
+          opc_Creacion_Id: '$usuarioCreacion._id',
+          opc_Creacion_Nombre: {
             $concat: [
               { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
               ' ',
               { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] },
             ],
           },
-          usr_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
-          usr_Actualizacion_Nombre: {
+          opc_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
+          opc_Actualizacion_Nombre: {
             $cond: {
               if: { $ifNull: ['$usuarioActualizacion._id', false] },
               then: {
@@ -169,21 +154,6 @@ class OpcionesSchemaRepository extends OpcionesRepository {
                   { $ifNull: ['$usuarioActualizacion.usr_Primer_Nombre', ''] },
                   ' ',
                   { $ifNull: ['$usuarioActualizacion.usr_Primer_Apellido', ''] },
-                ],
-              },
-              else: null,
-            },
-          },
-
-          usr_Eliminacion_Id: { $ifNull: ['$usuarioEliminacion._id', null] },
-          usr_Eliminacion_Nombre: {
-            $cond: {
-              if: { $ifNull: ['$usuarioEliminacion._id', false] },
-              then: {
-                $concat: [
-                  { $ifNull: ['$usuarioEliminacion.usr_Primer_Nombre', ''] },
-                  ' ',
-                  { $ifNull: ['$usuarioEliminacion.usr_Primer_Apellido', ''] },
                 ],
               },
               else: null,
