@@ -22,17 +22,14 @@ class OpcionesUsuariosSchemaRepository {
   }
 
   async findByUsuarioId(usuarioId) {
-    if (!Types.ObjectId.isValid(usuarioId)) return [];
-
-    const docs = await OpcionesUsuariosSchema.aggregate([
-      // 1. Filtrar registros del usuario
+    
+    const docs = await OpcionesUsuariosSchema.aggregate([      
       {
         $match: {
           ous_Usr_Id:            new Types.ObjectId(usuarioId),
           ous_Fecha_Eliminacion: { $in: [null, undefined] },
         }
       },
-      // 2. Traer la opcion asignada (puede ser padre o hijo)
       {
         $lookup: {
           from:         'Opciones',
@@ -42,7 +39,6 @@ class OpcionesUsuariosSchemaRepository {
         }
       },
       { $unwind: '$opcion' },
-      // 3. Traer TipoOpcion de la opcion asignada
       {
         $lookup: {
           from:         'TipoOpcion',
@@ -52,7 +48,6 @@ class OpcionesUsuariosSchemaRepository {
         }
       },
       { $unwind: { path: '$opcionTipo', preserveNullAndEmptyArrays: true } },
-      // 4. Traer el padre si existe
       {
         $lookup: {
           from:         'Opciones',
@@ -62,7 +57,6 @@ class OpcionesUsuariosSchemaRepository {
         }
       },
       { $unwind: { path: '$padre', preserveNullAndEmptyArrays: true } },
-      // 5. Traer TipoOpcion del padre
       {
         $lookup: {
           from:         'TipoOpcion',
@@ -72,13 +66,9 @@ class OpcionesUsuariosSchemaRepository {
         }
       },
       { $unwind: { path: '$padreTipo', preserveNullAndEmptyArrays: true } },
-      // 6. Normalizar: definir quién es el padre del grupo y quién es hijo
       {
         $project: {
-          // Si tiene padre -> la opcion es hijo; si no -> la opcion es el padre del grupo
           tienepadre: { $cond: [{ $ifNull: ['$opcion.opc_Padre_Id', false] }, true, false] },
-
-          // Datos del padre del grupo
           grupoId:     { $ifNull: ['$padre._id',         '$opcion._id']         },
           grupoNombre: { $ifNull: ['$padre.opc_Nombre',  '$opcion.opc_Nombre']  },
           grupoCodigo: { $ifNull: ['$padre.opc_Codigo',  '$opcion.opc_Codigo']  },
@@ -86,8 +76,6 @@ class OpcionesUsuariosSchemaRepository {
             _id:    { $ifNull: ['$padreTipo._id',         '$opcionTipo._id']         },
             nombre: { $ifNull: ['$padreTipo.top_Nombre',  '$opcionTipo.top_Nombre']  },
           },
-
-          // Datos del hijo (solo aplica si tienepadre = true)
           hijoId:     '$opcion._id',
           hijoNombre: '$opcion.opc_Nombre',
           hijoCodigo: '$opcion.opc_Codigo',
@@ -97,7 +85,6 @@ class OpcionesUsuariosSchemaRepository {
           },
         }
       },
-      // 7. Agrupar por padre, acumulando hijos
       {
         $group: {
           _id:      '$grupoId',
@@ -126,7 +113,6 @@ class OpcionesUsuariosSchemaRepository {
     
     const docs = [];
     for (const opcion of opcionesPerfil) {
-      // padre
       docs.push({
         ous_Usr_Id:        new Types.ObjectId(usuarioId),
         ous_Opc_Id:        new Types.ObjectId(opcion.id),
@@ -135,7 +121,6 @@ class OpcionesUsuariosSchemaRepository {
           ous_Usr_Creacion: new Types.ObjectId(usuarioCreacion),
         }),
       });
-      // hijos
       for (const hijo of opcion.hijos) {
         docs.push({
           ous_Usr_Id:        new Types.ObjectId(usuarioId),

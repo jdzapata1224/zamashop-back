@@ -22,14 +22,11 @@ class CategoriasSchemaRepository extends CategoriasRepository {
 
 
   async findById(id) {
-    if (!Types.ObjectId.isValid(id)) {
-      return null;
-    }
-
+    
     const docs = await CategoriasSchema.aggregate([
       {
         $match: {
-          _id: new Types.ObjectId(id),
+          _id: id,
           $or: [
             { cat_Fecha_Eliminacion: null },
             { cat_Fecha_Eliminacion: { $exists: false } },

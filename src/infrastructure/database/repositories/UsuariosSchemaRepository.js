@@ -27,35 +27,31 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       usuarioCreacionId: doc.usr_Creacion_Id,
       usuarioCreacionNombre: doc.usr_Creacion_Nombre ? doc.usr_Creacion_Nombre.toString() : null,
       fechaActualizacion: doc.usr_Fecha_Actualizacion ?? null,
-      usuarioActualizacionId: doc.usr_Actualizacion_Id??null,
+      usuarioActualizacionId: doc.usr_Actualizacion_Id ?? null,
       usuarioActualizacionNombre: doc.usr_Actualizacion_Nombre ? doc.usr_Actualizacion_Nombre.toString() : null,
       fechaEliminacion: doc.usr_Fecha_Eliminacion ?? null,
-      usuarioEliminacionId: doc.usr_Eliminacion_Id??null,
+      usuarioEliminacionId: doc.usr_Eliminacion_Id ?? null,
       usuarioEliminacionNombre: doc.usr_Eliminacion_Nombre ? doc.usr_Eliminacion_Nombre.toString() : null
     });
   }
 
   async incrementarIntentosFallidos(id) {
-    if (!Types.ObjectId.isValid(id)) return;
     await UsuariosSchema.findByIdAndUpdate(id, { $inc: { usr_Intentos_Fallidos: 1 } });
   }
 
   async resetearIntentosFallidos(id) {
-    if (!Types.ObjectId.isValid(id)) return;
     await UsuariosSchema.findByIdAndUpdate(id, {
       $set: { usr_Intentos_Fallidos: 0, usr_Requiere_Cambio_Clave: false },
     });
   }
 
   async marcarRequiereCambioClave(id) {
-    if (!Types.ObjectId.isValid(id)) return;
     await UsuariosSchema.findByIdAndUpdate(id, {
       $set: { usr_Requiere_Cambio_Clave: true },
     });
   }
 
   async cambiarClave(id, nuevaClave) {
-    if (!Types.ObjectId.isValid(id)) return;
     const hash = await hashPassword(nuevaClave);
     await UsuariosSchema.findByIdAndUpdate(id, {
       $set: {
@@ -181,51 +177,37 @@ class UsuariosSchemaRepository extends UsuariosRepository {
         },
       },
     ]);
-  
+
     return docs.length ? this._toEntity(docs[0]) : null;
   }
 
   async delete(data) {
-    if (!Types.ObjectId.isValid(data.id)) return null;
-
     const payload = {
       usr_Fecha_Eliminacion: new Date(),
+      usr_Eliminacion: data.usuarioEliminacion,
     };
 
-    // usr_Eliminacion solo se guarda si es un ObjectId válido
-    if (data.usuarioEliminacion && Types.ObjectId.isValid(data.usuarioEliminacion)) {
-      payload.usr_Eliminacion = new Types.ObjectId(data.usuarioEliminacion);
-    }
-
     const doc = await UsuariosSchema.findByIdAndUpdate(
-      new Types.ObjectId(data.id),  // ← corregido: era `id` sin definir
+      data.id,  // ← corregido: era `id` sin definir
       { $set: payload },
       { new: true }                 // ← sin upsert: si no existe, no crea
     );
 
     if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
     return this._toEntity(doc);
-
-
   }
 
   async changeStatus(data) {
-    if (!Types.ObjectId.isValid(data.id)) return null;
-
     const payload = {
       usr_Fecha_Actualizacion: new Date(),
       usr_Estado: data.estado,
+      usr_Actualizacion: data.usuarioActualizacion,
     };
 
-    // usr_Eliminacion solo se guarda si es un ObjectId válido
-    if (data.usuarioActualizacion && Types.ObjectId.isValid(data.usuarioActualizacion)) {
-      payload.usr_Actualizacion = new Types.ObjectId(data.usuarioActualizacion);
-    }
-
     const doc = await UsuariosSchema.findByIdAndUpdate(
-      new Types.ObjectId(data.id),  // ← corregido: era `id` sin definir
+      data.id,
       { $set: payload },
-      { new: true }                 // ← sin upsert: si no existe, no crea
+      { new: true }
     );
 
     if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
@@ -278,7 +260,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
 
       // Usuario eliminación (opcional)
-      
+
       {
         $set: {
           usr_Perfil_Id: '$perfil._id',
@@ -456,12 +438,12 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       usr_Estado: true,
       usr_Prf_Id: data.perfil,
       usr_Fecha_Creacion: new Date(),
-      usr_Creacion:data.usuarioCreacion
+      usr_Creacion: data.usuarioCreacion
     };
 
     if (data.segundo_nombre) payload.usr_Segundo_Nombre = data.segundo_nombre;
     if (data.segundo_apellido) payload.usr_Segundo_Apellido = data.segundo_apellido;
-    
+
     const doc = await UsuariosSchema.create(payload);
 
     if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
@@ -470,9 +452,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
   }
 
   async update(data) {
-    // usuario y password NO se actualizan
-    if (!Types.ObjectId.isValid(data.perfil)) return null;
-
+    
     const payload = {
       usr_Primer_Nombre: data.primer_nombre,
       usr_Primer_Apellido: data.primer_apellido,
@@ -480,15 +460,12 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       usr_Correo: data.correo,
       usr_Telefono: data.telefono,
       usr_Fecha_Actualizacion: new Date(),
-      usr_Prf_Id: new Types.ObjectId(data.perfil),
-
+      usr_Prf_Id: data.perfil,
+      usr_Actualizacion: data.usuarioActualizacion
     };
 
     if (data.segundo_nombre) payload.usr_Segundo_Nombre = data.segundo_nombre;
     if (data.segundo_apellido) payload.usr_Segundo_Apellido = data.segundo_apellido;
-    if (data.usuarioActualizacion && Types.ObjectId.isValid(data.usuarioActualizacion)) {
-      payload.usr_Actualizacion = new Types.ObjectId(data.usuarioActualizacion);
-    }
 
     const doc = await UsuariosSchema.findByIdAndUpdate(
       data.id,
