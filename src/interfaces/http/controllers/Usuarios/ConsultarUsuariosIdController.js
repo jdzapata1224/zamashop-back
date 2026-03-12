@@ -9,8 +9,8 @@ class ConsultarUsuariosIdController {
   consultarUsuariosId = async (req, res) => {
     try {
       const output = await this.consultarUsuariosIdUseCase.execute({
-        id:           req.params.id,
-        usuarioToken: req.usuario, 
+        id:    req.params.id,
+        infoLogin: req.infoLogin
       });
 
       return res.status(200).json({

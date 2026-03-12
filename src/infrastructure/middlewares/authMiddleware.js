@@ -18,7 +18,7 @@ const authMiddleware = async (req, res, next) => {
     if (!tokenDoc) {
       return res.status(401).json({ codigo: 401, mensaje: 'Token inválido o sesión cerrada' });
     }
-    req.usuario = decoded;
+    req.infoLogin = decoded;
     next();
   } catch (err) {
     if (err.name === 'TokenExpiredError') {

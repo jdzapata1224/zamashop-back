@@ -1,11 +1,12 @@
-const { Types } = require('mongoose');
+const { requireObjectId }  = require('../../../../infrastructure/utils/validate.util');
+const { toObjectId }             = require('../../../../infrastructure/utils/basic.util');
 
 
 class ConsultarUsuarioIdInDTO {
   constructor(id) {
-    if (!id || !Types.ObjectId.isValid(id)) throw new Error('id es requerido y debe ser un Id válido');
+    requireObjectId(id,                   'id');
 
-    this.id = new Types.ObjectId(trimmedId);
+    this.id = toObjectId(id);
   }
 }
 module.exports = ConsultarUsuarioIdInDTO;

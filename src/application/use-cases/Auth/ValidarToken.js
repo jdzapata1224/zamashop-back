@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { InvalidCredentialsError } = require('../../../domain/exceptions/UsuariosErrors');
+const {  toDate}  = require('../../../infrastructure/utils/basic.util');
 
 class ValidarToken {
   execute(rawInput) {
@@ -20,8 +21,8 @@ class ValidarToken {
         primer_nombre:   decoded.primer_nombre,
         primer_apellido: decoded.primer_apellido,
         correo:          decoded.correo,
-        emitido:         new Date(decoded.iat * 1000).toISOString(),
-        expira:          new Date(decoded.exp * 1000).toISOString(),
+        emitido:         toDate(decoded.iat),
+        expira:          toDate(decoded.exp),
       };
     } catch (err) {
       const mensaje = err.name === 'TokenExpiredError'

@@ -1,10 +1,11 @@
+const jwt    = require('jsonwebtoken');
+
 class Logout {
   constructor(tokensRepository) {
     this.tokensRepository = tokensRepository;
   }
 
   async execute(token) {
-    const jwt    = require('jsonwebtoken');
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);

@@ -1,4 +1,5 @@
-const { Types } = require('mongoose');
+const AsignarOpcionPerfilInDTO  = require('../../dtos/OpcionesPerfiles/in/AsignarOpcionPerfilIn.dto');
+const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 
 class AsignarOpcionPerfil {
   constructor(opcionesPerfilesRepository) {
@@ -6,21 +7,17 @@ class AsignarOpcionPerfil {
   }
 
   async execute(rawInput) {
-    const { id: tokenId } = rawInput.usuarioToken;
-    const { perfilId, opcionId, activo } = rawInput;
+    const tokenId  = extractTokenId(rawInput);
+    const inputDto = new AsignarOpcionPerfilInDTO({ ...rawInput, usuarioCreacion: tokenId });
 
-    if (!Types.ObjectId.isValid(perfilId)) throw new Error('perfilId inválido');
-    if (!Types.ObjectId.isValid(opcionId)) throw new Error('opcionId inválido');
-    if (typeof activo !== 'boolean')       throw new Error('activo debe ser true o false');
+    const existe = await this.opcionesPerfilesRepository.findByPerfilYOpcion(inputDto.perfilId, inputDto.opcionId);
 
-    const existe = await this.opcionesPerfilesRepository.findByPerfilYOpcion(perfilId, opcionId);
-
-    if (activo) {
+    if (inputDto.activo) {
       if (existe) throw new Error('La opción ya está asignada al perfil');
-      await this.opcionesPerfilesRepository.createOne(perfilId, opcionId, tokenId);
+      await this.opcionesPerfilesRepository.createOne(inputDto.perfilId, inputDto.opcionId, tokenId);
     } else {
       if (!existe) throw new Error('La opción no está asignada al perfil');
-      await this.opcionesPerfilesRepository.deleteOne(perfilId, opcionId);
+      await this.opcionesPerfilesRepository.deleteOne(inputDto.perfilId, inputDto.opcionId);
     }
   }
 }

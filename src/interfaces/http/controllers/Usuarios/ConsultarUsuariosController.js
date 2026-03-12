@@ -9,7 +9,7 @@ class ConsultarUsuariosController {
   consultarUsuarios = async (req, res) => {
     try {
       const output = await this.consultarUsuariosUseCase.execute({
-        usuarioToken: req.usuario, 
+        infoLogin: req.infoLogin
       });  
 
       return res.status(200).json({

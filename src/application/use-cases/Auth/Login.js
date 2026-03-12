@@ -4,6 +4,8 @@ const LoginInDTO  = require('../../dtos/Auth/in/LoginIn.dto');
 const LoginOutDTO = require('../../dtos/Auth/out/LoginOut.dto');
 const { InvalidCredentialsError, UserInactiveError } = require('../../../domain/exceptions/UsuariosErrors');
 const { randomUUID } = require('crypto');
+const {  toDate}  = require('../../../infrastructure/utils/basic.util');
+
 
 const MAX_INTENTOS = 5;
 const MAX_SESIONES = 3;
@@ -19,6 +21,8 @@ class Login {
 
     const usuario = await this.usuarioRepository.findByUsuario(inputDto.usuario);
     if (!usuario) throw new InvalidCredentialsError();
+    if (!usuario.estado) throw new UserInactiveError();
+
     if (usuario.requiereCambioClave) {
       throw new Error('Debe cambiar su clave antes de iniciar sesión.');
     }
@@ -37,26 +41,15 @@ class Login {
       
     }
 
-    if (!usuario.estado) throw new UserInactiveError();
     
-    if (usuario.requiereCambioClave) {
-      throw new Error('Debe cambiar su clave antes de iniciar sesión.');
-    }
-
     await this.usuarioRepository.resetearIntentosFallidos(usuario.id)
 
     const sesionesActivas = await this.tokensRepository.contarActivasPorUsuario(usuario.id);
     if (sesionesActivas >= MAX_SESIONES) {
       const masAntigua = await this.tokensRepository.findMasAntiguaByUsuario(usuario.id);
       if (masAntigua) await this.tokensRepository.invalidateByJti(masAntigua.tkn_Jti);
+      // continúa sin throw
     }
-
-    if (sesionesActivas >= MAX_SESIONES) {
-      throw new Error('Límite de sesiones alcanzado. Cierre una sesión antes de continuar.');
-    }
-
-    
-
     const jti = randomUUID();
 
     const payload = {
@@ -73,24 +66,23 @@ class Login {
     });
 
     const decoded = jwt.decode(token);
-
+    
     await this.tokensRepository.create({
       usuarioId: usuario.id,
       jti,
-      action:    'LOGIN',
+      accion:    'LOGIN',
       ip:        rawInput.ip        || null,
-      userAgent: rawInput.userAgent || null,
-      issuedAt:  new Date(decoded.iat * 1000).toISOString(),
-      expiredAt: new Date(decoded.exp * 1000).toISOString(),
-      success:   true,
+      agenteCliente: rawInput.userAgent || null,
+      fechaExpiracion: toDate(decoded.exp),
+      fechaEmision: toDate(decoded.iat),
       tipoToken: 'JWT',
+      usuarioCreacion: usuario.id,
     });
-    
     return new LoginOutDTO({
       ...payload,
       token,
-      emitido: new Date(decoded.iat * 1000).toISOString(),
-      expira:  new Date(decoded.exp * 1000).toISOString(),
+      fechaEmision: toDate(decoded.iat),
+      fechaExpiracion:  toDate(decoded.exp)
     });
     
   }

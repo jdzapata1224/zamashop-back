@@ -9,13 +9,8 @@ class ConsultarUsuariosId {
     this.usuarioRepository = usuarioRepository;
   }
 
-  async execute({ id, usuarioToken }) {
-    const { id: tokenId  } = usuarioToken;
-
-    if (!tokenId) throw new Error('Token inválido: id de usuario no encontrado');
-
-    const inputDto = new ConsultarUsuarioIdIn(id);
-    
+  async execute(rawInput) {
+    const inputDto = new ConsultarUsuarioIdIn(rawInput);
     const user = await this.usuarioRepository.findById(inputDto.id);
     if (!user) throw new UserNotFoundError(rawInput);
     return ConsultarUsuariosOut.fromEntity(user);

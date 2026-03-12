@@ -1,3 +1,5 @@
+const { NotImplementedError, EmptyResultError } = require('./BaseErrors');
+
 class UserAlreadyExistsError extends Error {
   constructor() {
     super('El usuario o identificación ya existe');
@@ -30,27 +32,11 @@ class UserNotFoundError extends Error {
   }
 }
 
-class UserEmptyError extends Error {
-  constructor(id) {
-    super(`No hay informacin para mostrar`);
-    this.name       = 'UserEmptyError';
-    this.statusCode = 404;
-  }
-}
-
-class NotImplementedError extends Error {
-  constructor() {
-    super('Método no implementado');
-    this.name       = 'NotImplementedError';
-    this.statusCode = 501;
-  }
-}
-
 module.exports = {
-  UserEmptyError,
   UserAlreadyExistsError,
   InvalidCredentialsError,
   UserInactiveError,
   UserNotFoundError,
+  EmptyResultError,
   NotImplementedError,
 };

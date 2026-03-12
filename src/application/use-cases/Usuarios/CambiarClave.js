@@ -1,3 +1,4 @@
+const CambiarClaveIn = require('../../dtos/Usuarios/in/CambiarClaveIn.dto');
 const jwt = require('jsonwebtoken');
 
 class CambiarClave {
@@ -7,8 +8,8 @@ class CambiarClave {
   }
 
   async execute({ token, nuevaClave }) {
-    if (!token)      throw new Error('Token requerido');
-    if (!nuevaClave) throw new Error('Nueva clave requerida');
+    const inputDto = new CambiarClaveIn({token,nuevaClave});
+
 
     let decoded;
     try {
@@ -23,7 +24,7 @@ class CambiarClave {
     const tokenDoc = await this.tokensRepository.findByJtiYAction(decoded.jti, 'CAMBIO_CLAVE');
     if (!tokenDoc) throw new Error('Token ya utilizado o inválido');
 
-    await this.usuarioRepository.cambiarClave(decoded.id, nuevaClave);
+    await this.usuarioRepository.cambiarClave({...inputDto,id:decoded.id});
     await this.tokensRepository.invalidateByJti(decoded.jti);
   }
 }

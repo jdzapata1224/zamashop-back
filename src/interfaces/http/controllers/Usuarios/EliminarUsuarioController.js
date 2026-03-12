@@ -7,7 +7,7 @@ class EliminarUsuarioController {
     try {
       await this.eliminarUsuarioUseCase.execute({
         id:    req.params.id,
-        usuarioToken: req.usuario, 
+        infoLogin: req.infoLogin
       });
 
       return res.status(200).json({

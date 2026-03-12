@@ -4,8 +4,6 @@ class ActualizarUsuarioController {
     this.actualizarUsuarioUseCase = actualizarUsuarioUseCase;
   }
 
-  
-
   actualizarUsuario  = async (req, res) => {
     try {
 
@@ -14,8 +12,8 @@ class ActualizarUsuarioController {
     }
       await this.actualizarUsuarioUseCase.execute({
         ...req.body,
-        id:    req.params.id,           // id viene de la URL
-        usuarioToken: req.usuario,
+        id:    req.params.id,
+        infoLogin: req.infoLogin
       });
 
       return res.status(200).json({

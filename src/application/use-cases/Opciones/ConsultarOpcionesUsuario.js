@@ -6,14 +6,10 @@ class ConsultarOpcionesUsuario {
     this.opcionesUsuariosRepository = opcionesUsuariosRepository;
   }
 
-  async execute({ id, usuarioToken }) {
-    const { id: tokenId } = usuarioToken;
-    if (!tokenId) throw new Error('Token inválido: id de usuario no encontrado');
-
-    const inputDto = new ConsultarOpcionesUsuarioIn(id);
-
+  async execute(rawInput) {
+    const tokenId  = extractTokenId(rawInput);
+    const inputDto = new ConsultarOpcionesUsuarioIn({ ...rawInput, usuarioConssulta: tokenId });
     const opciones = await this.opcionesUsuariosRepository.findByUsuarioId(inputDto.id);
-
     return ConsultarOpcionesUsuarioOut.fromEntities(opciones);
   }
 }

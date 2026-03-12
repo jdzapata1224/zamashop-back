@@ -7,17 +7,11 @@ class EliminarOpciones {
   }
 
   async execute(rawInput) {
-    const { id: tokenId } = rawInput.usuarioToken;
-
-    if (!tokenId) throw new Error('Token inválido: id de usuario no encontrado');
-
+    const tokenId  = extractTokenId(rawInput);
     const inputDto = new EliminarOpcionesIn({ ...rawInput, usuarioEliminacion: tokenId });
 
-    // Verificar que el usuario exista
     const existe = await this.opcionesRepository.findById(inputDto.id);
     if (!existe) throw new OpcionesNotFoundError(rawInput.id);
-
-    // Toggle de estado: true → false / false → true
 
     const eliminado = await this.opcionesRepository.delete({
       id:                 inputDto.id,

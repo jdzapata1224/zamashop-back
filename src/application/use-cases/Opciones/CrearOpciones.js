@@ -9,10 +9,7 @@ class CrearOpciones {
   }
 
   async execute(rawInput) {
-    const { id: tokenId } = rawInput.usuarioToken;
-
-    if (!tokenId) throw new Error('Token inválido: id de usuario no encontrado');
-
+    const tokenId  = extractTokenId(rawInput);
     const inputDto = new CrearOpcionesIn({ ...rawInput, usuarioCreacion: tokenId });
     const existeCodigo = await this.opcionesRepository.findByCodigo(inputDto.codigo);
     if (existeCodigo) throw new OpcionesAlreadyExistsError();

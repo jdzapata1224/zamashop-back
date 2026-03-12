@@ -1,4 +1,5 @@
-const { Types } = require('mongoose');
+const AsignarOpcionUsuarioInDTO  = require('../../dtos/OpcionesUsuarios/in/AsignarOpcionUsuarioIn.dto');
+const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 
 class AsignarOpcionUsuario {
   constructor(opcionesUsuariosRepository) {
@@ -6,21 +7,17 @@ class AsignarOpcionUsuario {
   }
 
   async execute(rawInput) {
-    const { id: tokenId } = rawInput.usuarioToken;
-    const { usuarioId, opcionId, activo } = rawInput;
+    const tokenId  = extractTokenId(rawInput);
+    const inputDto = new AsignarOpcionUsuarioInDTO({ ...rawInput, usuarioCreacion: tokenId });
 
-    if (!Types.ObjectId.isValid(usuarioId)) throw new Error('usuarioId inválido');
-    if (!Types.ObjectId.isValid(opcionId))  throw new Error('opcionId inválido');
-    if (typeof activo !== 'boolean')        throw new Error('activo debe ser true o false');
-
-    const existe = await this.opcionesUsuariosRepository.findByUsuarioYOpcion(usuarioId, opcionId);
+    const existe = await this.opcionesUsuariosRepository.findByUsuarioYOpcion(inputDto.usuarioId, inputDto.opcionId);
 
     if (activo) {
       if (existe) throw new Error('La opción ya está asignada al usuario');
-      await this.opcionesUsuariosRepository.createOne(usuarioId, opcionId, tokenId);
+      await this.opcionesUsuariosRepository.createOne(inputDto.usuarioId, inputDto.opcionId, tokenId);
     } else {
       if (!existe) throw new Error('La opción no está asignada al usuario');
-      await this.opcionesUsuariosRepository.deleteOne(usuarioId, opcionId);
+      await this.opcionesUsuariosRepository.deleteOne(inputDto.usuarioId, inputDto.opcionId);
     }
   }
 }

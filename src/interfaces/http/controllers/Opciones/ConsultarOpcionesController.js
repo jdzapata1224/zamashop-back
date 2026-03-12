@@ -8,9 +8,7 @@ class ConsultarOpcionesController {
 
   consultarOpciones = async (req, res) => {
     try {
-      const output = await this.consultarOpcionesUseCase.execute({
-        usuarioToken: req.usuario, 
-      });  
+      const output = await this.consultarOpcionesUseCase.execute();  
 
       return res.status(200).json({
         codigo: 200,

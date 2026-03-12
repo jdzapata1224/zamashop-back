@@ -6,14 +6,10 @@ class ConsultarOpcionesPerfil {
     this.opcionesPerfilesRepository = opcionesPerfilesRepository;
   }
 
-  async execute({ id, usuarioToken }) {
-    const { id: tokenId } = usuarioToken;
-    if (!tokenId) throw new Error('Token inválido: id de perfil no encontrado');
-
-    const inputDto = new ConsultarOpcionesPerfilIn(id);
-
+  async execute(rawInput) {
+    const tokenId  = extractTokenId(rawInput);
+    const inputDto = new ConsultarOpcionesPerfilIn({ ...rawInput, usuarioConsulta: tokenId });
     const opciones = await this.opcionesPerfilesRepository.findByPerfilId(inputDto.id);
-
     return ConsultarOpcionesPerfilOut.fromEntities(opciones);
   }
 }

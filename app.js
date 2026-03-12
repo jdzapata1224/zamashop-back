@@ -7,6 +7,7 @@ const connectDB = require("./src/infrastructure/config/database");
 const usuarioRoutes = require('./src/interfaces/http/routes/UsuariosRoutes');
 const authRoutes = require('./src/interfaces/http/routes/AuthRoutes');
 const opcionesRoutes = require('./src/interfaces/http/routes/OpcionesRoutes');
+const categoriasRoutes = require('./src/interfaces/http/routes/CategoriasRoutes');
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,7 @@ const apiRouter = express.Router();
 apiRouter.use('/Usuarios', usuarioRoutes);
 apiRouter.use('/Opciones', opcionesRoutes);
 apiRouter.use('/Auth', authRoutes);
+apiRouter.use('/Categorias', categoriasRoutes);
 
 app.use('/api', apiRouter);
 

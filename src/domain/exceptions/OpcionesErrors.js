@@ -1,3 +1,5 @@
+const { NotImplementedError, EmptyResultError } = require('./BaseErrors');
+
 class OpcionesAlreadyExistsError extends Error {
   constructor() {
     super('La Opcion ya existe');
@@ -6,10 +8,9 @@ class OpcionesAlreadyExistsError extends Error {
   }
 }
 
-
 class OpcionesInactiveError extends Error {
   constructor() {
-    super('Opcion se encuentra inactivo');
+    super('Opcion se encuentra inactiva');
     this.name       = 'OpcionesInactiveError';
     this.statusCode = 403;
   }
@@ -17,32 +18,16 @@ class OpcionesInactiveError extends Error {
 
 class OpcionesNotFoundError extends Error {
   constructor(id) {
-    super(`Opcion con id ${id} no encontrado`);
+    super(`Opcion con id ${id} no encontrada`);
     this.name       = 'OpcionesNotFoundError';
     this.statusCode = 404;
   }
 }
 
-class OpcionesEmptyError extends Error {
-  constructor(id) {
-    super(`No hay informacion para mostrar`);
-    this.name       = 'OpcionesEmptyError';
-    this.statusCode = 404;
-  }
-}
-
-class NotImplementedError extends Error {
-  constructor() {
-    super('Método no implementado');
-    this.name       = 'NotImplementedError';
-    this.statusCode = 501;
-  }
-}
-
 module.exports = {
-  OpcionesEmptyError,
   OpcionesAlreadyExistsError,
   OpcionesInactiveError,
   OpcionesNotFoundError,
+  EmptyResultError,
   NotImplementedError,
 };

@@ -1,20 +1,17 @@
-const { Types } = require('mongoose');
+const { requireString, requireObjectId }  = require('../../../../infrastructure/utils/validate.util');
+const { toUpper, toObjectId }             = require('../../../../infrastructure/utils/basic.util');
 
 class CrearOpcionesInDTO {
   constructor({ nombre,codigo,tipoOpcion,usuarioCreacion }) {
-    if (!nombre        || typeof nombre        !== 'string' || !nombre.trim())        throw new Error('Nombre es requerido');   
-    if (!codigo      || typeof codigo      !== 'string' || !codigo.trim())      throw new Error('codigo es requerido');
-    
-    const trimmedTipoOpcionId = String(tipoOpcion).trim();
-    if (!Types.ObjectId.isValid(trimmedTipoOpcionId)) throw new Error(`Formato Tipo Opcion Id incorrecto: ${trimmedTipoOpcionId}`);
-    
+    requireString(nombre,                 'Nombre');
+    requireString(codigo,                 'Codigo');
+    requireObjectId(tipoOpcion, 'Tipo Opcion');
+    requireObjectId(usuarioCreacion, 'Usuario Creacion');
 
-    this.tipoOpcion = new Types.ObjectId(trimmedTipoOpcionId);
-    this.nombre = nombre.trim().toUpperCase();
-    this.codigo = codigo.trim().toUpperCase();
-    this.usuarioCreacion = (usuarioCreacion && Types.ObjectId.isValid(usuarioCreacion))
-      ? new Types.ObjectId(usuarioCreacion)
-      : null;
+    this.tipoOpcion      = toObjectId(tipoOpcion);
+    this.nombre               = toUpper(nombre);
+    this.codigo               = toUpper(codigo);
+    this.usuarioCreacion      = toObjectId(usuarioCreacion);
   }
 }
 

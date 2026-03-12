@@ -1,5 +1,8 @@
 const jwt         = require('jsonwebtoken');
 const { randomUUID } = require('crypto');
+const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
+const GenerarTokenCambioClaveInDTO     = require('../../dtos/Usuarios/in/GenerarTokenCambioClaveIn.dto');
+const {  toDate}  = require('../../../infrastructure/utils/basic.util');
 
 class GenerarTokenCambioClave {
   constructor(usuarioRepository, tokensRepository) {
@@ -7,18 +10,21 @@ class GenerarTokenCambioClave {
     this.tokensRepository  = tokensRepository;
   }
 
-  async execute({ usuarioId, ip, userAgent }) {
-    const usuario = await this.usuarioRepository.findById(usuarioId);
+  async execute(rawInput) {
+    const tokenId  = extractTokenId(rawInput);
+    const inputConsultarUsuarioDto = new GenerarTokenCambioClaveInDTO({ ...rawInput, usuarioCreacion: tokenId });
+
+    const usuario = await this.usuarioRepository.findById(inputConsultarUsuarioDto.id);
     if (!usuario) throw new Error('Usuario no encontrado');
 
-    const tokenActivo = await this.tokensRepository.findActivoByUsuarioYAction(usuarioId, 'CAMBIO_CLAVE');
+    const tokenActivo = await this.tokensRepository.findActivoByUsuarioYAction(usuario.id, 'CAMBIO_CLAVE');
     if (tokenActivo) {
-      const expira = new Date(tokenActivo.tkn_ExpiredAt).toISOString();
+      const expira = tokenActivo.tkn_Fecha_Expiracion;
       throw new Error(`Ya existe un token de cambio de clave activo. Expira: ${expira}`);
     }
 
     // Invalida tokens de cambio de clave anteriores
-    await this.tokensRepository.invalidateByUsuarioYAction(usuarioId, 'CAMBIO_CLAVE');
+    await this.tokensRepository.invalidateByUsuarioYAction(usuario.id, 'CAMBIO_CLAVE');
 
     const jti   = randomUUID();
     const token = jwt.sign(
@@ -28,16 +34,17 @@ class GenerarTokenCambioClave {
     );
     const decoded = jwt.decode(token);
 
+
     await this.tokensRepository.create({
-      usuarioId,
+      usuarioId:inputConsultarUsuarioDto.id,
       jti,
-      action:    'CAMBIO_CLAVE',
-      ip:        ip        || null,
-      userAgent: userAgent || null,
-      issuedAt:  new Date(decoded.iat * 1000).toISOString(),
-      expiredAt: new Date(decoded.exp * 1000).toISOString(),
-      success:   true,
+      accion:    'CAMBIO_CLAVE',
+      ip:        rawInput.ip        || null,
+      agenteCliente: rawInput.userAgent || null,
+      fechaExpiracion: toDate(decoded.exp),
+      fechaEmision: toDate(decoded.iat),
       tipoToken: 'JWT',
+      usuarioCreacion: usuario.id,
     });
 
     return { token };

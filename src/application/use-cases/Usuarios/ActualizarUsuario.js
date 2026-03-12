@@ -1,5 +1,7 @@
 const { UserAlreadyExistsError } = require('../../../domain/exceptions/UsuariosErrors');
 const ActualizarUsuarioIn = require('../../dtos/Usuarios/in/ActualizarUsuarioIn.dto');
+const { toObjectId } = require('../../../infrastructure/utils/basic.util');
+const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 
 
 
@@ -11,31 +13,28 @@ class ActualizarUsuario {
   }
 
   async execute(rawInput) {
-    const { id: tokenId } = rawInput.usuarioToken;
-
-    if (!tokenId) throw new Error('Token inválido: id de usuario no encontrado');
-
+    
+    const tokenId  = extractTokenId(rawInput);
     const inputDto = new ActualizarUsuarioIn({ ...rawInput, usuarioActualizacion: tokenId });
 
-    const existe = await this.usuarioRepository.findById(inputDto.id.toString());
+    const existe = await this.usuarioRepository.findById(inputDto.id);
     if (!existe) throw new UserNotFoundError();
 
     const otroPorIdentificacion = await this.usuarioRepository.findByIdentificacion(inputDto.identificacion);
-    if (otroPorIdentificacion && otroPorIdentificacion.id !== inputDto.id.toString()) {
+    if (otroPorIdentificacion && otroPorIdentificacion.id !== inputDto.id) {
       throw new Error('La identificacion ya está en uso por otro usuario');
     }
     
     const actualizado = await this.usuarioRepository.update(inputDto);
-
     if (!actualizado) throw new Error('No se pudo actualizar el usuario');
 
-    const perfilCambio = existe.perfilId?.toString() !== inputDto.perfil.toString();
+    const perfilCambio = toObjectId(existe.perfilId) !== inputDto.perfil;
     if (perfilCambio) {
-      await this.opcionesUsuariosRepository.deleteByUsuarioId(inputDto.id.toString());
+      await this.opcionesUsuariosRepository.deleteByUsuarioId(inputDto.id);
 
       const opcionesPerfil = await this.opcionesPerfilesRepository.findByPerfilId(inputDto.perfil);
       if (opcionesPerfil.length > 0) {
-        await this.opcionesUsuariosRepository.createMany(inputDto.id.toString(), opcionesPerfil, tokenId);
+        await this.opcionesUsuariosRepository.createMany(inputDto.id, opcionesPerfil, tokenId);
       }
     }
 

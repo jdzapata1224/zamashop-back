@@ -1,10 +1,13 @@
+const { requireString }  = require('../../../../infrastructure/utils/validate.util');
+const { trimmedString }  = require('../../../../infrastructure/utils/basic.util');
+
 class LoginInDTO {
   constructor({ usuario, password }) {
-    if (!usuario  || typeof usuario  !== 'string' || !usuario.trim())  throw new Error('Usuario es requerido');
-    if (!password || typeof password !== 'string' || !password.trim()) throw new Error('Password es requerido');
+    requireString(usuario, 'Nombre');
+    requireString(password, 'Password');
 
-    this.usuario  = usuario.trim();
-    this.password = password.trim();
+    this.usuario  = trimmedString(usuario);
+    this.password = trimmedString(password);
   }
 }
 
