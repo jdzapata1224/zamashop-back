@@ -27,11 +27,11 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       usuarioCreacionId: doc.usr_Creacion_Id,
       usuarioCreacionNombre: doc.usr_Creacion_Nombre ? doc.usr_Creacion_Nombre.toString() : null,
       fechaActualizacion: doc.usr_Fecha_Actualizacion ?? null,
-      usuarioActualizacionId: doc.usr_Actualizacion_Id,
+      usuarioActualizacionId: doc.usr_Actualizacion_Id??null,
       usuarioActualizacionNombre: doc.usr_Actualizacion_Nombre ? doc.usr_Actualizacion_Nombre.toString() : null,
       fechaEliminacion: doc.usr_Fecha_Eliminacion ?? null,
-      usuarioEliminacionId: doc.usr_Eliminacion_Id,
-      usuarioEliminacionNombre: doc.usr_Eliminacion_Nombre ? doc.usr_Eliminacion_Nombre.toString() : null,
+      usuarioEliminacionId: doc.usr_Eliminacion_Id??null,
+      usuarioEliminacionNombre: doc.usr_Eliminacion_Nombre ? doc.usr_Eliminacion_Nombre.toString() : null
     });
   }
 
@@ -68,19 +68,17 @@ class UsuariosSchemaRepository extends UsuariosRepository {
 
 
   async findById(id) {
-    if (!Types.ObjectId.isValid(id)) {
-      return null;
-    }
     const docs = await UsuariosSchema.aggregate([
       {
         $match: {
-          _id: new Types.ObjectId(id),
+          _id: id,
           $or: [
             { usr_Fecha_Eliminacion: null },
             { usr_Fecha_Eliminacion: { $exists: false } },
           ],
         },
       },
+      // Perfil
       {
         $lookup: {
           from: 'Perfiles',
@@ -89,19 +87,101 @@ class UsuariosSchemaRepository extends UsuariosRepository {
           as: 'perfil',
         },
       },
+      { $unwind: { path: '$perfil', preserveNullAndEmptyArrays: true } },
+
+      // Usuario creación (siempre presente)
       {
-        $unwind: { path: '$perfil', preserveNullAndEmptyArrays: true },
+        $lookup: {
+          from: 'Usuarios',
+          localField: 'usr_Creacion',
+          foreignField: '_id',
+          as: 'usuarioCreacion',
+        },
       },
+      { $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true } },
+
+      // Usuario actualización (opcional)
+      {
+        $lookup: {
+          from: 'Usuarios',
+          localField: 'usr_Actualizacion',
+          foreignField: '_id',
+          as: 'usuarioActualizacion',
+        },
+      },
+      { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
+
+      // Usuario eliminación (opcional)
       {
         $set: {
-          perfilId: '$perfil._id',
-          perfilNombre: '$perfil.prf_Nombre',
+          usr_Perfil_Id: '$perfil._id',
+          usr_Perfil_Nombre: '$perfil.prf_Nombre',
+          usr_Creacion_Id: '$usuarioCreacion._id',
+          usr_Creacion_Nombre: {
+            $concat: [
+              { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
+              ' ',
+              { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] },
+            ],
+          },
+
+          usr_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
+          usr_Actualizacion_Nombre: {
+            $cond: {
+              if: { $ifNull: ['$usuarioActualizacion._id', false] },
+              then: {
+                $concat: [
+                  { $ifNull: ['$usuarioActualizacion.usr_Primer_Nombre', ''] },
+                  ' ',
+                  { $ifNull: ['$usuarioActualizacion.usr_Primer_Apellido', ''] },
+                ],
+              },
+              else: null,
+            },
+          },
+
+          usr_Eliminacion_Id: { $ifNull: ['$usuarioEliminacion._id', null] },
+          usr_Eliminacion_Nombre: {
+            $cond: {
+              if: { $ifNull: ['$usuarioEliminacion._id', false] },
+              then: {
+                $concat: [
+                  { $ifNull: ['$usuarioEliminacion.usr_Primer_Nombre', ''] },
+                  ' ',
+                  { $ifNull: ['$usuarioEliminacion.usr_Primer_Apellido', ''] },
+                ],
+              },
+              else: null,
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          usr_Primer_Nombre: 1,
+          usr_Segundo_Nombre: 1,
+          usr_Primer_Apellido: 1,
+          usr_Segundo_Apellido: 1,
+          usr_Usuario: 1,
+          usr_Password: 1,
+          usr_Identificacion: 1,
+          usr_Correo: 1,
+          usr_Telefono: 1,
+          usr_Estado: 1,
+          usr_Intentos_Fallidos: 1,
+          usr_Requiere_Cambio_Clave: 1,
+          usr_Fecha_Creacion: 1,
+          usr_Creacion_Id: 1,
+          usr_Fecha_Actualizacion: 1,
+          usr_Actualizacion_Id: 1,
+          usr_Perfil_Id: 1,
+          usr_Perfil_Nombre: 1,
+          usr_Creacion_Nombre: 1,
+          usr_Actualizacion_Nombre: 1
         },
       },
     ]);
-
-
-
+  
     return docs.length ? this._toEntity(docs[0]) : null;
   }
 
@@ -198,16 +278,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
 
       // Usuario eliminación (opcional)
-      {
-        $lookup: {
-          from: 'Usuarios',
-          localField: 'usr_Eliminacion',
-          foreignField: '_id',
-          as: 'usuarioEliminacion',
-        },
-      },
-      { $unwind: { path: '$usuarioEliminacion', preserveNullAndEmptyArrays: true } },
-
+      
       {
         $set: {
           usr_Perfil_Id: '$perfil._id',
@@ -234,22 +305,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
               },
               else: null,
             },
-          },
-
-          usr_Eliminacion_Id: { $ifNull: ['$usuarioEliminacion._id', null] },
-          usr_Eliminacion_Nombre: {
-            $cond: {
-              if: { $ifNull: ['$usuarioEliminacion._id', false] },
-              then: {
-                $concat: [
-                  { $ifNull: ['$usuarioEliminacion.usr_Primer_Nombre', ''] },
-                  ' ',
-                  { $ifNull: ['$usuarioEliminacion.usr_Primer_Apellido', ''] },
-                ],
-              },
-              else: null,
-            },
-          },
+          }
         },
       },
       {
@@ -270,17 +326,14 @@ class UsuariosSchemaRepository extends UsuariosRepository {
           usr_Creacion_Id: 1,
           usr_Fecha_Actualizacion: 1,
           usr_Actualizacion_Id: 1,
-          usr_Fecha_Eliminacion: 1,
-          usr_Eliminacion_Id: 1,
           usr_Perfil_Id: 1,
           usr_Perfil_Nombre: 1,
           usr_Creacion_Nombre: 1,
-          usr_Actualizacion_Nombre: 1,
-          usr_Eliminacion_Nombre: 1,
+          usr_Actualizacion_Nombre: 1
         },
       },
     ]);
-    
+
     return docs.map(doc => this._toEntity(doc));
   }
 
@@ -386,7 +439,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
         },
       },
     ]);
-
+    console.log(docs);
     return docs.length ? this._toEntity(docs[0]) : null;
   }
 

@@ -4,11 +4,14 @@ class ConsultarOpcionesOutDTO {
     this.nombre     = opcion.nombre;
     this.codigo     = opcion.codigo;
     this.estado     = opcion.estado;
-    this.usuarioCreacion    = opcion.usuarioCreacion;
+    this.usuarioCreacionId    = opcion.usuarioCreacionId;
+    this.usuarioCreacionNombre    = opcion.usuarioCreacionNombre;
     this.fechaCreacion    = opcion.fechaCreacion;
-    this.usuarioActualizacion    = opcion.usuarioActualizacion;
+    this.usuarioActualizacionId    = opcion.usuarioActualizacionId;
+    this.usuarioActualizacionNombre    = opcion.usuarioActualizacionNombre;
     this.fechaActualizacion    = opcion.fechaActualizacion;
-    this.usuarioEliminacion    = opcion.usuarioEliminacion;
+    this.usuarioEliminacionId    = opcion.usuarioEliminacionId;
+    this.usuarioEliminacionNombre    = opcion.usuarioEliminacionNombre;
     this.fechaEliminacion    = opcion.fechaEliminacion;
   }
 

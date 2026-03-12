@@ -16,11 +16,11 @@ class Usuarios {
     perfilId,
     perfilNombre,
     fechaCreacion,
-    usuarioCreacion,
-    usuarioActualizacion,
-    fechaActualizacion,
-    usuarioEliminacion,
-    fechaEliminacion,
+    usuarioCreacionId,
+    usuarioCreacionNombre,
+    usuarioActualizacionId,
+    usuarioActualizacionNombre,
+    fechaActualizacion
   }) {
     this.id             = id;
     this.primer_nombre        = primer_nombre;
@@ -38,11 +38,11 @@ class Usuarios {
     this.perfilId           = perfilId   ?? null;
     this.perfilNombre       = perfilNombre ?? null;
     this.fechaCreacion  = fechaCreacion;
-    this.usuarioCreacion       = usuarioCreacion;
+    this.usuarioCreacionId       = usuarioCreacionId;
+    this.usuarioCreacionNombre       = usuarioCreacionNombre;
     this.fechaActualizacion  = fechaActualizacion;
-    this.usuarioActualizacion       = usuarioActualizacion;
-    this.fechaEliminacion  = fechaEliminacion;
-    this.usuarioEliminacion       = usuarioEliminacion;
+    this.usuarioActualizacionId       = usuarioActualizacionId;
+    this.usuarioActualizacionNombre       = usuarioActualizacionNombre;
   }
 
 }

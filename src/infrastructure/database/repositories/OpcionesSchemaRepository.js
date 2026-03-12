@@ -14,12 +14,15 @@ class OpcionesSchemaRepository extends OpcionesRepository {
       nombre:  doc.opc_Nombre,
       codigo:       doc.opc_Codigo,
       estado:         doc.opc_Estado,
-      fechaCreacion:  doc.opc_Fecha_Creacion,
-      usuarioCreacion:       doc.opc_Usr_Creacion ? doc.opc_Usr_Creacion.toString() : null,
-      fechaActualizacion:  doc.opc_Fecha_Actualizacion ?? null,
-      usuarioActualizacion:       doc.opc_Usr_Actualizacion ? doc.opc_Usr_Actualizacion.toString() : null, 
-      fechaEliminacion:  doc.opc_Fecha_Eliminacion ?? null,
-      usuarioEliminacion:       doc.opc_Usr_Eliminacion ? doc.opc_Usr_Eliminacion.toString() : null,
+      fechaCreacion: doc.opc_Fecha_Creacion,
+      usuarioCreacionId: opc.opc_Creacion_Id,
+      usuarioCreacionNombre: opc.opc_Creacion_Nombre ? doc.opc_Creacion_Nombre.toString() : null,
+      fechaActualizacion: doc.opc_Fecha_Actualizacion ?? null,
+      usuarioActualizacionId: doc.opc_Actualizacion_Id,
+      usuarioActualizacionNombre: doc.opc_Actualizacion_Nombre ? doc.opc_Actualizacion_Nombre.toString() : null,
+      fechaEliminacion: doc.opc_Fecha_Eliminacion ?? null,
+      usuarioEliminacionId: doc.opc_Eliminacion_Id,
+      usuarioEliminacionNombre: doc.opc_Eliminacion_Nombre ? doc.opc_Eliminacion_Nombre.toString() : null,
     });
   }
 
@@ -46,16 +49,26 @@ class OpcionesSchemaRepository extends OpcionesRepository {
             },
           },
           {
-            $lookup: {
-              from: 'Usuarios',
-              localField: 'opc_Usr_Creacion',
-              foreignField: '_id',
-              as: 'usuarioCreacion',
-            },
+        $lookup: {
+          from: 'Usuarios',
+          localField: 'usr_Creacion',
+          foreignField: '_id',
+          as: 'usuarioCreacion',
+        },
+        },
+        { $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true } },
+
+        // Usuario actualización (opcional)
+        {
+          $lookup: {
+            from: 'Usuarios',
+            localField: 'usr_Actualizacion',
+            foreignField: '_id',
+            as: 'usuarioActualizacion',
           },
-          {
-            $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true },
-          },
+        },
+        { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
+
           {
             $set: {
               usuarioCreacionId: '$usuarioCreacion._id',

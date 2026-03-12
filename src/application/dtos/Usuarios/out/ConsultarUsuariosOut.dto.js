@@ -18,9 +18,9 @@ class ConsultarUsuariosOutDTO {
     this.usuarioActualizacionId = user.usuarioActualizacionId;
     this.usuarioActualizacionNombre = user.usuarioActualizacionNombre;
     this.fechaActualizacion = user.fechaActualizacion;
-    this.usuarioEliminacionId = user.usuarioEliminacionId;
-    this.usuarioEliminacionNombre = user.usuarioEliminacionNombre;
-    this.fechaEliminacion = user.fechaEliminacion;
+    this.usuarioEliminacionId    = user.usuarioEliminacionId;
+    this.usuarioEliminacionNombre    = user.usuarioEliminacionNombre;
+    this.fechaEliminacion    = user.fechaEliminacion;
   }
 
   static fromEntity(user) {
