@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const ProductoSchema = new mongoose.Schema(
   {
+    prd_Codigo:           { type: String, required: true, trim: true },
     prd_Nombre:           { type: String, required: true, trim: true },
     prd_Descripcion:      { type: String, trim: true },
     prd_Precio_Base:      { type: Number, required: true },

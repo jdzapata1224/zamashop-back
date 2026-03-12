@@ -8,11 +8,12 @@ const { Types } = require('mongoose');
 class OpcionesSchemaRepository extends OpcionesRepository {
 
   // Mongoose doc → Domain Entity
-  _toEntity(doc) {
+ _toEntity(doc) {
     return new Opciones({
       id: doc._id.toString(),
       nombre: doc.opc_Nombre,
       codigo: doc.opc_Codigo,
+      tipoOpcion: doc.opc_TipoOpcion,
       estado: doc.opc_Estado,
       fechaCreacion: doc.opc_Fecha_Creacion,
       usuarioCreacionId: doc.opc_Creacion_Id,
@@ -94,6 +95,7 @@ class OpcionesSchemaRepository extends OpcionesRepository {
         $project: {
           opc_Codigo: 1,
           opc_Nombre: 1,
+          opc_TipoOpcion: 1,
           opc_Estado: 1,
           opc_Fecha_Creacion: 1,
           opc_Creacion_Id: 1,
@@ -166,6 +168,7 @@ class OpcionesSchemaRepository extends OpcionesRepository {
           opc_Codigo: 1,
           opc_Nombre: 1,
           opc_Estado: 1,
+           opc_TipoOpcion: 1,
           opc_Fecha_Creacion: 1,
           opc_Creacion_Id: 1,
           opc_Creacion_Nombre: 1,
@@ -184,6 +187,7 @@ class OpcionesSchemaRepository extends OpcionesRepository {
     const payload = {
       opc_Nombre: data.nombre,
       opc_Codigo: data.codigo,
+      opc_TipoOpcion: data.tipoOpcion,
       opc_Estado: true,
       opc_Fecha_Creacion: new Date(),
       opc_Usr_Creacion:data.usuarioCreacion

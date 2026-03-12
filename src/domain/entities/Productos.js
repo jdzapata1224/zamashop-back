@@ -1,9 +1,9 @@
-class Opciones {
+class Categorias {
   constructor({
     id,
     nombre,
     codigo,
-    tipoOpcion,
+    descripcion,  
     estado,
     fechaCreacion,
     usuarioCreacionId,
@@ -16,10 +16,10 @@ class Opciones {
     usuarioEliminacionNombre,
   }) {
     this.id             = id;
-    this.nombre         = nombre;
-    this.codigo         = codigo;
-    this.tipoOpcion     = tipoOpcion;
-    this.estado         = estado;
+    this.nombre        = nombre;
+    this.codigo        = codigo;
+    this.descripcion   = descripcion;
+    this.estado   = estado;
     this.fechaCreacion  = fechaCreacion;
     this.usuarioCreacionId       = usuarioCreacionId;
     this.usuarioCreacionNombre       = usuarioCreacionNombre;
@@ -32,4 +32,4 @@ class Opciones {
   }
 
 }
-module.exports = Opciones;
+module.exports = Categorias;

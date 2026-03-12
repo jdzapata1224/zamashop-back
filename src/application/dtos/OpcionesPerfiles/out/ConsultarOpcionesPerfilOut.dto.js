@@ -3,14 +3,12 @@ class ConsultarOpcionesPerfilOutDTO {
     this.id               = opcionPerfil.id;
     this.nombre           = opcionPerfil.nombre;
     this.codigo           = opcionPerfil.codigo;
-    this.tipoOpcionId     = opcionPerfil.tipoOpcionId;
-    this.tipoOpcionNombre = opcionPerfil.tipoOpcionNombre;
+    this.tipoOpcion = opcionPerfil.tipoOpcion;
     this.hijos            = (opcionPerfil.hijos || []).map(h => ({
       id:               h.id,
       nombre:           h.nombre,
       codigo:           h.codigo,
-      tipoOpcionId:     h.tipoOpcionId,
-      tipoOpcionNombre: h.tipoOpcionNombre,
+      tipoOpcion:     h.tipoOpcion
     }));
   }
 

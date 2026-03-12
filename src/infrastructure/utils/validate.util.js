@@ -11,7 +11,11 @@ const requireNumber = (value, fieldName) => {
     throw new Error(`${fieldName} es requerido`);
   }
 };
-
+const requireEnum = (value, fieldName, validValues) => {
+  if (!value || !validValues.includes(value)) {
+    throw new Error(`${fieldName} es requerido y debe ser uno de: ${validValues.join(', ')}`);
+  }
+};
 const requireBoolean = (value, fieldName) => {
   if (!value || typeof value !== 'boolean') {
     throw new Error(`${fieldName} es requerido`);
@@ -39,6 +43,7 @@ const optionalString = (value, fieldName) => {
 };
 
 module.exports = {
+  requireEnum,
   requireBoolean,
   requireNumber,
   requireString,

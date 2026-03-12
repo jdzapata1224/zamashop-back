@@ -3,14 +3,12 @@ class ConsultarOpcionesUsuarioOutDTO {
     this.id               = opcionUsuario.id;
     this.nombre           = opcionUsuario.nombre;
     this.codigo           = opcionUsuario.codigo;
-    this.tipoOpcionId     = opcionUsuario.tipoOpcionId;
-    this.tipoOpcionNombre = opcionUsuario.tipoOpcionNombre;
+    this.tipoOpcion = opcionUsuario.tipoOpcion;
     this.hijos            = (opcionUsuario.hijos || []).map(h => ({
       id:               h.id,
       nombre:           h.nombre,
       codigo:           h.codigo,
-      tipoOpcionId:     h.tipoOpcionId,
-      tipoOpcionNombre: h.tipoOpcionNombre,
+      tipoOpcion: h.tipoOpcion,
     }));
   }
 

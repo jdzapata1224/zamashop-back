@@ -1,0 +1,378 @@
+const ProductosRepository = require('../../../domain/repositories/IProductosRepository');
+const ProductosSchema = require('../models/ProductosSchema');
+const Productos = require('../../../domain/entities/Productos');
+
+class ProductosSchemaRepository extends ProductosRepository {
+
+    _toEntity(doc) {
+        return new Productos({
+            id: doc._id.toString(),
+            nombre: doc.prd_Nombre,
+            descripcion: doc.prd_Descripcion,
+            estado: doc.prd_Estado,
+            categoriaId: doc.prd_Categoria_Id ?? null,
+            categoriaNombre: doc.prd_Categoria_Nombre ?? null,
+            fechaCreacion: doc.prd_Fecha_Creacion,
+            usuarioCreacion: doc.prd_Usr_Creacion ? doc.prd_Usr_Creacion.toString() : null,
+            fechaActualizacion: doc.prd_Fecha_Actualizacion ?? null,
+            usuarioActualizacion: doc.prd_Usr_Actualizacion ? doc.prd_Usr_Actualizacion.toString() : null,
+            fechaEliminacion: doc.prd_Fecha_Eliminacion ?? null,
+            usuarioEliminacion: doc.prd_Usr_Eliminacion ? doc.prd_Usr_Eliminacion.toString() : null,
+        });
+    }
+
+
+    async findById(id) {
+        const docs = await ProductosSchema.aggregate([
+            {
+                $match: {
+                     _id: id,
+                    $or: [
+                        { prd_Fecha_Eliminacion: null },
+                        { prd_Fecha_Eliminacion: { $exists: false } },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: 'Categorias',
+                    localField: 'prd_Cat_Id',
+                    foreignField: '_id',
+                    as: 'productoCategoria',
+                },
+            },
+            { $unwind: { path: '$productoCategoria', preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: 'Usuarios',
+                    localField: 'prd_Usr_Creacion',
+                    foreignField: '_id',
+                    as: 'usuarioCreacion',
+                },
+            },
+            { $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true } },
+
+            // Usuario actualización (opcional)
+            {
+                $lookup: {
+                    from: 'Usuarios',
+                    localField: 'prd_Usr_Actualizacion',
+                    foreignField: '_id',
+                    as: 'usuarioActualizacion',
+                },
+            },
+            { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
+
+            {
+                $set: {
+                    prd_Categoria_Id: '$productoCategoria._id',
+                    prd_Categoria_Nombre: '$productoCategoria.cat_Nombre',
+                    prd_Creacion_Id: '$usuarioCreacion._id',
+                    prd_Creacion_Nombre: {
+                        $concat: [
+                            { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
+                            ' ',
+                            { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] },
+                        ],
+                    },
+
+                    prd_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
+                    prd_Actualizacion_Nombre: {
+                        $cond: {
+                            if: { $ifNull: ['$usuarioActualizacion._id', false] },
+                            then: {
+                                $concat: [
+                                    { $ifNull: ['$usuarioActualizacion.usr_Primer_Nombre', ''] },
+                                    ' ',
+                                    { $ifNull: ['$usuarioActualizacion.usr_Primer_Apellido', ''] },
+                                ],
+                            },
+                            else: null,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    prd_Codigo: 1,
+                    prd_Nombre: 1,
+                    prd_Descripcion: 1,
+                    prd_Categoria_Id: 1,
+                    prd_Categoria_Nombre: 1,
+                    prd_Estado: 1,
+                    prd_Fecha_Creacion: 1,
+                    prd_Creacion_Id: 1,
+                    prd_Creacion_Nombre: 1,
+                    prd_Fecha_Actualizacion: 1,
+                    prd_Actualizacion_Id: 1,
+                    prd_Actualizacion_Nombre: 1
+                },
+            },
+        ]);
+
+     
+        return docs.length ? this._toEntity(docs[0]) : null;
+    }
+
+    async findByNombreYCategoria(nombre,categoria) {
+         const docs = await ProductosSchema.aggregate([
+            {
+                $match: {
+                    prd_Nombre: nombre,
+                    prd_Cat_Id: categoria,
+                    $or: [
+                        { prd_Fecha_Eliminacion: null },
+                        { prd_Fecha_Eliminacion: { $exists: false } },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: 'Categorias',
+                    localField: 'prd_Cat_Id',
+                    foreignField: '_id',
+                    as: 'productoCategoria',
+                },
+            },
+            { $unwind: { path: '$productoCategoria', preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: 'Usuarios',
+                    localField: 'prd_Usr_Creacion',
+                    foreignField: '_id',
+                    as: 'usuarioCreacion',
+                },
+            },
+            { $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true } },
+
+            // Usuario actualización (opcional)
+            {
+                $lookup: {
+                    from: 'Usuarios',
+                    localField: 'prd_Usr_Actualizacion',
+                    foreignField: '_id',
+                    as: 'usuarioActualizacion',
+                },
+            },
+            { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
+
+            {
+                $set: {
+                    prd_Categoria_Id: '$productoCategoria._id',
+                    prd_Categoria_Nombre: '$productoCategoria.cat_Nombre',
+                    prd_Creacion_Id: '$usuarioCreacion._id',
+                    prd_Creacion_Nombre: {
+                        $concat: [
+                            { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
+                            ' ',
+                            { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] },
+                        ],
+                    },
+
+                    prd_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
+                    prd_Actualizacion_Nombre: {
+                        $cond: {
+                            if: { $ifNull: ['$usuarioActualizacion._id', false] },
+                            then: {
+                                $concat: [
+                                    { $ifNull: ['$usuarioActualizacion.usr_Primer_Nombre', ''] },
+                                    ' ',
+                                    { $ifNull: ['$usuarioActualizacion.usr_Primer_Apellido', ''] },
+                                ],
+                            },
+                            else: null,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    prd_Codigo: 1,
+                    prd_Nombre: 1,
+                    prd_Descripcion: 1,
+                    prd_Categoria_Id: 1,
+                    prd_Categoria_Nombre: 1,
+                    prd_Estado: 1,
+                    prd_Fecha_Creacion: 1,
+                    prd_Creacion_Id: 1,
+                    prd_Creacion_Nombre: 1,
+                    prd_Fecha_Actualizacion: 1,
+                    prd_Actualizacion_Id: 1,
+                    prd_Actualizacion_Nombre: 1
+                },
+            },
+        ]);
+
+     
+        return docs.length ? this._toEntity(docs[0]) : null;
+    }
+
+    async delete(data) {
+
+        const payload = {
+            cat_Fecha_Eliminacion: new Date(),
+            cat_Usr_Eliminacion: data.usuarioEliminacion
+        };
+
+
+        const doc = await CategoriasSchema.findByIdAndUpdate(
+            data.id,
+            { $set: payload },
+            { new: true }
+        );
+
+        if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+        return this._toEntity(doc);
+
+
+    }
+
+    async changeStatus(data) {
+      
+        const payload = {
+            cat_Fecha_Actualizacion: new Date(),
+            cat_Estado: data.estado,
+            cat_Usr_Actualizacion:data.usuarioActualizacion
+        };
+
+
+        const doc = await CategoriasSchema.findByIdAndUpdate(
+            data.id, 
+            { $set: payload },
+            { new: true }       
+        );
+
+        if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+        return this._toEntity(doc);
+
+
+    }
+
+    async find() {
+        const docs = await ProductosSchema.aggregate([
+            {
+                $match: {
+                    $or: [
+                        { prd_Fecha_Eliminacion: null },
+                        { prd_Fecha_Eliminacion: { $exists: false } },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: 'Categorias',
+                    localField: 'prd_Cat_Id',
+                    foreignField: '_id',
+                    as: 'productoCategoria',
+                },
+            },
+            { $unwind: { path: '$productoCategoria', preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: 'Usuarios',
+                    localField: 'prd_Usr_Creacion',
+                    foreignField: '_id',
+                    as: 'usuarioCreacion',
+                },
+            },
+            { $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true } },
+
+            // Usuario actualización (opcional)
+            {
+                $lookup: {
+                    from: 'Usuarios',
+                    localField: 'prd_Usr_Actualizacion',
+                    foreignField: '_id',
+                    as: 'usuarioActualizacion',
+                },
+            },
+            { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
+
+            {
+                $set: {
+                    prd_Categoria_Id: '$productoCategoria._id',
+                    prd_Categoria_Nombre: '$productoCategoria.cat_Nombre',
+                    prd_Creacion_Id: '$usuarioCreacion._id',
+                    prd_Creacion_Nombre: {
+                        $concat: [
+                            { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
+                            ' ',
+                            { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] },
+                        ],
+                    },
+
+                    prd_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
+                    prd_Actualizacion_Nombre: {
+                        $cond: {
+                            if: { $ifNull: ['$usuarioActualizacion._id', false] },
+                            then: {
+                                $concat: [
+                                    { $ifNull: ['$usuarioActualizacion.usr_Primer_Nombre', ''] },
+                                    ' ',
+                                    { $ifNull: ['$usuarioActualizacion.usr_Primer_Apellido', ''] },
+                                ],
+                            },
+                            else: null,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    prd_Codigo: 1,
+                    prd_Nombre: 1,
+                    prd_Descripcion: 1,
+                    prd_Categoria_Id: 1,
+                    prd_Categoria_Nombre: 1,
+                    prd_Estado: 1,
+                    prd_Fecha_Creacion: 1,
+                    prd_Creacion_Id: 1,
+                    prd_Creacion_Nombre: 1,
+                    prd_Fecha_Actualizacion: 1,
+                    prd_Actualizacion_Id: 1,
+                    prd_Actualizacion_Nombre: 1
+                },
+            },
+        ]);
+        return docs.map(doc => this._toEntity(doc));
+    }
+
+    async create(data) {
+
+        const payload = {
+            cat_Nombre: data.nombre,
+            cat_Descripcion: data.descripcion,
+            cat_Estado: true,
+            cat_Fecha_Creacion: new Date(),
+            cat_Usr_Creacion: data.usuarioCreacion
+        };
+        const doc = await CategoriasSchema.create(payload);
+
+
+        if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
+
+        return this._toEntity(doc);
+    }
+
+    async update(data) {
+        const payload = {
+            cat_Nombre: data.nombre,
+            cat_Descripcion: data.descripcion,
+            cat_Estado: true,
+            cat_Fecha_Creacion: new Date(),
+            cat_Usr_Actualizacion: data.usuarioActualizacion
+        };
+
+        const doc = await CategoriasSchema.findByIdAndUpdate(
+            data.id,
+            { $set: payload },
+            { new: true }
+        );
+
+        if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+        return this._toEntity(doc);
+    }
+
+}
+
+module.exports = ProductosSchemaRepository;
