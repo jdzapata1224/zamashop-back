@@ -27,10 +27,10 @@ class UsuariosSchemaRepository extends UsuariosRepository {
       usuarioCreacionId: doc.usr_Creacion_Id,
       usuarioCreacionNombre: doc.usr_Creacion_Nombre ? doc.usr_Creacion_Nombre.toString() : null,
       fechaActualizacion: doc.usr_Fecha_Actualizacion ?? null,
-      usuarioActualizacion: doc.usr_Actualizacion_Id,
+      usuarioActualizacionId: doc.usr_Actualizacion_Id,
       usuarioActualizacionNombre: doc.usr_Actualizacion_Nombre ? doc.usr_Actualizacion_Nombre.toString() : null,
       fechaEliminacion: doc.usr_Fecha_Eliminacion ?? null,
-      usuarioEliminacion: doc.usr_Eliminacion_Id,
+      usuarioEliminacionId: doc.usr_Eliminacion_Id,
       usuarioEliminacionNombre: doc.usr_Eliminacion_Nombre ? doc.usr_Eliminacion_Nombre.toString() : null,
     });
   }
@@ -280,6 +280,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
         },
       },
     ]);
+    
     return docs.map(doc => this._toEntity(doc));
   }
 
