@@ -46,10 +46,10 @@ const actualizarCategoriasController      = new ActualizarCategoriasController(a
 router.use(authMiddleware);
 router.get('/ConsultarCategoriasId/:id',(req, res) => consultarCategoriasIdController.consultarCategoriasId(req, res));
 router.get('/ConsultarCategorias',(req, res) => consultarCategoriasController.consultarCategorias(req, res));
-router.post('/CrearCategoria',(req, res) => crearCategoriasController.crearCategoria(req, res));
-router.post('/ActualizarCategoria/:id',(req, res) => actualizarCategoriasController.actualizarCategoria(req, res));
-router.patch('/EliminarCategoria/:id',(req, res) => eliminarCategoriasController.eliminarCategoria(req, res));
-router.patch('/CambiarEstadoCategoria/:id',(req, res) => cambiarEstadoCategoriasController.cambiarEstadoCategoria(req, res));
+router.post('/CrearCategoria',(req, res) => crearCategoriasController.crearCategorias(req, res));
+router.post('/ActualizarCategoria/:id',(req, res) => actualizarCategoriasController.actualizarCategorias(req, res));
+router.patch('/EliminarCategoria/:id',(req, res) => eliminarCategoriasController.eliminarCategorias(req, res));
+router.patch('/CambiarEstadoCategoria/:id',(req, res) => cambiarEstadoCategoriasController.cambiarEstadoCategorias(req, res));
 
 
 module.exports = router;
