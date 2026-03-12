@@ -1,4 +1,3 @@
-const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 const { CategoriaEmptyError } = require('../../../domain/exceptions/CategoriasErrors');
 const ConsultarCategoriasOut = require('../../dtos/Categorias/out/ConsultarCategoriasOut.dto');
 
@@ -11,7 +10,7 @@ class ConsultarCategorias {
 
   async execute() {
     const categorias = await this.categoriaRepository.find();
-    if (!categorias || categorias.length === 0) throw new CategoriaEmptyError();
+    if (!categorias || categorias.length === 0) throw new Error('No hay informacion para mostrar');
     return ConsultarCategoriasOut.fromEntities(categorias);
   }
 }
