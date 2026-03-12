@@ -8,7 +8,7 @@ class ActualizarCategoriasController extends BaseController {
 
   actualizarCategorias  = this.handle(async (req, res) => {
     this.requireBody(req);
-    await this.crearUsuarioUseCase.execute({ ...req.body, id:    req.params.id,infoLogin: req.infoLogin });
+    await this.actualizarCategoriasUseCase.execute({ ...req.body, id:    req.params.id,infoLogin: req.infoLogin });
     res.status(200).json({ codigo: 200, mensaje: 'Registro Actualizado Satisfactoriamente' });
   });
 }

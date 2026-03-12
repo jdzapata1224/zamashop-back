@@ -8,7 +8,7 @@ class EliminarCategoriasController extends BaseController {
 
   eliminarCategorias  = this.handle(async (req, res) => {
     
-    await this.crearCategoriasUseCase.execute({ id:    req.params.id, infoLogin: req.infoLogin });
+    await this.eliminarCategoriasUseCase.execute({ id:    req.params.id, infoLogin: req.infoLogin });
     res.status(200).json({ codigo: 200, mensaje: 'Registro Eliminado Satisfactoriamente' });
   });
 }
