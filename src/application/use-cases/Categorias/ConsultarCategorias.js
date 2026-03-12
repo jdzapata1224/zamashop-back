@@ -9,8 +9,7 @@ class ConsultarCategorias {
     this.categoriaRepository = categoriaRepository;
   }
 
-  async execute(rawInput) {
-    const tokenId  = extractTokenId(rawInput);
+  async execute() {
     const categorias = await this.categoriaRepository.find();
     if (!categorias || categorias.length === 0) throw new CategoriaEmptyError();
     return ConsultarCategoriasOut.fromEntities(categorias);
