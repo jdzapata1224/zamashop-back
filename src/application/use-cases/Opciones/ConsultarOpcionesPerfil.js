@@ -1,5 +1,6 @@
 const ConsultarOpcionesPerfilIn  = require('../../dtos/OpcionesPerfiles/in/ConsultarOpcionesPerfilIn.dto');
 const ConsultarOpcionesPerfilOut   = require('../../dtos/OpcionesPerfiles/out/ConsultarOpcionesPerfilOut.dto');
+const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 
 class ConsultarOpcionesPerfil {
   constructor(opcionesPerfilesRepository) {

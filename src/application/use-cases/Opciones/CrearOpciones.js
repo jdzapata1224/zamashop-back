@@ -1,5 +1,6 @@
 const { OpcionesAlreadyExistsError } = require('../../../domain/exceptions/OpcionesErrors');
 const CrearOpcionesIn = require('../../dtos/Opciones/in/CrearOpcionesIn.dto');
+const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 
 
 

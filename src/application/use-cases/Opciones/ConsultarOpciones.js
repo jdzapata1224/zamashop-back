@@ -6,8 +6,7 @@ class ConsultarOpciones {
     this.opcionesRepository = opcionesRepository;
   }
 
-  async execute(rawInput) {
-    const tokenId  = extractTokenId(rawInput);
+  async execute() {
     const opcion = await this.opcionesRepository.find();
     if (!opcion || opcion.length === 0) throw new EmptyResultError();
     return ConsultarOpcionesOut.fromEntities(opcion);

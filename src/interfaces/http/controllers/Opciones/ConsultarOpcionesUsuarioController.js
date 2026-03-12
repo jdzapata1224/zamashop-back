@@ -1,24 +1,16 @@
-class ConsultarOpcionesUsuarioController {
+const BaseController = require('../_base/BaseController');
+
+class ConsultarOpcionesUsuarioController extends BaseController{
   constructor(consultarOpcionesUsuarioUseCase) {
+    super();
     this.consultarOpcionesUsuarioUseCase = consultarOpcionesUsuarioUseCase;
   }
 
-  consultarOpcionesUsuario = async (req, res) => {
-    try {
-      const output = await this.consultarOpcionesUsuarioUseCase.execute({
-        id:           req.params.id,
-        usuarioToken: req.usuario,
-      });
+  consultarOpcionesUsuario = this.handle(async (req, res) => {
+    const output = await this.consultarOpcionesUsuarioUseCase.execute({id:req.params.id,infoLogin: req.infoLogin});
+    res.status(200).json({ codigo: 200, mensaje: 'Consulta Ejecutada Satisfactoriamente', data: output });
+  });  
 
-      return res.status(200).json({
-        codigo:  200,
-        mensaje: 'Consulta Ejecutada Satisfactoriamente',
-        data:    output,
-      });
-    } catch (err) {
-      res.status(err.statusCode || 400).json({ codigo: 400, mensaje: err.message });
-    }
-  };
 }
 
 module.exports = ConsultarOpcionesUsuarioController;

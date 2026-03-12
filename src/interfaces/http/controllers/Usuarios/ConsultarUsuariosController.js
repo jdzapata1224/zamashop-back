@@ -1,26 +1,15 @@
-class ConsultarUsuariosController {
-  constructor(consultarUsuariosUseCase) {
+const BaseController = require('../_base/BaseController');
 
+class ConsultarUsuariosController extends BaseController {
+  constructor(consultarUsuariosUseCase) {
+    super();
     this.consultarUsuariosUseCase = consultarUsuariosUseCase;
   }
 
-  
-
-  consultarUsuarios = async (req, res) => {
-    try {
-      const output = await this.consultarUsuariosUseCase.execute({
-        infoLogin: req.infoLogin
-      });  
-
-      return res.status(200).json({
-        codigo: 200,
-        mensaje:"Consulta Ejecutada Satisfactoriamente",
-        data: output,
-      });
-    } catch (err) {
-      res.status(err.statusCode || 400).json({ codigo: 400, mensaje: err.message });
-    }
-  };
+  consultarUsuarios = this.handle(async (req, res) => {
+    const output = await this.consultarUsuariosUseCase.execute();
+    res.status(200).json({ codigo: 200, mensaje: 'Consulta Ejecutada Satisfactoriamente', data: output });
+  });
 }
 
 module.exports = ConsultarUsuariosController;

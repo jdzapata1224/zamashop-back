@@ -1,29 +1,18 @@
-class ActualizarUsuarioController {
-  constructor(actualizarUsuarioUseCase) {
+const BaseController = require('../_base/BaseController');
 
+class ActualizarUsuarioController extends BaseController {
+  constructor(actualizarUsuarioUseCase) {
+    super();
     this.actualizarUsuarioUseCase = actualizarUsuarioUseCase;
   }
 
-  actualizarUsuario  = async (req, res) => {
-    try {
+  actualizarUsuario = this.handle(async (req, res) => {
+    this.requireBody(req);
+    await this.actualizarUsuarioUseCase.execute({ ...req.body, id: req.params.id, infoLogin: req.infoLogin });
+    res.status(200).json({ codigo: 200, mensaje: 'Registro Actualizado Satisfactoriamente' });
+  });
 
-    if (!req.body || Object.keys(req.body).length === 0) {
-      return res.status(200).json({ codigo: 400, message: 'No Se Ha Recibido Ningun Parametro' });
-    }
-      await this.actualizarUsuarioUseCase.execute({
-        ...req.body,
-        id:    req.params.id,
-        infoLogin: req.infoLogin
-      });
-
-      return res.status(200).json({
-        codigo: 200,
-        mensaje:"Registro Actualizado Satisfactoriamente",
-      });
-    } catch (err) {
-      res.status(err.statusCode || 400).json({ codigo: 400, mensaje: err.message });
-    }
-  };
+  
 }
 
 module.exports = ActualizarUsuarioController;

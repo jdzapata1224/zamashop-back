@@ -1,5 +1,6 @@
 const { OpcionesNotFoundError } = require('../../../domain/exceptions/OpcionesErrors');
 const EliminarOpcionesIn     = require('../../dtos/Opciones/in/EliminarOpcionesIn.dto');
+const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 
 class EliminarOpciones {
   constructor(opcionesRepository) {

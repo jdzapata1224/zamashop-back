@@ -1,24 +1,17 @@
-class ConsultarOpcionesPerfilController {
+const BaseController = require('../_base/BaseController');
+
+class ConsultarOpcionesPerfilController extends BaseController{
   constructor(consultarOpcionesPerfilUseCase) {
+    super();
     this.consultarOpcionesPerfilUseCase = consultarOpcionesPerfilUseCase;
   }
 
-  consultarOpcionesPerfil = async (req, res) => {
-    try {
-      const output = await this.consultarOpcionesPerfilUseCase.execute({
-        id:           req.params.id,
-        usuarioToken: req.usuario,
-      });
+  consultarOpcionesPerfil = this.handle(async (req, res) => {
+    const output = await this.consultarOpcionesPerfilUseCase.execute({id:req.params.id,infoLogin: req.infoLogin});
+    res.status(200).json({ codigo: 200, mensaje: 'Consulta Ejecutada Satisfactoriamente', data: output });
+  });
 
-      return res.status(200).json({
-        codigo:  200,
-        mensaje: 'Consulta Ejecutada Satisfactoriamente',
-        data:    output,
-      });
-    } catch (err) {
-      res.status(err.statusCode || 400).json({ codigo: 400, mensaje: err.message });
-    }
-  };
+ 
 }
 
 module.exports = ConsultarOpcionesPerfilController;
