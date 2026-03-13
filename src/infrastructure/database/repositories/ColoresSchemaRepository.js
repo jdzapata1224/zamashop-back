@@ -97,6 +97,83 @@ class ColoresSchemaRepository extends ColoresRepository {
         return docs.length ? this._toEntity(docs[0]) : null;
     }
 
+    async findByNombre(nombre) {
+        const docs = await ColoresSchema.aggregate([
+            {
+                $match: {
+                    col_Nombre: nombre,
+                    $or: [
+                        { col_Fecha_Eliminacion: null },
+                        { col_Fecha_Eliminacion: { $exists: false } },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: 'Usuarios',
+                    localField: 'col_Usr_Creacion',
+                    foreignField: '_id',
+                    as: 'usuarioCreacion',
+                },
+            },
+            { $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true } },
+
+            // Usuario actualización (opcional)
+            {
+                $lookup: {
+                    from: 'Usuarios',
+                    localField: 'col_Usr_Actualizacion',
+                    foreignField: '_id',
+                    as: 'usuarioActualizacion',
+                },
+            },
+            { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
+
+            {
+                $set: {
+                    col_Creacion_Id: '$usuarioCreacion._id',
+                    col_Creacion_Nombre: {
+                        $concat: [
+                            { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
+                            ' ',
+                            { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] },
+                        ],
+                    },
+
+                    col_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
+                    col_Actualizacion_Nombre: {
+                        $cond: {
+                            if: { $ifNull: ['$usuarioActualizacion._id', false] },
+                            then: {
+                                $concat: [
+                                    { $ifNull: ['$usuarioActualizacion.usr_Primer_Nombre', ''] },
+                                    ' ',
+                                    { $ifNull: ['$usuarioActualizacion.usr_Primer_Apellido', ''] },
+                                ],
+                            },
+                            else: null,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                  
+                    col_Nombre: 1,
+                    col_Hex: 1,
+                    col_Fecha_Creacion: 1,
+                    col_Creacion_Id: 1,
+                    col_Creacion_Nombre: 1,
+                    col_Fecha_Actualizacion: 1,
+                    col_Actualizacion_Id: 1,
+                    col_Actualizacion_Nombre: 1
+                },
+            },
+        ]);
+     
+        return docs.length ? this._toEntity(docs[0]) : null;
+    }
+
     async delete(data) {
 
         const payload = {
