@@ -3,7 +3,7 @@ const { PerfilesNotFoundError } = require('../../../domain/exceptions/PerfilesEr
 const CambiarEstadoPerfilesIn = require('../../dtos/Perfiles/in/CambiarEstadoPerfilesIn.dto');
 
 class CambiarEstadoPerfiles {
-  constructor(PerfilesRepository) {
+  constructor(perfilesRepository) {
     this.perfilesRepository = perfilesRepository;
   }
 

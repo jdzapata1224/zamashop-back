@@ -3,18 +3,18 @@ const { PerfilesNotFoundError } = require('../../../domain/exceptions/PerfilesEr
 const EliminarPerfilesIn = require('../../dtos/Perfiles/in/EliminarPerfilesIn.dto');
 
 class EliminarPerfiles {
-  constructor(PerfilesRepository) {
-    this.PerfilesRepository = PerfilesRepository;
+  constructor(perfilesRepository) {
+    this.perfilesRepository = perfilesRepository;
   }
 
   async execute(rawInput) {
     const tokenId  = extractTokenId(rawInput);
     const inputDto = new EliminarPerfilesIn({ ...rawInput, usuarioEliminacion: tokenId });
 
-    const existe = await this.PerfilesRepository.findById(inputDto.id);
+    const existe = await this.perfilesRepository.findById(inputDto.id);
     if (!existe) throw new PerfilesNotFoundError(rawInput.id);
 
-    const eliminado = await this.PerfilesRepository.delete({
+    const eliminado = await this.perfilesRepository.delete({
       id:                 inputDto.id,
       usuarioEliminacion: inputDto.usuarioEliminacion,
     });

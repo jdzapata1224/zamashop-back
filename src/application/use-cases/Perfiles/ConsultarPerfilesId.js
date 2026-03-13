@@ -4,14 +4,14 @@ const ConsultarPerfilesOut = require('../../dtos/Perfiles/out/ConsultarPerfilesO
 const ConsultarPerfilesIdIn = require('../../dtos/Perfiles/in/ConsultarPerfilesIdIn.dto');
 
 class ConsultarPerfilesId {
-  constructor(PerfilesRepository) {
-    this.PerfilesRepository = PerfilesRepository;
+  constructor(perfilesRepository) {
+    this.perfilesRepository = perfilesRepository;
   }
 
   async execute(rawInput) {
     const tokenId  = extractTokenId(rawInput);
     const inputDto = new ConsultarPerfilesIdIn({ ...rawInput, usuarioConsulta: tokenId });
-    const producto = await this.PerfilesRepository.findById(inputDto.id);
+    const producto = await this.perfilesRepository.findById(inputDto.id);
     if (!producto) throw new PerfilesNotFoundError(rawInput.id);
     return ConsultarPerfilesOut.fromEntity(producto);
   }

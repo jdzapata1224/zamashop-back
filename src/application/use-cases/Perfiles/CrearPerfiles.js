@@ -4,18 +4,18 @@ const CrearPerfilesIn = require('../../dtos/Perfiles/in/CrearPerfilesIn.dto');
 
 
 class CrearPerfiles {
-  constructor(PerfilesRepository) {
-    this.PerfilesRepository = PerfilesRepository;
+  constructor(perfilesRepository) {
+    this.perfilesRepository = perfilesRepository;
   }
 
   async execute(rawInput) {
     const tokenId  = extractTokenId(rawInput);
     const inputDto = new CrearPerfilesIn({ ...rawInput, usuarioCreacion: tokenId });
 
-    const existeNombre = await this.PerfilesRepository.findByNombre(inputDto.nombre);
+    const existeNombre = await this.perfilesRepository.findByNombre(inputDto.nombre);
     if (existeNombre) throw new PerfilesAlreadyExistsError();
 
-    const creado = await this.PerfilesRepository.create(inputDto);
+    const creado = await this.perfilesRepository.create(inputDto);
     if (!creado) throw new Error('No se pudo crear la categoría');
 
   }
