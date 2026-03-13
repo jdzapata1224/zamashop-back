@@ -126,7 +126,7 @@ class PerfilesSchemaRepository extends PerfilesRepository {
   async delete(data) {
     const payload = {
       prf_Fecha_Eliminacion: new Date(),
-      prf_Eliminacion: data.usuarioEliminacion,
+      prf_Usr_Eliminacion: data.usuarioEliminacion,
     };
 
     const doc = await PerfilesSchema.findByIdAndUpdate(
@@ -143,7 +143,7 @@ class PerfilesSchemaRepository extends PerfilesRepository {
     const payload = {
       prf_Fecha_Actualizacion: new Date(),
       prf_Estado: data.estado,
-      prf_Actualizacion: data.usuarioActualizacion,
+      prf_Usr_Actualizacion: data.usuarioActualizacion,
     };
 
     const doc = await PerfilesSchema.findByIdAndUpdate(
@@ -373,7 +373,7 @@ class PerfilesSchemaRepository extends PerfilesRepository {
       prf_Nombre: data.nombre,
       prf_Codigo: data.codigo,
       prf_Fecha_Actualizacion: new Date(),
-      prf_Actualizacion: data.usuarioActualizacion
+      prf_Usr_Actualizacion: data.usuarioActualizacion
     };
     const doc = await PerfilesSchema.findByIdAndUpdate(
       data.id,
