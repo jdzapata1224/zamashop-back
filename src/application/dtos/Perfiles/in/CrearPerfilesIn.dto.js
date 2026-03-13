@@ -3,7 +3,7 @@ const { toUpper, toObjectId,toNumber }             = require('../../../../infras
 
 class CrearPerfilesInDTO {
   constructor({ nombre,orden,usuarioCreacion }) {
-    requireNumber(nombre,                 'Nombre');
+    requireString(nombre,                 'Nombre');
     requireString(codigo,            'Codigo');
     requireObjectId(usuarioCreacion, 'Usuario Creacion');
 
