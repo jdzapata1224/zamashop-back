@@ -5,7 +5,6 @@ class CrearTallasInDTO {
   constructor({ nombre,orden,usuarioCreacion }) {
     requireString(nombre,                 'Nombre');
     requireString(orden,            'Orden');
-    requireString(codigo,            'Codigo');
     requireObjectId(usuarioCreacion, 'Usuario Creacion');
 
     this.nombre               = toUpper(nombre);
