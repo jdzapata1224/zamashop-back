@@ -1,5 +1,5 @@
 const { requireString, requireDecimal,requireObjectId,requireBoolean,requireNumber }  = require('../../../../infrastructure/utils/validate.util');
-const { toUpper, toObjectId,trimmedString,toBoolean,toDecimal }             = require('../../../../infrastructure/utils/basic.util');
+const { toUpper, toObjectId,toNumber }             = require('../../../../infrastructure/utils/basic.util');
 
 class CrearTallasInDTO {
   constructor({ nombre,orden,usuarioCreacion }) {
