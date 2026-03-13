@@ -25,4 +25,4 @@ class CambiarEstadoProductoVariacion {
   }
 }
 
-module.exports = CambiarEstadoProductos;
+module.exports = CambiarEstadoProductoVariacion;
