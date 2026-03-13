@@ -2,7 +2,7 @@ const { requireString, requireObjectId,requireBoolean }  = require('../../../../
 const { toUpper, toObjectId,toBoolean,trimmedString }             = require('../../../../infrastructure/utils/basic.util');
 
 class ActualizarProductosInDTO {
-  constructor({ id,nombre,descripcion,codigo,tieneTalla,tieneColor,categoriaId,usuarioActualizacion }) {
+  constructor({ id,nombre,descripcion,codigo,tieneTalla,tieneColor,categoriaId,usuarioActualizacion,precioBase }) {
     requireObjectId(id,                   'id');
     requireString(nombre,                 'Nombre');
     requireString(codigo,                 'Codigo');
@@ -10,7 +10,9 @@ class ActualizarProductosInDTO {
     requireObjectId(usuarioActualizacion, 'Usuario Actualizacion');
     requireObjectId(categoriaId,                   'Categoria');
     requireBoolean(tieneTalla,                   'Tiene Talla');
-    requireBoolean(tieneColor,                   'Tiene coLOR');
+    requireBoolean(tieneColor,                   'Tiene Color');
+    requireDecimal(precioBase, 'Precio Base');
+
     this.id                   = toObjectId(id);
     this.categoriaId          = toObjectId(categoriaId);
     this.codigo               = toUpper(codigo);
@@ -19,6 +21,7 @@ class ActualizarProductosInDTO {
     this.nombre               = toUpper(nombre);
     this.descripcion          = trimmedString(descripcion);
     this.usuarioActualizacion = toObjectId(usuarioActualizacion);
+    this.precioBase=toDecimal(precioBase);
 
   }
 }
