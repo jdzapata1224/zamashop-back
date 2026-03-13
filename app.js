@@ -10,7 +10,7 @@ const opcionesRoutes = require('./src/interfaces/http/routes/OpcionesRoutes');
 const categoriasRoutes = require('./src/interfaces/http/routes/CategoriasRoutes');
 const productosRoutes = require('./src/interfaces/http/routes/ProductosRoutes');
 const coloresRoutes = require('./src/interfaces/http/routes/ColoresRoutes');
-const tallasRoutes = require('./src/interfaces/http/routes/ColoresRoutes');
+const tallasRoutes = require('./src/interfaces/http/routes/TallasRoutes');
 
 const app = express();
 app.use(express.json());
