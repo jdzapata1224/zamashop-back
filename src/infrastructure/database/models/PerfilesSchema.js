@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 
 const PerfilesSchema = new mongoose.Schema(
   {
-    prf_Codigo: {Perfilestype: String,Perfilesrequired: true,Perfilestrim: true},
-    prf_Nombre: {Perfilestype: String,Perfilestrim: true},
-    prf_Estado: {Perfilestype: Boolean,Perfilesdefault: true},
-    prf_Fecha_Creacion: {Perfilestype: Date,Perfilesdefault: Date.now},
-    prf_Usr_Creacion: {Perfilestype: mongoose.Schema.Types.ObjectId,Perfilesref: 'Usuarios'},
-    prf_Fecha_Eliminacion: {Perfilestype: Date},
-    prf_Usr_Eliminacion: {Perfilestype: mongoose.Schema.Types.ObjectId,Perfilesref: 'Usuarios'},
-    prf_Fecha_Actualizacion: {Perfilestype: Date},
-    prf_Usr_Actualizacion: {Perfilestype: mongoose.Schema.Types.ObjectId,Perfilesref: 'Usuarios'},
+    prf_Codigo: {type: String,required: true,trim: true},
+    prf_Nombre: {type: String,trim: true},
+    prf_Estado: {type: Boolean,default: true},
+    prf_Fecha_Creacion: {type: Date,default: Date.now},
+    prf_Usr_Creacion: {type: mongoose.Schema.Types.ObjectId,ref: 'Usuarios'},
+    prf_Fecha_Eliminacion: {type: Date},
+    prf_Usr_Eliminacion: {type: mongoose.Schema.Types.ObjectId,ref: 'Usuarios'},
+    prf_Fecha_Actualizacion: {type: Date},
+    prf_Usr_Actualizacion: {type: mongoose.Schema.Types.ObjectId,ref: 'Usuarios'},
   },
   {
     collection: 'Perfiles',  // explicit collection name
