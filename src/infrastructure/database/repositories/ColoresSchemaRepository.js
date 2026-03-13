@@ -84,6 +84,7 @@ class ColoresSchemaRepository extends ColoresRepository {
                   
                     col_Nombre: 1,
                     col_Hex: 1,
+                    col_Estado: 1,
                     col_Fecha_Creacion: 1,
                     col_Creacion_Id: 1,
                     col_Creacion_Nombre: 1,
