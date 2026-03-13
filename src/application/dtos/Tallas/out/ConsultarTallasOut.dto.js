@@ -16,11 +16,11 @@ class ConsultarTallasOutDTO {
   }
 
   static fromEntity(producto) {
-    return new ConsultarProductosOutDTO(producto);
+    return new ConsultarTallasOutDTO(producto);
   }
 
 static fromEntities(productos) {
-  return productos.map(producto => new ConsultarProductosOutDTO(producto));
+  return productos.map(producto => new ConsultarTallasOutDTO(producto));
 }
 }
 module.exports = ConsultarTallasOutDTO;

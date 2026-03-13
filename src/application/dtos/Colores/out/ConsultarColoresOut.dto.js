@@ -1,4 +1,4 @@
-class ConsultarProductosOutDTO {
+class ConsultarColoresOutDTO {
   constructor(producto) {
     this.id       = producto.id;
     this.nombre     = producto.nombre;
@@ -16,11 +16,11 @@ class ConsultarProductosOutDTO {
   }
 
   static fromEntity(producto) {
-    return new ConsultarProductosOutDTO(producto);
+    return new ConsultarColoresOutDTO(producto);
   }
 
 static fromEntities(productos) {
-  return productos.map(producto => new ConsultarProductosOutDTO(producto));
+  return productos.map(producto => new ConsultarColoresOutDTO(producto));
 }
 }
-module.exports = ConsultarProductosOutDTO;
+module.exports = ConsultarColoresOutDTO;
