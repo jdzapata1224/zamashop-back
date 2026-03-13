@@ -1,26 +1,26 @@
 class ConsultarTallasOutDTO {
-  constructor(producto) {
-    this.id       = producto.id;
-    this.nombre     = producto.nombre;
-    this.orden     = producto.orden;
-    this.estado     = producto.estado;
-    this.usuarioCreacionId    = producto.usuarioCreacionId;
-    this.usuarioCreacionNombre    = producto.usuarioCreacionNombre;
-    this.fechaCreacion    = producto.fechaCreacion;
-    this.usuarioActualizacionId    = producto.usuarioActualizacionId;
-    this.usuarioActualizacionNombre    = producto.usuarioActualizacionNombre;
-    this.fechaActualizacion    = producto.fechaActualizacion;
-    this.usuarioEliminacionId    = producto.usuarioEliminacionId;
-    this.usuarioEliminacionNombre    = producto.usuarioEliminacionNombre;
-    this.fechaEliminacion    = producto.fechaEliminacion;
+  constructor(talla) {
+    this.id       = talla.id;
+    this.nombre     = talla.nombre;
+    this.orden     = talla.orden;
+    this.estado     = talla.estado;
+    this.usuarioCreacionId    = talla.usuarioCreacionId;
+    this.usuarioCreacionNombre    = talla.usuarioCreacionNombre;
+    this.fechaCreacion    = talla.fechaCreacion;
+    this.usuarioActualizacionId    = talla.usuarioActualizacionId;
+    this.usuarioActualizacionNombre    = talla.usuarioActualizacionNombre;
+    this.fechaActualizacion    = talla.fechaActualizacion;
+    this.usuarioEliminacionId    = talla.usuarioEliminacionId;
+    this.usuarioEliminacionNombre    = talla.usuarioEliminacionNombre;
+    this.fechaEliminacion    = talla.fechaEliminacion;
   }
 
-  static fromEntity(producto) {
-    return new ConsultarTallasOutDTO(producto);
+  static fromEntity(talla) {
+    return new ConsultarTallasOutDTO(talla);
   }
 
-static fromEntities(productos) {
-  return productos.map(producto => new ConsultarTallasOutDTO(producto));
+static fromEntities(tallas) {
+  return tallas.map(talla => new ConsultarTallasOutDTO(talla));
 }
 }
 module.exports = ConsultarTallasOutDTO;

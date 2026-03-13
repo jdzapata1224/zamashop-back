@@ -1,26 +1,26 @@
 class ConsultarColoresOutDTO {
-  constructor(producto) {
-    this.id       = producto.id;
-    this.nombre     = producto.nombre;
-    this.hex     = producto.hex;
-    this.estado     = producto.estado;
-    this.usuarioCreacionId    = producto.usuarioCreacionId;
-    this.usuarioCreacionNombre    = producto.usuarioCreacionNombre;
-    this.fechaCreacion    = producto.fechaCreacion;
-    this.usuarioActualizacionId    = producto.usuarioActualizacionId;
-    this.usuarioActualizacionNombre    = producto.usuarioActualizacionNombre;
-    this.fechaActualizacion    = producto.fechaActualizacion;
-    this.usuarioEliminacionId    = producto.usuarioEliminacionId;
-    this.usuarioEliminacionNombre    = producto.usuarioEliminacionNombre;
-    this.fechaEliminacion    = producto.fechaEliminacion;
+  constructor(color) {
+    this.id       = color.id;
+    this.nombre     = color.nombre;
+    this.hex     = color.hex;
+    this.estado     = color.estado;
+    this.usuarioCreacionId    = color.usuarioCreacionId;
+    this.usuarioCreacionNombre    = color.usuarioCreacionNombre;
+    this.fechaCreacion    = color.fechaCreacion;
+    this.usuarioActualizacionId    = color.usuarioActualizacionId;
+    this.usuarioActualizacionNombre    = color.usuarioActualizacionNombre;
+    this.fechaActualizacion    = color.fechaActualizacion;
+    this.usuarioEliminacionId    = color.usuarioEliminacionId;
+    this.usuarioEliminacionNombre    = color.usuarioEliminacionNombre;
+    this.fechaEliminacion    = color.fechaEliminacion;
   }
 
-  static fromEntity(producto) {
-    return new ConsultarColoresOutDTO(producto);
+  static fromEntity(color) {
+    return new ConsultarColoresOutDTO(color);
   }
 
-static fromEntities(productos) {
-  return productos.map(producto => new ConsultarColoresOutDTO(producto));
+static fromEntities(colores) {
+  return colores.map(color => new ConsultarColoresOutDTO(color));
 }
 }
 module.exports = ConsultarColoresOutDTO;
