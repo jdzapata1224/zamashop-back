@@ -1,20 +1,20 @@
 const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
-const { ProductoNotFoundError } = require('../../../domain/exceptions/ProductosErrors');
-const EliminarProductoIn = require('../../dtos/Productos/in/EliminarProductosIn.dto');
+const { ProductoVariacionNotFoundError } = require('../../../domain/exceptions/ProductoVariacionsErrors');
+const EliminarProductoVariacionIn = require('../../dtos/ProductoVariacions/in/EliminarProductoVariacionsIn.dto');
 
-class EliminarProducto {
-  constructor(productoRepository) {
-    this.productoRepository = productoRepository;
+class EliminarProductoVariacion {
+  constructor(productoVariacionRepository) {
+    this.productoVariacionRepository = productoVariacionRepository;
   }
 
   async execute(rawInput) {
     const tokenId  = extractTokenId(rawInput);
-    const inputDto = new EliminarProductoIn({ ...rawInput, usuarioEliminacion: tokenId });
+    const inputDto = new EliminarProductoVariacionIn({ ...rawInput, usuarioEliminacion: tokenId });
 
-    const existe = await this.productoRepository.findById(inputDto.id);
-    if (!existe) throw new ProductoNotFoundError(rawInput.id);
+    const existe = await this.productoVariacionRepository.findById(inputDto.id);
+    if (!existe) throw new ProductoVariacionNotFoundError(rawInput.id);
 
-    const eliminado = await this.productoRepository.delete({
+    const eliminado = await this.productoVariacionRepository.delete({
       id:                 inputDto.id,
       usuarioEliminacion: inputDto.usuarioEliminacion,
     });
@@ -22,4 +22,4 @@ class EliminarProducto {
   }
 }
 
-module.exports = EliminarProducto;
+module.exports = EliminarProductoVariacion;

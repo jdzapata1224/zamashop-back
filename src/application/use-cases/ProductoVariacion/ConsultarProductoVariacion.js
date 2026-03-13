@@ -1,16 +1,16 @@
-const { ProductoEmptyError } = require('../../../domain/exceptions/ProductosErrors');
-const ConsultarProductosOut = require('../../dtos/Productos/out/ConsultarProductosOut.dto');
+const { ProductoVariacionEmptyError } = require('../../../domain/exceptions/ProductoVariacionErrors');
+const ConsultarProductoVariacionOut = require('../../dtos/ProductoVariacion/out/ConsultarProductoVariacionOut.dto');
 
-class ConsultarProductos {
-  constructor(productoRepository) {
-    this.productoRepository = productoRepository;
+class ConsultarProductoVariacion {
+  constructor(productoVariacionRepository) {
+    this.productoVariacionRepository = productoVariacionRepository;
   }
 
   async execute() {
-    const productos = await this.productoRepository.find();
-    if (!productos || productos.length === 0) throw new Error('No hay informacion para mostrar');
-    return ConsultarProductosOut.fromEntities(productos);
+    const ProductoVariacion = await this.productoVariacionRepository.find();
+    if (!ProductoVariacion || ProductoVariacion.length === 0) throw new Error('No hay informacion para mostrar');
+    return ConsultarProductoVariacionOut.fromEntities(ProductoVariacion);
   }
 }
 
-module.exports = ConsultarProductos;
+module.exports = ConsultarProductoVariacion;

@@ -139,6 +139,121 @@ class ProductoVariacionSchemaRepository extends ProductoVariacionRepository {
         return docs.length ? this._toEntity(docs[0]) : null;
     }
 
+    async findByPrdTalCol(productoId,tallaId,colorId) {
+        const docs = await ProductoVariacionSchema.aggregate([
+            {
+                $match: {
+                    prv_Prd_Id: productoId,
+                    prv_Tal_Id: tallaId,
+                    prv_Col_Id: colorId,
+                    $or: [
+                        { prv_Fecha_Eliminacion: null },
+                        { prv_Fecha_Eliminacion: { $exists: false } },
+                    ],
+                },
+            },
+            {
+                $lookup: {
+                    from: 'Productos',
+                    localField: 'prv_Prd_Id',
+                    foreignField: '_id',
+                    as: 'productos',
+                },
+            },
+            { $unwind: { path: '$productos', preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: 'Tallas',
+                    localField: 'prv_Tal_Id',
+                    foreignField: '_id',
+                    as: 'tallas',
+                },
+            },
+            { $unwind: { path: '$tallas', preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: 'Colores',
+                    localField: 'prv_Col_Id',
+                    foreignField: '_id',
+                    as: 'colores',
+                },
+            },
+            { $unwind: { path: '$colores', preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: 'Usuarios',
+                    localField: 'prv_Usr_Creacion',
+                    foreignField: '_id',
+                    as: 'usuarioCreacion',
+                },
+            },
+            { $unwind: { path: '$usuarioCreacion', preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: 'Usuarios',
+                    localField: 'prv_Usr_Actualizacion',
+                    foreignField: '_id',
+                    as: 'usuarioActualizacion',
+                },
+            },
+            { $unwind: { path: '$usuarioActualizacion', preserveNullAndEmptyArrays: true } },
+            {
+                $set: {
+                    prv_Producto_Id: '$productos._id',
+                    prv_Producto_Nombre: '$productos.prd_Nombre',
+                    prv_Talla_Id: '$tallas._id',
+                    prv_Talla_Nombre: '$tallas.tal_Nombre',
+                    prv_Color_Id: '$colores._id',
+                    prv_Color_Nombre: '$colores.col_Nombre',
+                    prv_Creacion_Id: '$usuarioCreacion._id',
+                    prv_Creacion_Nombre: {
+                        $concat: [
+                            { $ifNull: ['$usuarioCreacion.usr_Primer_Nombre', ''] },
+                            ' ',
+                            { $ifNull: ['$usuarioCreacion.usr_Primer_Apellido', ''] },
+                        ],
+                    },
+
+                    prv_Actualizacion_Id: { $ifNull: ['$usuarioActualizacion._id', null] },
+                    prv_Actualizacion_Nombre: {
+                        $cond: {
+                            if: { $ifNull: ['$usuarioActualizacion._id', false] },
+                            then: {
+                                $concat: [
+                                    { $ifNull: ['$usuarioActualizacion.usr_Primer_Nombre', ''] },
+                                    ' ',
+                                    { $ifNull: ['$usuarioActualizacion.usr_Primer_Apellido', ''] },
+                                ],
+                            },
+                            else: null,
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    prv_Codigo: 1,
+                    prv_Producto_Id: 1,
+                    prv_Producto_Nombre: 1,
+                    prv_Talla_Id: 1,
+                    prv_Talla_Nombre: 1,
+                    prv_Color_Id: 1,
+                    prv_Color_Nombre: 1,
+                    prv_Estado: 1,
+                    prv_Fecha_Creacion: 1,
+                    prv_Creacion_Id: 1,
+                    prv_Creacion_Nombre: 1,
+                    prv_Fecha_Actualizacion: 1,
+                    prv_Actualizacion_Id: 1,
+                    prv_Actualizacion_Nombre: 1
+                },
+            },
+        ]);
+
+     
+        return docs.length ? this._toEntity(docs[0]) : null;
+    }
+
     async delete(data) {
 
         const payload = {
