@@ -11,6 +11,7 @@ const categoriasRoutes = require('./src/interfaces/http/routes/CategoriasRoutes'
 const productosRoutes = require('./src/interfaces/http/routes/ProductosRoutes');
 const coloresRoutes = require('./src/interfaces/http/routes/ColoresRoutes');
 const tallasRoutes = require('./src/interfaces/http/routes/TallasRoutes');
+const productoVariacionRoutes = require('./src/interfaces/http/routes/ProductoVariacionRoutes');
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ apiRouter.use('/Opciones', opcionesRoutes);
 apiRouter.use('/Productos', productosRoutes);
 apiRouter.use('/Colores', coloresRoutes);
 apiRouter.use('/Tallas', tallasRoutes);
+apiRouter.use('/ProductosVariacion', productoVariacionRoutes);
 apiRouter.use('/Auth', authRoutes);
 apiRouter.use('/Categorias', categoriasRoutes);
 

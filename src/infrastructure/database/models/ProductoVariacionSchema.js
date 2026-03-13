@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const ProductoVariacionSchema = new mongoose.Schema(
   {
+    prv_Codigo:           { type: String, required: true, trim: true },
     prv_Prd_Id:           { type: mongoose.Schema.Types.ObjectId, ref: 'Productos', required: true },
     prv_Col_Id:           { type: mongoose.Schema.Types.ObjectId, ref: 'Colores', default: null },   // null si no aplica
     prv_Tal_Id:           { type: mongoose.Schema.Types.ObjectId, ref: 'Tallas',  default: null },   // null si no aplica
