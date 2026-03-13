@@ -8,7 +8,6 @@ class CrearTallasInDTO {
     requireObjectId(usuarioCreacion, 'Usuario Creacion');
 
     this.nombre               = toUpper(nombre);
-    this.orden          = trimmedString(orden);
     this.usuarioCreacion      = toObjectId(usuarioCreacion);
     this.orden=toNumber(orden);
 
