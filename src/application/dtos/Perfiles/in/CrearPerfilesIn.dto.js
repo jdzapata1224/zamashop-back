@@ -2,7 +2,7 @@ const { requireString, requireDecimal,requireObjectId,requireBoolean,requireNumb
 const { toUpper, toObjectId,toNumber }             = require('../../../../infrastructure/utils/basic.util');
 
 class CrearPerfilesInDTO {
-  constructor({ nombre,orden,usuarioCreacion }) {
+  constructor({ nombre,codigo,usuarioCreacion }) {
     requireString(nombre,                 'Nombre');
     requireString(codigo,            'Codigo');
     requireObjectId(usuarioCreacion, 'Usuario Creacion');
