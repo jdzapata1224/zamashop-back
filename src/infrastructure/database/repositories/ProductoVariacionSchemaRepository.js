@@ -257,8 +257,8 @@ class ProductoVariacionSchemaRepository extends ProductoVariacionRepository {
     async delete(data) {
 
         const payload = {
-            prd_Fecha_Eliminacion: new Date(),
-            prd_Usr_Eliminacion: data.usuarioEliminacion
+            prv_Fecha_Eliminacion: new Date(),
+            prv_Usr_Eliminacion: data.usuarioEliminacion
         };
 
 
