@@ -1,30 +1,30 @@
 const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
-const { CategoriaNotFoundError, CategoriasAlreadyExistsError } = require('../../../domain/exceptions/CategoriasErrors');
-const ActualizarCategoriasIn = require('../../dtos/Categorias/in/ActualizarCategoriasIn.dto');
+const { ProductosNotFoundError, ProductosAlreadyExistsError } = require('../../../domain/exceptions/ProductosErrors');
+const ActualizarProductosIn = require('../../dtos/Productos/in/ActualizarProductosIn.dto');
 
 
 
-class ActualizarCategorias {
-   constructor(categoriaRepository) {
-    this.categoriaRepository          = categoriaRepository;
+class ActualizarProductos {
+   constructor(productoRepository) {
+    this.productoRepository          = productoRepository;
   }
 
   async execute(rawInput) {
     const tokenId  = extractTokenId(rawInput);
-    const inputDto = new ActualizarCategoriasIn({ ...rawInput, usuarioActualizacion: tokenId });
+    const inputDto = new ActualizarProductosIn({ ...rawInput, usuarioActualizacion: tokenId });
 
-    const existe = await this.categoriaRepository.findById(inputDto.id);
-    if (!existe) throw new CategoriaNotFoundError(inputDto.id);
+    const existe = await this.productoRepository.findById(inputDto.id);
+    if (!existe) throw new ProductosNotFoundError(inputDto.id);
 
-    const otroPorNombre = await this.categoriaRepository.findByNombre(inputDto.nombre);
-    if (otroPorNombre && otroPorIdentificacion.id !== inputDto.id) {
-      throw new CategoriasAlreadyExistsError();
+    const otroPorNombre = await this.productoRepository.findByNombreYCategoria(inputDto.nombre,inputDto.categoriaId);
+    if (otroPorNombre && otroPorNombre.id !== inputDto.id) {
+      throw new ProductosAlreadyExistsError();
     }
     
-    const actualizado = await this.categoriaRepository.update(inputDto);
+    const actualizado = await this.productoRepository.update(inputDto);
     if (!actualizado) throw new Error('No se pudo actualizar la categoría');
 
   }
 }
 
-module.exports = ActualizarCategorias;
+module.exports = ActualizarProductos;

@@ -5,7 +5,7 @@ const ProductoSchema = new mongoose.Schema(
     prd_Codigo:           { type: String, required: true, trim: true },
     prd_Nombre:           { type: String, required: true, trim: true },
     prd_Descripcion:      { type: String, trim: true },
-    prd_Precio_Base:      { type: Number, required: true },
+    prd_Precio_Base:      { type: mongoose.Types.Decimal128, required: true },
     prd_Imagenes:         [{ type: String }],                          // array de URLs
     prd_Cat_Id:           { type: mongoose.Schema.Types.ObjectId, ref: 'Categorias', required: true },
     prd_Tiene_Color:      { type: Boolean, default: false },

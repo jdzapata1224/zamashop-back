@@ -11,12 +11,15 @@ class CategoriasSchemaRepository extends CategoriasRepository {
       nombre:  doc.cat_Nombre,
       descripcion:  doc.cat_Descripcion,
       estado:         doc.cat_Estado,
-      fechaCreacion:  doc.cat_Fecha_Creacion,
-      usuarioCreacion:       doc.cat_Usr_Creacion ? doc.cat_Usr_Creacion.toString() : null,
-      fechaActualizacion:  doc.cat_Fecha_Actualizacion ?? null,
-      usuarioActualizacion:       doc.cat_Usr_Actualizacion ? doc.cat_Usr_Actualizacion.toString() : null, 
-      fechaEliminacion:  doc.cat_Fecha_Eliminacion ?? null,
-      usuarioEliminacion:       doc.cat_Usr_Eliminacion ? doc.cat_Usr_Eliminacion.toString() : null,
+      fechaCreacion: doc.cat_Fecha_Creacion,
+      usuarioCreacionId: doc.cat_Creacion_Id,
+      usuarioCreacionNombre: doc.cat_Creacion_Nombre ? doc.cat_Creacion_Nombre.toString() : null,
+      fechaActualizacion: doc.cat_Fecha_Actualizacion ?? null,
+      usuarioActualizacionId: doc.cat_Actualizacion_Id,
+      usuarioActualizacionNombre: doc.cat_Actualizacion_Nombre ? doc.cat_Actualizacion_Nombre.toString() : null,
+      fechaEliminacion: doc.cat_Fecha_Eliminacion ?? null,
+      usuarioEliminacionId: doc.cat_Eliminacion_Id,
+      usuarioEliminacionNombre: doc.cat_Eliminacion_Nombre ? doc.cat_Eliminacion_Nombre.toString() : null,
     });
   }
 
@@ -300,7 +303,7 @@ class CategoriasSchemaRepository extends CategoriasRepository {
       cat_Nombre:        data.nombre,
       cat_Descripcion:      data.descripcion,
       cat_Estado:         true,
-      cat_Fecha_Creacion: new Date(),
+      cat_Fecha_Actualizacion: new Date(),
       cat_Usr_Actualizacion:data.usuarioActualizacion
     };
 

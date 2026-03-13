@@ -4,11 +4,14 @@ class ConsultarCategoriasOutDTO {
     this.nombre     = categoria.nombre;
     this.descripcion     = categoria.descripcion;
     this.estado     = categoria.estado;
-    this.usuarioCreacion    = categoria.usuarioCreacion;
+    this.usuarioCreacionId    = categoria.usuarioCreacionId;
+    this.usuarioCreacionNombre    = categoria.usuarioCreacionNombre;
     this.fechaCreacion    = categoria.fechaCreacion;
-    this.usuarioActualizacion    = categoria.usuarioActualizacion;
+    this.usuarioActualizacionId    = categoria.usuarioActualizacionId;
+    this.usuarioActualizacionNombre    = categoria.usuarioActualizacionNombre;
     this.fechaActualizacion    = categoria.fechaActualizacion;
-    this.usuarioEliminacion    = categoria.usuarioEliminacion;
+    this.usuarioEliminacionId    = categoria.usuarioEliminacionId;
+    this.usuarioEliminacionNombre    = categoria.usuarioEliminacionNombre;
     this.fechaEliminacion    = categoria.fechaEliminacion;
   }
 

@@ -12,7 +12,7 @@ class ConsultarUsuariosId {
   async execute(rawInput) {
     const inputDto = new ConsultarUsuarioIdIn(rawInput);
     const user = await this.usuarioRepository.findById(inputDto.id);
-    if (!user) throw new UserNotFoundError(rawInput);
+    if (!user) throw new UserNotFoundError(rawInput.id);
     return ConsultarUsuariosOut.fromEntity(user);
   }
 }

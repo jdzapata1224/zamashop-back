@@ -1,5 +1,5 @@
 const ProductosRepository = require('../../../domain/repositories/IProductosRepository');
-const ProductosSchema = require('../models/ProductosSchema');
+const ProductosSchema = require('../models/ProductoSchema');
 const Productos = require('../../../domain/entities/Productos');
 
 class ProductosSchemaRepository extends ProductosRepository {
@@ -8,7 +8,10 @@ class ProductosSchemaRepository extends ProductosRepository {
         return new Productos({
             id: doc._id.toString(),
             nombre: doc.prd_Nombre,
+            codigo: doc.prd_Codigo,
             descripcion: doc.prd_Descripcion,
+            tieneColor: doc.prd_Tiene_Color ?? null,
+            tieneTalla: doc.prd_Tiene_Talla ?? null,
             estado: doc.prd_Estado,
             categoriaId: doc.prd_Categoria_Id ?? null,
             categoriaNombre: doc.prd_Categoria_Nombre ?? null,
@@ -94,6 +97,8 @@ class ProductosSchemaRepository extends ProductosRepository {
             },
             {
                 $project: {
+                    prd_Tiene_Color: 1,
+                    prd_Tiene_Talla: 1,
                     prd_Codigo: 1,
                     prd_Nombre: 1,
                     prd_Descripcion: 1,
@@ -191,6 +196,8 @@ class ProductosSchemaRepository extends ProductosRepository {
                     prd_Nombre: 1,
                     prd_Descripcion: 1,
                     prd_Categoria_Id: 1,
+                    prd_Tiene_Color: 1,
+                    prd_Tiene_Talla: 1,
                     prd_Categoria_Nombre: 1,
                     prd_Estado: 1,
                     prd_Fecha_Creacion: 1,
@@ -210,12 +217,12 @@ class ProductosSchemaRepository extends ProductosRepository {
     async delete(data) {
 
         const payload = {
-            cat_Fecha_Eliminacion: new Date(),
-            cat_Usr_Eliminacion: data.usuarioEliminacion
+            prd_Fecha_Eliminacion: new Date(),
+            prd_Usr_Eliminacion: data.usuarioEliminacion
         };
 
 
-        const doc = await CategoriasSchema.findByIdAndUpdate(
+        const doc = await ProductosSchema.findByIdAndUpdate(
             data.id,
             { $set: payload },
             { new: true }
@@ -230,13 +237,13 @@ class ProductosSchemaRepository extends ProductosRepository {
     async changeStatus(data) {
       
         const payload = {
-            cat_Fecha_Actualizacion: new Date(),
-            cat_Estado: data.estado,
-            cat_Usr_Actualizacion:data.usuarioActualizacion
+            prd_Fecha_Actualizacion: new Date(),
+            prd_Estado: data.estado,
+            prd_Usr_Actualizacion:data.usuarioActualizacion
         };
 
 
-        const doc = await CategoriasSchema.findByIdAndUpdate(
+        const doc = await ProductosSchema.findByIdAndUpdate(
             data.id, 
             { $set: payload },
             { new: true }       
@@ -321,6 +328,8 @@ class ProductosSchemaRepository extends ProductosRepository {
                 $project: {
                     prd_Codigo: 1,
                     prd_Nombre: 1,
+                    prd_Tiene_Color: 1,
+                    prd_Tiene_Talla: 1,
                     prd_Descripcion: 1,
                     prd_Categoria_Id: 1,
                     prd_Categoria_Nombre: 1,
@@ -340,13 +349,18 @@ class ProductosSchemaRepository extends ProductosRepository {
     async create(data) {
 
         const payload = {
-            cat_Nombre: data.nombre,
-            cat_Descripcion: data.descripcion,
-            cat_Estado: true,
-            cat_Fecha_Creacion: new Date(),
-            cat_Usr_Creacion: data.usuarioCreacion
+            prd_Nombre: data.nombre,
+            prd_Descripcion: data.descripcion,
+            prd_Codigo: data.codigo,
+            prd_Tiene_Color: data.tieneColor,
+            prd_Tiene_Talla: data.tieneTalla,
+            prd_Cat_Id: data.categoriaId,
+            prd_Estado: true,
+            prd_Fecha_Creacion: new Date(),
+            prd_Usr_Creacion: data.usuarioCreacion,
+            prd_Precio_Base:data.precioBase
         };
-        const doc = await CategoriasSchema.create(payload);
+        const doc = await ProductosSchema.create(payload);
 
 
         if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
@@ -356,14 +370,18 @@ class ProductosSchemaRepository extends ProductosRepository {
 
     async update(data) {
         const payload = {
-            cat_Nombre: data.nombre,
-            cat_Descripcion: data.descripcion,
-            cat_Estado: true,
-            cat_Fecha_Creacion: new Date(),
-            cat_Usr_Actualizacion: data.usuarioActualizacion
+            prd_Nombre: data.nombre,
+            prd_Descripcion: data.descripcion,
+            prd_Codigo: data.codigo,
+            prd_Tiene_Color: data.tieneColor,
+            prd_Tiene_Talla: data.tieneTalla,
+            prd_Cat_Id: data.categoriaId,
+            prd_Estado: true,
+            prd_Fecha_Actualizacion: new Date(),
+            prd_Usr_Actualizacion: data.usuarioActualizacion
         };
 
-        const doc = await CategoriasSchema.findByIdAndUpdate(
+        const doc = await ProductosSchema.findByIdAndUpdate(
             data.id,
             { $set: payload },
             { new: true }

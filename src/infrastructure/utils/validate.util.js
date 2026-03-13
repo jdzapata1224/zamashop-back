@@ -11,6 +11,7 @@ const requireNumber = (value, fieldName) => {
     throw new Error(`${fieldName} es requerido`);
   }
 };
+
 const requireEnum = (value, fieldName, validValues) => {
   if (!value || !validValues.includes(value)) {
     throw new Error(`${fieldName} es requerido y debe ser uno de: ${validValues.join(', ')}`);
@@ -19,6 +20,12 @@ const requireEnum = (value, fieldName, validValues) => {
 const requireBoolean = (value, fieldName) => {
   if (!value || typeof value !== 'boolean') {
     throw new Error(`${fieldName} es requerido`);
+  }
+};
+
+const requireDecimal = (value, fieldName) => {
+  if (value === null || value === undefined || isNaN(parseFloat(value))) {
+    throw new Error(`${fieldName} es requerido y debe ser un número decimal válido`);
   }
 };
 
@@ -49,5 +56,6 @@ module.exports = {
   requireString,
   requireObjectId,
   optionalString,
-  requireDate
+  requireDate,
+  requireDecimal
 };

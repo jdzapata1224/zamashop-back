@@ -17,7 +17,7 @@ class ActualizarCategorias {
     if (!existe) throw new CategoriaNotFoundError(inputDto.id);
 
     const otroPorNombre = await this.categoriaRepository.findByNombre(inputDto.nombre);
-    if (otroPorNombre && otroPorIdentificacion.id !== inputDto.id) {
+    if (otroPorNombre && otroPorNombre.id !== inputDto.id) {
       throw new CategoriasAlreadyExistsError();
     }
     

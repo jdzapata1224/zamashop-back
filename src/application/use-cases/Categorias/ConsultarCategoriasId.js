@@ -12,7 +12,7 @@ class ConsultarCategoriasId {
     const tokenId  = extractTokenId(rawInput);
     const inputDto = new ConsultarCategoriasIdIn({ ...rawInput, usuarioConsulta: tokenId });
     const categoria = await this.categoriaRepository.findById(inputDto.id);
-    if (!categoria) throw new CategoriaNotFoundError(rawInput);
+    if (!categoria) throw new CategoriaNotFoundError(rawInput.id);
     return ConsultarCategoriasOut.fromEntity(categoria);
   }
 }

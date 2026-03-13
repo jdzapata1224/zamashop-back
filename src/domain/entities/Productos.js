@@ -5,6 +5,8 @@ class Categorias {
     codigo,
     descripcion,  
     estado,
+    tieneColor,
+    tieneTalla,
     fechaCreacion,
     usuarioCreacionId,
     usuarioCreacionNombre,
@@ -20,6 +22,8 @@ class Categorias {
     this.codigo        = codigo;
     this.descripcion   = descripcion;
     this.estado   = estado;
+    this.tieneColor   = tieneColor;
+    this.tieneTalla   = tieneTalla;
     this.fechaCreacion  = fechaCreacion;
     this.usuarioCreacionId       = usuarioCreacionId;
     this.usuarioCreacionNombre       = usuarioCreacionNombre;

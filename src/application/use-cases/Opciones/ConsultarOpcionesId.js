@@ -11,7 +11,7 @@ class ConsultarOpcionesId {
   async execute(rawInput) {
     const inputDto = new ConsultarOpcionesIdIn(rawInput);
     const opcion = await this.opcionesRepository.findById(inputDto.id);
-    if (!opcion) throw new UserNotFoundError(rawInput);
+    if (!opcion) throw new UserNotFoundError(rawInput.id);
     return ConsultarOpcionesOut.fromEntity(opcion);
   }
 }
