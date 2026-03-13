@@ -22,7 +22,7 @@ apiRouter.use('/Opciones', opcionesRoutes);
 apiRouter.use('/Productos', productosRoutes);
 apiRouter.use('/Colores', coloresRoutes);
 apiRouter.use('/Tallas', tallasRoutes);
-apiRouter.use('/ProductosVariacion', productoVariacionRoutes);
+apiRouter.use('/ProductoVariacion', productoVariacionRoutes);
 apiRouter.use('/Auth', authRoutes);
 apiRouter.use('/Categorias', categoriasRoutes);
 
