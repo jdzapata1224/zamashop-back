@@ -1,16 +1,16 @@
-const { ColoresEmptyError } = require('../../../domain/exceptions/ColoresErrors');
-const ConsultarColoresOut = require('../../dtos/Colores/out/ConsultarColoresOut.dto');
+const { TallasEmptyError } = require('../../../domain/exceptions/TallasErrors');
+const ConsultarTallasOut = require('../../dtos/Tallas/out/ConsultarTallasOut.dto');
 
-class ConsultarColores {
-  constructor(coloresRepository) {
-    this.coloresRepository = coloresRepository;
+class ConsultarTallas {
+  constructor(tallasRepository) {
+    this.tallasRepository = tallasRepository;
   }
 
   async execute() {
-    const Colores = await this.coloresRepository.find();
-    if (!Colores || Colores.length === 0) throw new Error('No hay informacion para mostrar');
-    return ConsultarColoresOut.fromEntities(Colores);
+    const Tallas = await this.tallasRepository.find();
+    if (!Tallas || Tallas.length === 0) throw new Error('No hay informacion para mostrar');
+    return ConsultarTallasOut.fromEntities(Tallas);
   }
 }
 
-module.exports = ConsultarColores;
+module.exports = ConsultarTallas;

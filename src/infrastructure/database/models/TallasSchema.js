@@ -9,6 +9,8 @@ const TallaSchema = new mongoose.Schema(
     tal_Usr_Creacion:     { type: mongoose.Schema.Types.ObjectId, ref: 'Usuarios' },
     tal_Fecha_Eliminacion: { type: Date },
     tal_Usr_Eliminacion:  { type: mongoose.Schema.Types.ObjectId, ref: 'Usuarios' },
+    tal_Fecha_Actualizacion: { type: Date },
+    tal_Usr_Actualizacion:  { type: mongoose.Schema.Types.ObjectId, ref: 'Usuarios' },
   },
   { collection: 'Tallas', versionKey: false }
 );
