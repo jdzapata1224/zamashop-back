@@ -1,5 +1,5 @@
 const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
-const { ProductoVariacionNotFoundError } = require('../../../domain/exceptions/ProductoVariacionsErrors');
+const { ProductoVariacionNotFoundError } = require('../../../domain/exceptions/ProductoVariacionErrors');
 const EliminarProductoVariacionIn = require('../../dtos/ProductoVariacions/in/EliminarProductoVariacionsIn.dto');
 
 class EliminarProductoVariacion {
