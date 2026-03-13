@@ -1,4 +1,3 @@
-const { TallasEmptyError } = require('../../../domain/exceptions/TallasErrors');
 const ConsultarTallasOut = require('../../dtos/Tallas/out/ConsultarTallasOut.dto');
 
 class ConsultarTallas {

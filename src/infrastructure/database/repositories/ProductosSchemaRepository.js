@@ -16,11 +16,15 @@ class ProductosSchemaRepository extends ProductosRepository {
             categoriaId: doc.prd_Categoria_Id ?? null,
             categoriaNombre: doc.prd_Categoria_Nombre ?? null,
             fechaCreacion: doc.prd_Fecha_Creacion,
-            usuarioCreacion: doc.prd_Usr_Creacion ? doc.prd_Usr_Creacion.toString() : null,
+            usuarioCreacionId: doc.prd_Creacion_Id,
+            usuarioCreacionNombre: doc.prd_Creacion_Nombre ? doc.prd_Creacion_Nombre.toString() : null,
             fechaActualizacion: doc.prd_Fecha_Actualizacion ?? null,
-            usuarioActualizacion: doc.prd_Usr_Actualizacion ? doc.prd_Usr_Actualizacion.toString() : null,
+            usuarioActualizacionId: doc.prd_Actualizacion_Id ?? null,
+            usuarioActualizacionNombre: doc.prd_Actualizacion_Nombre ? doc.prd_Actualizacion_Nombre.toString() : null,
             fechaEliminacion: doc.prd_Fecha_Eliminacion ?? null,
-            usuarioEliminacion: doc.prd_Usr_Eliminacion ? doc.prd_Usr_Eliminacion.toString() : null,
+            usuarioEliminacionId: doc.prd_Eliminacion_Id ?? null,
+            usuarioEliminacionNombre: doc.prd_Eliminacion_Nombre ? doc.prd_Eliminacion_Nombre.toString() : null
+            
         });
     }
 

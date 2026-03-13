@@ -11,11 +11,14 @@ class ColoresSchemaRepository extends ColoresRepository {
             hex: doc.col_Hex,
             estado: doc.col_Estado,
             fechaCreacion: doc.col_Fecha_Creacion,
-            usuarioCreacion: doc.col_Usr_Creacion ? doc.col_Usr_Creacion.toString() : null,
+            usuarioCreacionId: doc.col_Creacion_Id,
+            usuarioCreacionNombre: doc.col_Creacion_Nombre ? doc.col_Creacion_Nombre.toString() : null,
             fechaActualizacion: doc.col_Fecha_Actualizacion ?? null,
-            usuarioActualizacion: doc.col_Usr_Actualizacion ? doc.col_Usr_Actualizacion.toString() : null,
+            usuarioActualizacionId: doc.col_Actualizacion_Id,
+            usuarioActualizacionNombre: doc.col_Actualizacion_Nombre ? doc.col_Actualizacion_Nombre.toString() : null,
             fechaEliminacion: doc.col_Fecha_Eliminacion ?? null,
-            usuarioEliminacion: doc.col_Usr_Eliminacion ? doc.col_Usr_Eliminacion.toString() : null,
+            usuarioEliminacionNombre: doc.col_Eliminacion_Nombre ? doc.col_Eliminacion_Nombre.toString() : null,
+            usuarioEliminacionId: doc.col_Eliminacion_Id
         });
     }
 

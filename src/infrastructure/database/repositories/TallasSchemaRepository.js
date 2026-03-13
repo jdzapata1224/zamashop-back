@@ -11,11 +11,14 @@ class TallasSchemaRepository extends TallasRepository {
             orden: doc.tal_Orden,
             estado: doc.tal_Estado,
             fechaCreacion: doc.tal_Fecha_Creacion,
-            usuarioCreacion: doc.tal_Usr_Creacion ? doc.tal_Usr_Creacion.toString() : null,
+            usuarioCreacionId: doc.tal_Creacion_Id,
+            usuarioCreacionNombre: doc.tal_Creacion_Nombre ? doc.tal_Creacion_Nombre.toString() : null,
             fechaActualizacion: doc.tal_Fecha_Actualizacion ?? null,
-            usuarioActualizacion: doc.tal_Usr_Actualizacion ? doc.tal_Usr_Actualizacion.toString() : null,
+            usuarioActualizacionId: doc.tal_Actualizacion_Id,
+            usuarioActualizacionNombre: doc.tal_Actualizacion_Nombre ? doc.tal_Actualizacion_Nombre.toString() : null,
             fechaEliminacion: doc.tal_Fecha_Eliminacion ?? null,
-            usuarioEliminacion: doc.tal_Usr_Eliminacion ? doc.tal_Usr_Eliminacion.toString() : null,
+            usuarioEliminacionNombre: doc.tal_Eliminacion_Nombre ? doc.tal_Eliminacion_Nombre.toString() : null,
+            usuarioEliminacionId: doc.tal_Eliminacion_Id
         });
     }
 

@@ -7,7 +7,7 @@ const requireString = (value, fieldName) => {
 };
 
 const requireNumber = (value, fieldName) => {
-  if (!value || typeof value !== 'number') {
+  if (value === null || value === undefined || typeof value !== 'number') {
     throw new Error(`${fieldName} es requerido`);
   }
 };
@@ -18,7 +18,7 @@ const requireEnum = (value, fieldName, validValues) => {
   }
 };
 const requireBoolean = (value, fieldName) => {
-  if (!value || typeof value !== 'boolean') {
+  if (value === null || value === undefined || typeof value !== 'boolean') {
     throw new Error(`${fieldName} es requerido`);
   }
 };
