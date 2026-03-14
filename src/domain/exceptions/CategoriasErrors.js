@@ -2,7 +2,7 @@ const { NotImplementedError, EmptyResultError } = require('./BaseErrors');
 
 class CategoriasAlreadyExistsError extends Error {
   constructor() {
-    super('La Categoria ya existe');
+    super('Categoria ya existe');
     this.name       = 'CategoriasAlreadyExistsError';
     this.statusCode = 409;
   }

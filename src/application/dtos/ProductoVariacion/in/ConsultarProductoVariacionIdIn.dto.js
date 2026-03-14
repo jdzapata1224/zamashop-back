@@ -3,7 +3,7 @@ const {  requireObjectId }  = require('../../../../infrastructure/utils/validate
 
 
 class ConsultarProductoVariacionIdInDTO {
-  constructor(id) {
+  constructor({id}) {
     requireObjectId(id, 'id');
 
     this.id = toObjectId(id);

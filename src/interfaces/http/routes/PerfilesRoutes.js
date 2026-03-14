@@ -1,6 +1,7 @@
 const express               = require('express');
 const router                = express.Router();
 const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
+const TokensSchemaRepository = require('../../../infrastructure/database/repositories/TokensSchemaRepository');
 
 const PerfilesSchemaRepository   = require('../../../infrastructure/database/repositories/PerfilesSchemaRepository');
 
@@ -21,6 +22,9 @@ const CambiarEstadoPerfilesController      = require('../controllers/Perfiles/Ca
 
 const ActualizarPerfilesUseCase    = require('../../../application/use-cases/Perfiles/ActualizarPerfiles');
 const ActualizarPerfilesController = require('../controllers/Perfiles/ActualizarPerfilesController');
+
+const tokensRepository = new TokensSchemaRepository();
+const auth = authMiddleware(tokensRepository); 
 
 const perfilesRepository  = new PerfilesSchemaRepository();
 
@@ -43,7 +47,7 @@ const actualizarPerfilesUseCase      = new ActualizarPerfilesUseCase(perfilesRep
 const actualizarPerfilesController      = new ActualizarPerfilesController(actualizarPerfilesUseCase);
 
 
-router.use(authMiddleware);
+router.use(auth);
 router.get('/ConsultarPerfilesId/:id',(req, res) => consultarPerfilesIdController.consultarPerfilesId(req, res));
 router.get('/ConsultarPerfiles',(req, res) => consultarPerfilesController.consultarPerfiles(req, res));
 router.post('/CrearPerfiles',(req, res) => crearPerfilesController.crearPerfiles(req, res));

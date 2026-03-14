@@ -1,9 +1,9 @@
 const express               = require('express');
 const router                = express.Router();
 const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
+const TokensSchemaRepository = require('../../../infrastructure/database/repositories/TokensSchemaRepository');
 
 const UsuariosSchemaRepository   = require('../../../infrastructure/database/repositories/UsuariosSchemaRepository');
-const TokensSchemaRepository         = require('../../../infrastructure/database/repositories/TokensSchemaRepository');
 
 const ConsultarUsuariosIdUseCase = require('../../../application/use-cases/Usuarios/ConsultarUsuariosId');
 const ConsultarUsuariosIdController        = require('../controllers/Usuarios/ConsultarUsuariosIdController');
@@ -36,7 +36,6 @@ const GenerarTokenCambioClaveController = require('../controllers/Usuarios/Gener
 const userRepository  = new UsuariosSchemaRepository();
 const tokensRepository = new TokensSchemaRepository();
 
-
 const opcionesPerfilesRepository = new OpcionesPerfilesSchemaRepository();
 const opcionesUsuariosRepository = new OpcionesUsuariosSchemaRepository();
 
@@ -67,7 +66,9 @@ const generarTokenCambioClaveController = new GenerarTokenCambioClaveController(
 
 router.patch('/CambiarClave', (req, res) => cambiarClaveController.cambiarClave(req, res));
 
-router.use(authMiddleware);
+
+const auth = authMiddleware(tokensRepository); 
+router.use(auth);
 router.get('/ConsultarUsuariosId/:id',(req, res) => consultarUsuariosIdController.consultarUsuariosId(req, res));
 router.get('/ConsultarUsuarios',(req, res) => consultarUsuariosController.consultarUsuarios(req, res));
 router.post('/CrearUsuario',(req, res) => crearUsuarioController.crearUsuario(req, res));

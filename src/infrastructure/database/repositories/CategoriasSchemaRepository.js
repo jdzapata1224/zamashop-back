@@ -294,7 +294,7 @@ class CategoriasSchemaRepository extends CategoriasRepository {
     const doc = new CategoriasSchema(payload);
     const saved = await doc.save();
                             
-    if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
+    if (!saved || !saved._id) throw new Error('No se pudo crear la categoria');
                             
     return this._toEntity(saved);
 
@@ -305,7 +305,6 @@ class CategoriasSchemaRepository extends CategoriasRepository {
     const payload={
       cat_Nombre:        data.nombre,
       cat_Descripcion:      data.descripcion,
-      cat_Estado:         true,
       cat_Fecha_Actualizacion: new Date(),
       cat_Usr_Actualizacion:data.usuarioActualizacion
     };
@@ -316,7 +315,7 @@ class CategoriasSchemaRepository extends CategoriasRepository {
       { new: true }
     );
 
-    if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+    if (!doc || !doc._id) throw new Error('No se pudo actualizar la categoria');
     return this._toEntity(doc);
   }
 

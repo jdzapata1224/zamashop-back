@@ -1,6 +1,7 @@
 const express               = require('express');
 const router                = express.Router();
 const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
+const TokensSchemaRepository = require('../../../infrastructure/database/repositories/TokensSchemaRepository');
 
 const ProductosSchemaRepository   = require('../../../infrastructure/database/repositories/ProductosSchemaRepository');
 
@@ -21,6 +22,9 @@ const CambiarEstadoProductosController      = require('../controllers/Productos/
 
 const ActualizarProductosUseCase    = require('../../../application/use-cases/Productos/ActualizarProductos');
 const ActualizarProductosController = require('../controllers/Productos/ActualizarProductosController');
+
+const tokensRepository = new TokensSchemaRepository();
+const auth = authMiddleware(tokensRepository); 
 
 const productosRepository  = new ProductosSchemaRepository();
 
@@ -43,7 +47,7 @@ const actualizarProductosUseCase      = new ActualizarProductosUseCase(productos
 const actualizarProductosController      = new ActualizarProductosController(actualizarProductosUseCase);
 
 
-router.use(authMiddleware);
+router.use(auth);
 router.get('/ConsultarProductosId/:id',(req, res) => consultarProductosIdController.consultarProductosId(req, res));
 router.get('/ConsultarProductos',(req, res) => consultarProductosController.consultarProductos(req, res));
 router.post('/CrearProductos',(req, res) => crearProductosController.crearProductos(req, res));

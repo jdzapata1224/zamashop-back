@@ -2,7 +2,7 @@ const { requireObjectId }  = require('../../../../infrastructure/utils/validate.
 const { toObjectId }             = require('../../../../infrastructure/utils/basic.util');
 
 class ConsultarOpcionesUsuarioInDTO {
-  constructor(id) {
+  constructor({id}) {
     requireObjectId(id, 'id');
     this.id      = toObjectId(id);
   }

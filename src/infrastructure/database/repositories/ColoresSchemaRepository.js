@@ -192,7 +192,7 @@ class ColoresSchemaRepository extends ColoresRepository {
             { new: true }
         );
 
-        if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+        if (!doc || !doc._id) throw new Error('No se pudo actualizar el color');
         return this._toEntity(doc);
 
 
@@ -213,7 +213,7 @@ class ColoresSchemaRepository extends ColoresRepository {
             { new: true }       
         );
 
-        if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+        if (!doc || !doc._id) throw new Error('No se pudo actualizar el color');
         return this._toEntity(doc);
 
 
@@ -308,7 +308,7 @@ class ColoresSchemaRepository extends ColoresRepository {
         const doc = new ColoresSchema(payload);
         const saved = await doc.save();
                         
-        if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
+        if (!saved || !saved._id) throw new Error('No se pudo crear el color');
                         
         return this._toEntity(saved);
     }
@@ -328,7 +328,7 @@ class ColoresSchemaRepository extends ColoresRepository {
             { new: true }
         );
 
-        if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+        if (!doc || !doc._id) throw new Error('No se pudo actualizar el color');
         return this._toEntity(doc);
     }
 

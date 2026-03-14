@@ -1,6 +1,7 @@
 const express               = require('express');
 const router                = express.Router();
 const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
+const TokensSchemaRepository = require('../../../infrastructure/database/repositories/TokensSchemaRepository');
 
 const ProductoVariacionSchemaRepository   = require('../../../infrastructure/database/repositories/ProductoVariacionSchemaRepository');
 
@@ -43,7 +44,9 @@ const actualizarProductoVariacionUseCase      = new ActualizarProductoVariacionU
 const actualizarProductoVariacionController      = new ActualizarProductoVariacionController(actualizarProductoVariacionUseCase);
 
 
-router.use(authMiddleware);
+const tokensRepository = new TokensSchemaRepository();
+const auth = authMiddleware(tokensRepository); 
+router.use(auth);
 router.get('/ConsultarProductoVariacionId/:id',(req, res) => consultarProductoVariacionIdController.consultarProductoVariacionId(req, res));
 router.get('/ConsultarProductoVariacion',(req, res) => consultarProductoVariacionController.consultarProductoVariacion(req, res));
 router.post('/CrearProductoVariacion',(req, res) => crearProductoVariacionController.crearProductoVariacion(req, res));

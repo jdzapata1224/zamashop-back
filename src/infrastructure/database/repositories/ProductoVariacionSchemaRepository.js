@@ -268,7 +268,7 @@ class ProductoVariacionSchemaRepository extends ProductoVariacionRepository {
             { new: true }
         );
 
-        if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+        if (!doc || !doc._id) throw new Error('No se pudo actualizar el producto variacion');
         return this._toEntity(doc);
 
 
@@ -289,7 +289,7 @@ class ProductoVariacionSchemaRepository extends ProductoVariacionRepository {
             { new: true }       
         );
 
-        if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+        if (!doc || !doc._id) throw new Error('No se pudo actualizar el producto variacion');
         return this._toEntity(doc);
 
 
@@ -424,7 +424,7 @@ class ProductoVariacionSchemaRepository extends ProductoVariacionRepository {
         const saved = await doc.save();
 
 
-        if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
+        if (!saved || !saved._id) throw new Error('No se pudo crear el producto variacion');
 
         return this._toEntity(saved);
     }
@@ -448,7 +448,7 @@ class ProductoVariacionSchemaRepository extends ProductoVariacionRepository {
             { new: true }
         );
 
-        if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+        if (!doc || !doc._id) throw new Error('No se pudo actualizar el producto variacion');
         return this._toEntity(doc);
     }
 

@@ -1,6 +1,7 @@
 const express               = require('express');
 const router                = express.Router();
 const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
+const TokensSchemaRepository = require('../../../infrastructure/database/repositories/TokensSchemaRepository');
 
 const TallasSchemaRepository   = require('../../../infrastructure/database/repositories/TallasSchemaRepository');
 
@@ -43,7 +44,9 @@ const actualizarTallasUseCase      = new ActualizarTallasUseCase(tallasRepositor
 const actualizarTallasController      = new ActualizarTallasController(actualizarTallasUseCase);
 
 
-router.use(authMiddleware);
+const tokensRepository = new TokensSchemaRepository();
+const auth = authMiddleware(tokensRepository); 
+router.use(auth);
 router.get('/ConsultarTallasId/:id',(req, res) => consultarTallasIdController.consultarTallasId(req, res));
 router.get('/ConsultarTallas',(req, res) => consultarTallasController.consultarTallas(req, res));
 router.post('/CrearTallas',(req, res) => crearTallasController.crearTallas(req, res));

@@ -2,6 +2,8 @@ const express               = require('express');
 const router                = express.Router();
 const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
 
+const TokensSchemaRepository = require('../../../infrastructure/database/repositories/TokensSchemaRepository');
+
 const CategoriasSchemaRepository   = require('../../../infrastructure/database/repositories/CategoriasSchemaRepository');
 
 const ConsultarCategoriasIdUseCase = require('../../../application/use-cases/Categorias/ConsultarCategoriasId');
@@ -21,6 +23,9 @@ const CambiarEstadoCategoriasController      = require('../controllers/Categoria
 
 const ActualizarCategoriaUseCase    = require('../../../application/use-cases/Categorias/ActualizarCategorias');
 const ActualizarCategoriasController = require('../controllers/Categorias/ActualizarCategoriasController');
+const tokensRepository = new TokensSchemaRepository();
+
+const auth = authMiddleware(tokensRepository); // ← se crea una vez por archivo de rutas
 
 const categoriasRepository  = new CategoriasSchemaRepository();
 
@@ -43,7 +48,7 @@ const actualizarCategoriaUseCase      = new ActualizarCategoriaUseCase(categoria
 const actualizarCategoriasController      = new ActualizarCategoriasController(actualizarCategoriaUseCase);
 
 
-router.use(authMiddleware);
+router.use(auth);
 router.get('/ConsultarCategoriasId/:id',(req, res) => consultarCategoriasIdController.consultarCategoriasId(req, res));
 router.get('/ConsultarCategorias',(req, res) => consultarCategoriasController.consultarCategorias(req, res));
 router.post('/CrearCategoria',(req, res) => crearCategoriasController.crearCategorias(req, res));

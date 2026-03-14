@@ -1,9 +1,6 @@
-const jwt                    = require('jsonwebtoken');
-const TokensSchemaRepository = require('../database/repositories/TokensSchemaRepository');
+const jwt = require('jsonwebtoken');
 
-const tokensRepository = new TokensSchemaRepository();
-
-const authMiddleware = async (req, res, next) => {
+const authMiddleware = (tokensRepository) => async (req, res, next) => {
   const authHeader = req.headers['authorization'];
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -22,13 +19,13 @@ const authMiddleware = async (req, res, next) => {
     next();
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-          try {
-            const decoded = jwt.decode(token);
-            if (decoded?.jti) await tokensRepository.invalidateByJti(decoded.jti).catch(() => {});
-          } catch (_) {}
-          return res.status(401).json({ codigo: 401, mensaje: 'Token expirado' });
-        }
-        return res.status(401).json({ codigo: 401, mensaje: 'Token inválido' });
+      try {
+        const decoded = jwt.decode(token);
+        if (decoded?.jti) await tokensRepository.invalidateByJti(decoded.jti).catch(() => {});
+      } catch (_) {}
+      return res.status(401).json({ codigo: 401, mensaje: 'Token expirado' });
+    }
+    return res.status(401).json({ codigo: 401, mensaje: 'Token inválido' });
   }
 };
 

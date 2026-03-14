@@ -135,7 +135,7 @@ class PerfilesSchemaRepository extends PerfilesRepository {
       { new: true }                 // ← sin upsert: si no existe, no crea
     );
 
-    if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+    if (!doc || !doc._id) throw new Error('No se pudo actualizar el perfil');
     return this._toEntity(doc);
   }
 
@@ -152,7 +152,7 @@ class PerfilesSchemaRepository extends PerfilesRepository {
       { new: true }
     );
 
-    if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+    if (!doc || !doc._id) throw new Error('No se pudo actualizar el perfil');
     return this._toEntity(doc);
 
 
@@ -363,7 +363,7 @@ class PerfilesSchemaRepository extends PerfilesRepository {
     const doc = new PerfilesSchema(payload);
     const saved = await doc.save();
             
-    if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
+    if (!saved || !saved._id) throw new Error('No se pudo crear el perfil');
             
     return this._toEntity(saved);
 
@@ -384,7 +384,7 @@ class PerfilesSchemaRepository extends PerfilesRepository {
       { new: true }
     );
 
-    if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+    if (!doc || !doc._id) throw new Error('No se pudo actualizar el perfil');
     return this._toEntity(doc);
   }
 

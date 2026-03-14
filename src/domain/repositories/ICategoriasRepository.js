@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../exceptions/UsuariosErrors');
+const { NotImplementedError } = require('../exceptions/CategoriasErrors');
 
 class ICategoriasRepository {
   

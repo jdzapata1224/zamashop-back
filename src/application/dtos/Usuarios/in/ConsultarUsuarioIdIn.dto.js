@@ -3,7 +3,7 @@ const { toObjectId }             = require('../../../../infrastructure/utils/bas
 
 
 class ConsultarUsuarioIdInDTO {
-  constructor(id) {
+  constructor({id}) {
     requireObjectId(id,                   'id');
 
     this.id = toObjectId(id);

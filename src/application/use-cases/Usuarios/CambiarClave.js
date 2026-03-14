@@ -24,7 +24,7 @@ class CambiarClave {
     const tokenDoc = await this.tokensRepository.findByJtiYAction(decoded.jti, 'CAMBIO_CLAVE');
     if (!tokenDoc) throw new Error('Token ya utilizado o inválido');
 
-    await this.usuarioRepository.cambiarClave({id:decoded.id,nuevaClave});
+    await this.usuarioRepository.cambiarClave({id:decoded.uui,nuevaClave});
     await this.tokensRepository.invalidateByJti(decoded.jti);
   }
 }

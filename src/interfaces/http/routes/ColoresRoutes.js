@@ -1,6 +1,7 @@
 const express               = require('express');
 const router                = express.Router();
 const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
+const TokensSchemaRepository = require('../../../infrastructure/database/repositories/TokensSchemaRepository');
 
 const ColoresSchemaRepository   = require('../../../infrastructure/database/repositories/ColoresSchemaRepository');
 
@@ -41,9 +42,11 @@ const cambiarEstadoColoresController     = new CambiarEstadoColoresController(ca
 
 const actualizarColoresUseCase      = new ActualizarColoresUseCase(coloresRepository);
 const actualizarColoresController      = new ActualizarColoresController(actualizarColoresUseCase);
+const tokensRepository = new TokensSchemaRepository();
+const auth = authMiddleware(tokensRepository); // ← se crea una vez por archivo de rutas
 
 
-router.use(authMiddleware);
+router.use(auth);
 router.get('/ConsultarColoresId/:id',(req, res) => consultarColoresIdController.consultarColoresId(req, res));
 router.get('/ConsultarColores',(req, res) => consultarColoresController.consultarColores(req, res));
 router.post('/CrearColores',(req, res) => crearColoresController.crearColores(req, res));

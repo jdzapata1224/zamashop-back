@@ -1,6 +1,7 @@
 const express               = require('express');
 const router                = express.Router();
 const authMiddleware        = require('../../../infrastructure/middlewares/authMiddleware');
+const TokensSchemaRepository = require('../../../infrastructure/database/repositories/TokensSchemaRepository');
 
 const OpcionesSchemaRepository   = require('../../../infrastructure/database/repositories/OpcionesSchemaRepository');
 const OpcionesUsuariosSchemaRepository = require('../../../infrastructure/database/repositories/OpcionesUsuariosSchemaRepository');
@@ -34,6 +35,9 @@ const EliminarOpcionesController      = require('../controllers/Opciones/Elimina
 const CambiarEstadoOpcionesUseCase         = require('../../../application/use-cases/Opciones/CambiarEstadoOpciones');
 const CambiarEstadoOpcionesController      = require('../controllers/Opciones/CambiarEstadoOpcionesController');
 
+const tokensRepository = new TokensSchemaRepository();
+const auth = authMiddleware(tokensRepository); 
+
 const opcionesRepository  = new OpcionesSchemaRepository();
 const opcionesUsuariosRepository  = new OpcionesUsuariosSchemaRepository();
 const opcionesPerfilesRepository  = new OpcionesPerfilesSchemaRepository();
@@ -66,7 +70,7 @@ const consultarOpcionesUsuarioController      = new ConsultarOpcionesUsuarioCont
 const consultarOpcionesPerfilUseCase      = new ConsultarOpcionesPerfilUseCase(opcionesPerfilesRepository);
 const consultarOpcionesPerfilController      = new ConsultarOpcionesPerfilController(consultarOpcionesPerfilUseCase);
 
-router.use(authMiddleware);
+router.use(auth);
 
 router.get('/ConsultarOpcionesId/:id',(req, res) => consultarOpcionesIdController.consultarOpcionesId(req, res));
 router.get('/ConsultarOpciones',(req, res) => consultarOpcionesController.consultarOpciones(req, res));

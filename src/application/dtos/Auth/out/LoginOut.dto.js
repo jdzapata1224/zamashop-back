@@ -1,7 +1,7 @@
 const { trimmedString }  = require('../../../../infrastructure/utils/basic.util');
 
 class LoginOutDTO {
-  constructor(token) {
+  constructor({token}) {
     this.token          = token;
     
   }
