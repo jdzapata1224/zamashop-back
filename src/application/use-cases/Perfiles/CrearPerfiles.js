@@ -1,6 +1,7 @@
 const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 const { PerfilesAlreadyExistsError } = require('../../../domain/exceptions/PerfilesErrors');
 const CrearPerfilesIn = require('../../dtos/Perfiles/in/CrearPerfilesIn.dto');
+const CrearPerfilesOut = require('../../dtos/Perfiles/out/CrearPerfilesOut.dto');
 
 
 class CrearPerfiles {
@@ -17,6 +18,7 @@ class CrearPerfiles {
 
     const creado = await this.perfilesRepository.create(inputDto);
     if (!creado) throw new Error('No se pudo crear la categoría');
+    return new CrearPerfilesOut(creado);
 
   }
 }

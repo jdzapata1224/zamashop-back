@@ -53,7 +53,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
 
   async cambiarClave(id, nuevaClave) {
     const hash = await hashPassword(nuevaClave);
-    await UsuariosSchema.findByIdAndUpdate(id, {
+    await UsuariosSchema.findByIdAndUpdate(Types.ObjectId(id), {
       $set: {
         usr_Password: hash,
         usr_Requiere_Cambio_Clave: false,
@@ -67,7 +67,7 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     const docs = await UsuariosSchema.aggregate([
       {
         $match: {
-          _id: id,
+          _id: Types.ObjectId(id),
           $or: [
             { usr_Fecha_Eliminacion: null },
             { usr_Fecha_Eliminacion: { $exists: false } },
@@ -406,7 +406,6 @@ class UsuariosSchemaRepository extends UsuariosRepository {
         },
       },
     ]);
-    console.log(docs);
     return docs.length ? this._toEntity(docs[0]) : null;
   }
 
@@ -429,11 +428,12 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     if (data.segundo_nombre) payload.usr_Segundo_Nombre = data.segundo_nombre;
     if (data.segundo_apellido) payload.usr_Segundo_Apellido = data.segundo_apellido;
 
-    const doc = await UsuariosSchema.create(payload);
+    const doc = new UsuariosSchema(payload);
+    const saved = await doc.save();
 
-    if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
+    if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
 
-    return this._toEntity(doc);
+    return this._toEntity(saved);
   }
 
   async update(data) {

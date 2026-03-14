@@ -8,8 +8,8 @@ class CrearTallasController extends BaseController {
   
   crearTallas  = this.handle(async (req, res) => {
     this.requireBody(req);
-    await this.crearTallasUseCase.execute({ ...req.body, infoLogin: req.infoLogin });
-    res.status(200).json({ codigo: 200, mensaje: 'Registro Creado Satisfactoriamente' });
+    const responseCrearTalla=await this.crearTallasUseCase.execute({ ...req.body, infoLogin: req.infoLogin });
+    res.status(200).json({ codigo: 200, mensaje: 'Registro Creado Satisfactoriamente',data:responseCrearTalla });
   });
 }
 

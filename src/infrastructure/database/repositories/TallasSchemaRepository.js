@@ -309,12 +309,12 @@ class TallasSchemaRepository extends TallasRepository {
             tal_Fecha_Creacion: new Date(),
             tal_Usr_Creacion: data.usuarioCreacion,
         };
-        const doc = await TallasSchema.create(payload);
-
-
-        if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
-
-        return this._toEntity(doc);
+        const doc = new TallasSchema(payload);
+        const saved = await doc.save();
+                    
+        if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
+                    
+        return this._toEntity(saved);
     }
 
     async update(data) {

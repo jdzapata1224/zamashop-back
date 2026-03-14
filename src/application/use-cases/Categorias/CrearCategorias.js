@@ -1,6 +1,7 @@
 const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 const { CategoriasAlreadyExistsError } = require('../../../domain/exceptions/CategoriasErrors');
 const CrearCategoriasIn = require('../../dtos/Categorias/in/CrearCategoriasIn.dto');
+const CrearCategoriasOut = require('../../dtos/Categorias/out/CrearCategoriasOut.dto');
 
 
 class CrearCategorias {
@@ -17,6 +18,7 @@ class CrearCategorias {
 
     const creado = await this.categoriasRepository.create(inputDto);
     if (!creado) throw new Error('No se pudo crear la categoría');
+    return new CrearCategoriasOut(creado);
 
   }
 }

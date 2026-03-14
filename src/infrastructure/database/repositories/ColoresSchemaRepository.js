@@ -305,12 +305,12 @@ class ColoresSchemaRepository extends ColoresRepository {
             col_Fecha_Creacion: new Date(),
             col_Usr_Creacion: data.usuarioCreacion,
         };
-        const doc = await ColoresSchema.create(payload);
-
-
-        if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
-
-        return this._toEntity(doc);
+        const doc = new ColoresSchema(payload);
+        const saved = await doc.save();
+                        
+        if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
+                        
+        return this._toEntity(saved);
     }
 
     async update(data) {

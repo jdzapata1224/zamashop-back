@@ -193,12 +193,13 @@ class OpcionesSchemaRepository extends OpcionesRepository {
       opc_Usr_Creacion:data.usuarioCreacion
     };
 
-    const doc = await OpcionesSchema.create(payload);
+    const doc = new OpcionesSchema(payload);
+    const saved = await doc.save();
+                
+    if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
+                
+    return this._toEntity(saved);
 
-
-    if (!doc || !doc._id) throw new Error('No se pudo crear la opción');
-
-    return this._toEntity(doc);
   }
 
   async delete(data) {

@@ -2,7 +2,7 @@ const { NotImplementedError, EmptyResultError } = require('./BaseErrors');
 
 class ProductoVariacionAlreadyExistsError extends Error {
   constructor() {
-    super('La Opcion ya existe');
+    super('Producto ya existe');
     this.name       = 'ProductoVariacionAlreadyExistsError';
     this.statusCode = 409;
   }
@@ -10,7 +10,7 @@ class ProductoVariacionAlreadyExistsError extends Error {
 
 class ProductoVariacionInactiveError extends Error {
   constructor() {
-    super('Opcion se encuentra inactiva');
+    super('Producto se encuentra inactiva');
     this.name       = 'ProductoVariacionInactiveError';
     this.statusCode = 403;
   }
@@ -18,7 +18,7 @@ class ProductoVariacionInactiveError extends Error {
 
 class ProductoVariacionNotFoundError extends Error {
   constructor(id) {
-    super(`Opcion con id ${id} no encontrada`);
+    super(`Producto con id ${id} no encontrada`);
     this.name       = 'ProductoVariacionNotFoundError';
     this.statusCode = 404;
   }

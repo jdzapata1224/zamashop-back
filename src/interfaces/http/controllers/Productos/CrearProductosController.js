@@ -8,8 +8,8 @@ class CrearProductosController extends BaseController {
   
   crearProductos  = this.handle(async (req, res) => {
     this.requireBody(req);
-    await this.crearProductosUseCase.execute({ ...req.body, infoLogin: req.infoLogin });
-    res.status(200).json({ codigo: 200, mensaje: 'Registro Creado Satisfactoriamente' });
+    const responseCrearProducto=await this.crearProductosUseCase.execute({ ...req.body, infoLogin: req.infoLogin });
+    res.status(200).json({ codigo: 200, mensaje: 'Registro Creado Satisfactoriamente',data:responseCrearProducto });
   });
 }
 

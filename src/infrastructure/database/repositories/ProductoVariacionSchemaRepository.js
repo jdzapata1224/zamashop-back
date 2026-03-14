@@ -420,12 +420,13 @@ class ProductoVariacionSchemaRepository extends ProductoVariacionRepository {
             prv_Usr_Creacion: data.usuarioCreacion,
             
         };
-        const doc = await ProductoVariacionSchema.create(payload);
+        const doc = new ProductoVariacionSchema(payload);
+        const saved = await doc.save();
 
 
-        if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
+        if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
 
-        return this._toEntity(doc);
+        return this._toEntity(saved);
     }
 
     async update(data) {

@@ -8,8 +8,8 @@ class CrearProductoVariacionController extends BaseController {
   
   crearProductoVariacion  = this.handle(async (req, res) => {
     this.requireBody(req);
-    await this.crearProductoVariacionUseCase.execute({ ...req.body, infoLogin: req.infoLogin });
-    res.status(200).json({ codigo: 200, mensaje: 'Registro Creado Satisfactoriamente' });
+    const responseCrearProductoVariacion=await this.crearProductoVariacionUseCase.execute({ ...req.body, infoLogin: req.infoLogin });
+    res.status(200).json({ codigo: 200, mensaje: 'Registro Creado Satisfactoriamente',data:responseCrearProductoVariacion });
   });
 }
 

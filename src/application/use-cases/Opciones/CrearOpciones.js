@@ -1,5 +1,6 @@
 const { OpcionesAlreadyExistsError } = require('../../../domain/exceptions/OpcionesErrors');
 const CrearOpcionesIn = require('../../dtos/Opciones/in/CrearOpcionesIn.dto');
+const CrearOpcionesOut = require('../../dtos/Opciones/out/CrearOpcionesOut.dto');
 const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 
 
@@ -17,6 +18,7 @@ class CrearOpciones {
    
     const creado =await this.opcionesRepository.create(inputDto);
     if (!creado) throw new Error('No se pudo crear la opción');
+    return new CrearOpcionesOut(creado);
 
   }
 }

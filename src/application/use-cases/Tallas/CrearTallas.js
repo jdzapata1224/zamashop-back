@@ -1,6 +1,7 @@
 const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 const { TallasAlreadyExistsError } = require('../../../domain/exceptions/TallasErrors');
 const CrearTallasIn = require('../../dtos/Tallas/in/CrearTallasIn.dto');
+const CrearTallasOut = require('../../dtos/Tallas/out/CrearTallasOut.dto');
 
 
 class CrearTallas {
@@ -17,6 +18,7 @@ class CrearTallas {
 
     const creado = await this.tallasRepository.create(inputDto);
     if (!creado) throw new Error('No se pudo crear la categoría');
+    return new CrearTallasOut(creado);
 
   }
 }

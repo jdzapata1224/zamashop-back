@@ -360,11 +360,14 @@ class PerfilesSchemaRepository extends PerfilesRepository {
       prf_Creacion: data.usuarioCreacion
     };
 
-       const doc = await PerfilesSchema.create(payload);
+    const doc = new PerfilesSchema(payload);
+    const saved = await doc.save();
+            
+    if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
+            
+    return this._toEntity(saved);
 
-    if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
-
-    return this._toEntity(doc);
+    
   }
 
   async update(data) {

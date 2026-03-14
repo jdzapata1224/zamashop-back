@@ -8,8 +8,8 @@ class CrearColoresController extends BaseController {
   
   crearColores  = this.handle(async (req, res) => {
     this.requireBody(req);
-    await this.crearColoresUseCase.execute({ ...req.body, infoLogin: req.infoLogin });
-    res.status(200).json({ codigo: 200, mensaje: 'Registro Creado Satisfactoriamente' });
+    const responseCrearColores=await this.crearColoresUseCase.execute({ ...req.body, infoLogin: req.infoLogin });
+    res.status(200).json({ codigo: 200, mensaje: 'Registro Creado Satisfactoriamente',data:responseCrearColores });
   });
 }
 

@@ -8,8 +8,8 @@ class CrearPerfilesController extends BaseController {
   
   crearPerfiles  = this.handle(async (req, res) => {
     this.requireBody(req);
-    await this.crearPerfilesUseCase.execute({ ...req.body, infoLogin: req.infoLogin });
-    res.status(200).json({ codigo: 200, mensaje: 'Registro Creado Satisfactoriamente' });
+    const responseCrearPerfiles=await this.crearPerfilesUseCase.execute({ ...req.body, infoLogin: req.infoLogin });
+    res.status(200).json({ codigo: 200, mensaje: 'Registro Creado Satisfactoriamente',data:responseCrearPerfiles  });
   });
 }
 

@@ -364,12 +364,14 @@ class ProductosSchemaRepository extends ProductosRepository {
             prd_Usr_Creacion: data.usuarioCreacion,
             prd_Precio_Base:data.precioBase
         };
-        const doc = await ProductosSchema.create(payload);
 
+        const doc = new ProductosSchema(payload);
+        const saved = await doc.save();
+        
+        if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
+        
+        return this._toEntity(saved);
 
-        if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
-
-        return this._toEntity(doc);
     }
 
     async update(data) {

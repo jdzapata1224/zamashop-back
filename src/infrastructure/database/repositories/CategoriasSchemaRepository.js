@@ -117,7 +117,7 @@ class CategoriasSchemaRepository extends CategoriasRepository {
       },
       {
         $lookup: {
-          from:         'Categorias',
+          from:         'Usuarios',
           localField:   'cat_Usr_Creacion',
           foreignField: '_id',
           as:           'usuarioCreacion',
@@ -290,12 +290,15 @@ class CategoriasSchemaRepository extends CategoriasRepository {
       cat_Fecha_Creacion: new Date(),
       cat_Usr_Creacion:data.usuarioCreacion
     };
-    const doc = await CategoriasSchema.create(payload);
 
+    const doc = new CategoriasSchema(payload);
+    const saved = await doc.save();
+                            
+    if (!saved || !saved._id) throw new Error('No se pudo crear el usuario');
+                            
+    return this._toEntity(saved);
 
-    if (!doc || !doc._id) throw new Error('No se pudo crear el usuario');
-
-    return this._toEntity(doc);
+    
   }
 
  async update(data) {

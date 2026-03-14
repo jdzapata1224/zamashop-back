@@ -1,6 +1,8 @@
 const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 const { UserAlreadyExistsError } = require('../../../domain/exceptions/UsuariosErrors');
 const CrearUsuarioIn = require('../../dtos/Usuarios/in/CrearUsuarioIn.dto');
+const CrearUsuariosOut = require('../../dtos/Usuarios/out/CrearUsuariosOut.dto'); // 👈
+
 
 class CrearUsuario {
   constructor(usuarioRepository, opcionesPerfilesRepository, opcionesUsuariosRepository) {
@@ -18,10 +20,10 @@ class CrearUsuario {
     
     let usuarioFinal = `${inputDto.primer_nombre.charAt(0)}${inputDto.primer_apellido}`.toLowerCase();
     let contador = 0;
-   
+    let usuarioBase=usuarioFinal;
     while (await this.usuarioRepository.findByUsuario(usuarioFinal)) {
       contador++;
-      usuarioFinal = `${inputDto.usuarioBase}${contador}`;
+      usuarioFinal = `${usuarioBase}${contador}`;
     }
    
     
@@ -36,6 +38,8 @@ class CrearUsuario {
         tokenId
       );
     }
+    
+    return new CrearUsuariosOut(creado);
 
   }
 }

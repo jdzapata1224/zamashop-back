@@ -48,19 +48,14 @@ class Login {
     if (sesionesActivas >= MAX_SESIONES) {
       const masAntigua = await this.tokensRepository.findMasAntiguaByUsuario(usuario.id);
       if (masAntigua) await this.tokensRepository.invalidateByJti(masAntigua.tkn_Jti);
-      // continúa sin throw
     }
     const jti = randomUUID();
 
     const payload = {
-      id:              usuario.id,
-      usuario:         usuario.usuario,
-      primer_nombre:   usuario.primer_nombre,
-      primer_apellido: usuario.primer_apellido,
-      correo:          usuario.correo,
+      uui:              usuario.id,
+      nombre:   usuario.primer_nombre+" "+usuario.primer_apellido,
       jti,
     };
-    
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN || '8h',
     });
@@ -78,12 +73,7 @@ class Login {
       tipoToken: 'JWT',
       usuarioCreacion: usuario.id,
     });
-    return new LoginOutDTO({
-      ...payload,
-      token,
-      fechaEmision: toDate(decoded.iat),
-      fechaExpiracion:  toDate(decoded.exp)
-    });
+    return new LoginOutDTO(token);
     
   }
 }

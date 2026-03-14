@@ -1,6 +1,7 @@
 const { extractTokenId } = require('../../../infrastructure/utils/basic.util');
 const { ColoresAlreadyExistsError } = require('../../../domain/exceptions/ColoresErrors');
 const CrearColoresIn = require('../../dtos/Colores/in/CrearColoresIn.dto');
+const CrearColoresOut = require('../../dtos/Colores/out/CrearColoresOut.dto');
 
 
 class CrearColores {
@@ -17,6 +18,7 @@ class CrearColores {
 
     const creado = await this.coloresRepository.create(inputDto);
     if (!creado) throw new Error('No se pudo crear la categoría');
+    return new CrearColoresOut(creado);
 
   }
 }

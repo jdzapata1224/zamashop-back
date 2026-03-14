@@ -2,13 +2,13 @@ const { Types } = require('mongoose');
 
 const requireString = (value, fieldName) => {
   if (!value || typeof value !== 'string' || !value.trim()) {
-    throw new Error(`${fieldName} es requerido`);
+    throw new Error(`${fieldName} es requerido y/o debe ser string`);
   }
 };
 
 const requireNumber = (value, fieldName) => {
   if (value === null || value === undefined || typeof value !== 'number') {
-    throw new Error(`${fieldName} es requerido`);
+    throw new Error(`${fieldName} es requerido y/o debe ser numero`);
   }
 };
 
@@ -19,13 +19,13 @@ const requireEnum = (value, fieldName, validValues) => {
 };
 const requireBoolean = (value, fieldName) => {
   if (value === null || value === undefined || typeof value !== 'boolean') {
-    throw new Error(`${fieldName} es requerido`);
+    throw new Error(`${fieldName} es requerido y/o debe ser bool`);
   }
 };
 
 const requireDecimal = (value, fieldName) => {
   if (value === null || value === undefined || isNaN(parseFloat(value))) {
-    throw new Error(`${fieldName} es requerido y debe ser un número decimal válido`);
+    throw new Error(`${fieldName} es requerido y/o debe ser decimal`);
   }
 };
 
