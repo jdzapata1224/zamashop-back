@@ -28,7 +28,7 @@ class GenerarTokenCambioClave {
 
     const jti   = randomUUID();
     const token = jwt.sign(
-      { id: usuario.id, jti, action: 'CAMBIO_CLAVE' },
+      { uui: usuario.id, jti, action: 'CAMBIO_CLAVE' },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );

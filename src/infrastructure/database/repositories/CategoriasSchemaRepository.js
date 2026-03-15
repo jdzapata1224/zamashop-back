@@ -29,7 +29,7 @@ class CategoriasSchemaRepository extends CategoriasRepository {
     const docs = await CategoriasSchema.aggregate([
       {
         $match: {
-          _id: id,
+          _id: new Types.ObjectId(id),
           $or: [
             { cat_Fecha_Eliminacion: null },
             { cat_Fecha_Eliminacion: { $exists: false } },
@@ -173,7 +173,7 @@ class CategoriasSchemaRepository extends CategoriasRepository {
       { new: true }
     );
 
-    if (!doc || !doc._id) throw new Error('No se pudo actualizar el usuario');
+    if (!doc || !doc._id) throw new Error('No se pudo actualizar la categoria');
     return this._toEntity(doc);
 
    

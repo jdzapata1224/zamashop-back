@@ -31,7 +31,7 @@ class PerfilesSchemaRepository extends PerfilesRepository {
     const docs = await PerfilesSchema.aggregate([
       {
         $match: {
-          _id: id,
+          _id: new Types.ObjectId(id),
           $or: [
             { prf_Fecha_Eliminacion: null },
             { prf_Fecha_Eliminacion: { $exists: false } },

@@ -27,7 +27,7 @@ class ColoresSchemaRepository extends ColoresRepository {
         const docs = await ColoresSchema.aggregate([
             {
                 $match: {
-                     _id: id,
+                     _id: new Types.ObjectId(id),
                     $or: [
                         { col_Fecha_Eliminacion: null },
                         { col_Fecha_Eliminacion: { $exists: false } },

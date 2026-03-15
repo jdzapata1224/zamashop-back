@@ -33,7 +33,7 @@ class ProductosSchemaRepository extends ProductosRepository {
         const docs = await ProductosSchema.aggregate([
             {
                 $match: {
-                     _id: id,
+                     _id: new Types.ObjectId(id),
                     $or: [
                         { prd_Fecha_Eliminacion: null },
                         { prd_Fecha_Eliminacion: { $exists: false } },

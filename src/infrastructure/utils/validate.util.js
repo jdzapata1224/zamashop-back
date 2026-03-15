@@ -1,31 +1,28 @@
 const { Types } = require('mongoose');
 
+// ─── REQUERIDOS ────────────────────────────────────────────────────────────────
+
 const requireString = (value, fieldName) => {
-  if (!value || typeof value !== 'string' || !value.trim()) {
-    throw new Error(`${fieldName} es requerido y/o debe ser string`);
+  if (value === null || value === undefined || typeof value !== 'string' || !value.trim()) {
+    throw new Error(`${fieldName} es requerido y debe ser un texto válido`);
   }
 };
 
 const requireNumber = (value, fieldName) => {
-  if (value === null || value === undefined || typeof value !== 'number') {
-    throw new Error(`${fieldName} es requerido y/o debe ser numero`);
-  }
-};
-
-const requireEnum = (value, fieldName, validValues) => {
-  if (!value || !validValues.includes(value)) {
-    throw new Error(`${fieldName} es requerido y debe ser uno de: ${validValues.join(', ')}`);
-  }
-};
-const requireBoolean = (value, fieldName) => {
-  if (value === null || value === undefined || typeof value !== 'boolean') {
-    throw new Error(`${fieldName} es requerido y/o debe ser bool`);
+  if (value === null || value === undefined || typeof value !== 'number' || isNaN(value)) {
+    throw new Error(`${fieldName} es requerido y debe ser un número`);
   }
 };
 
 const requireDecimal = (value, fieldName) => {
   if (value === null || value === undefined || isNaN(parseFloat(value))) {
-    throw new Error(`${fieldName} es requerido y/o debe ser decimal`);
+    throw new Error(`${fieldName} es requerido y debe ser un decimal`);
+  }
+};
+
+const requireBoolean = (value, fieldName) => {
+  if (value === null || value === undefined || typeof value !== 'boolean') {
+    throw new Error(`${fieldName} es requerido y debe ser un booleano`);
   }
 };
 
@@ -35,27 +32,86 @@ const requireDate = (value, fieldName) => {
   }
 };
 
-
-
 const requireObjectId = (value, fieldName) => {
   if (!value || !Types.ObjectId.isValid(value)) {
     throw new Error(`${fieldName} es requerido y debe ser un Id válido`);
   }
 };
 
-const optionalString = (value, fieldName) => {
-  if (value !== undefined && value !== null && typeof value !== 'string') {
-    throw new Error(`${fieldName} debe ser texto`);
+const requireEnum = (value, fieldName, validValues) => {
+  if (value === null || value === undefined || !validValues.includes(value)) {
+    throw new Error(`${fieldName} es requerido y debe ser uno de: ${validValues.join(', ')}`);
   }
 };
 
+// ─── OPCIONALES ────────────────────────────────────────────────────────────────
+// Si el valor no viene (null/undefined) no hace nada.
+// Si viene, valida que sea del tipo correcto.
+
+const optionalString = (value, fieldName) => {
+  if (value === null || value === undefined) return;
+  if (typeof value !== 'string' || !value.trim()) {
+    throw new Error(`${fieldName} debe ser un texto válido`);
+  }
+};
+
+const optionalNumber = (value, fieldName) => {
+  if (value === null || value === undefined) return;
+  if (typeof value !== 'number' || isNaN(value)) {
+    throw new Error(`${fieldName} debe ser un número`);
+  }
+};
+
+const optionalDecimal = (value, fieldName) => {
+  if (value === null || value === undefined) return;
+  if (isNaN(parseFloat(value))) {
+    throw new Error(`${fieldName} debe ser un decimal`);
+  }
+};
+
+const optionalBoolean = (value, fieldName) => {
+  if (value === null || value === undefined) return;
+  if (typeof value !== 'boolean') {
+    throw new Error(`${fieldName} debe ser un booleano`);
+  }
+};
+
+const optionalDate = (value, fieldName) => {
+  if (value === null || value === undefined) return;
+  if (!(value instanceof Date) || isNaN(value.getTime())) {
+    throw new Error(`${fieldName} debe ser una fecha válida`);
+  }
+};
+
+const optionalObjectId = (value, fieldName) => {
+  if (value === null || value === undefined) return;
+  if (!Types.ObjectId.isValid(value)) {
+    throw new Error(`${fieldName} debe ser un Id válido`);
+  }
+};
+
+const optionalEnum = (value, fieldName, validValues) => {
+  if (value === null || value === undefined) return;
+  if (!validValues.includes(value)) {
+    throw new Error(`${fieldName} debe ser uno de: ${validValues.join(', ')}`);
+  }
+};
+
+// ──────────────────────────────────────────────────────────────────────────────
+
 module.exports = {
-  requireEnum,
-  requireBoolean,
-  requireNumber,
   requireString,
-  requireObjectId,
-  optionalString,
+  requireNumber,
+  requireDecimal,
+  requireBoolean,
   requireDate,
-  requireDecimal
+  requireObjectId,
+  requireEnum,
+  optionalString,
+  optionalNumber,
+  optionalDecimal,
+  optionalBoolean,
+  optionalDate,
+  optionalObjectId,
+  optionalEnum,
 };

@@ -27,7 +27,7 @@ class TallasSchemaRepository extends TallasRepository {
         const docs = await TallasSchema.aggregate([
             {
                 $match: {
-                     _id: id,
+                     _id: new Types.ObjectId(id),
                     $or: [
                         { tal_Fecha_Eliminacion: null },
                         { tal_Fecha_Eliminacion: { $exists: false } },

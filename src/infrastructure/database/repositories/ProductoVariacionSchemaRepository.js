@@ -30,7 +30,7 @@ class ProductoVariacionSchemaRepository extends ProductoVariacionRepository {
         const docs = await ProductoVariacionSchema.aggregate([
             {
                 $match: {
-                     _id: id,
+                     _id: new Types.ObjectId(id),
                     $or: [
                         { prv_Fecha_Eliminacion: null },
                         { prv_Fecha_Eliminacion: { $exists: false } },
