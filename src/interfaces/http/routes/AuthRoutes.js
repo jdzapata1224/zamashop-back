@@ -40,6 +40,6 @@ const auth = authMiddleware(tokensRepository); // ← se crea una vez por archiv
 router.post('/Login', (req, res) => loginController.login(req, res));
 router.post('/ValidarToken', (req, res) => validarTokenController.validarToken(req, res));
 router.post('/Logout',   auth, (req, res) => logoutController.logout(req, res));
-router.get('/Google',          (req, res) => googleRedirectController.redirect(req, res));
+router.get('/Google',          (req, res) => googleRedirectController.getUrl(req, res));
 router.get('/Google/Callback', (req, res) => googleCallbackController.callback(req, res));
 module.exports = router;
