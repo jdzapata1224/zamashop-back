@@ -7,7 +7,7 @@ class GoogleCallbackController {
 
   callback = async (req, res) => {
     try {
-      const { code } = req.body;
+      const { code } = req.params.code;
 
       if (!code) {
         return res.status(400).json({
