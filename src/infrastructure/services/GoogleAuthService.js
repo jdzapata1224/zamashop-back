@@ -1,16 +1,22 @@
 const { OAuth2Client } = require('google-auth-library');
 
-const client = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URI,
-);
+/**
+ * Crea el cliente OAuth2 en el momento de uso,
+ * garantizando que las variables de entorno ya están cargadas.
+ */
+function createClient() {
+  return new OAuth2Client(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_REDIRECT_URI,
+  );
+}
 
 /**
  * Genera la URL de autorización de Google para iniciar el flujo OAuth.
- * El parámetro `state` se usa para prevenir CSRF.
  */
 function getGoogleAuthUrl(state) {
+  const client = createClient();
   return client.generateAuthUrl({
     access_type: 'offline',
     scope: ['openid', 'email', 'profile'],
@@ -21,9 +27,10 @@ function getGoogleAuthUrl(state) {
 
 /**
  * Intercambia el `code` de Google por la identidad del usuario.
- * Retorna: { email, nombre, googleId, verified }
+ * Retorna: { googleId, email, nombre, verified }
  */
 async function exchangeCodeForUser(code) {
+  const client = createClient();
   const { tokens } = await client.getToken(code);
   client.setCredentials(tokens);
 
