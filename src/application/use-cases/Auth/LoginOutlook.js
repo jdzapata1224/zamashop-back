@@ -47,12 +47,12 @@ class LoginOutlook {
     await this.tokensRepository.create({
       usuarioId:       usuario.id,
       jti,
-      accion:          'LOGIN - Outlook',
+      accion:          'LOGIN',
       ip:              ip        || null,
       agenteCliente:   userAgent || null,
       fechaExpiracion: toDate(decoded.exp),
       fechaEmision:    toDate(decoded.iat),
-      tipoToken:       'JWT',
+      tipoToken:       'JWT - Outlook',
       usuarioCreacion: usuario.id,
     });
 

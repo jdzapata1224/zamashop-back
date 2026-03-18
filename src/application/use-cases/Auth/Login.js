@@ -64,12 +64,12 @@ class Login {
     const respuesta=await this.tokensRepository.create({
       usuarioId: usuario.id,
       jti,
-      accion:    'LOGIN - Front',
+      accion:    'LOGIN',
       ip:        rawInput.ip        || null,
       agenteCliente: rawInput.userAgent || null,
       fechaExpiracion: toDate(decoded.exp),
       fechaEmision: toDate(decoded.iat),
-      tipoToken: 'JWT',
+      tipoToken: 'JWT - Front',
       usuarioCreacion: usuario.id,
     });
     return new LoginOutDTO({token});

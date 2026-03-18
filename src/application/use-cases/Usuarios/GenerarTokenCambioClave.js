@@ -43,7 +43,7 @@ class GenerarTokenCambioClave {
       agenteCliente: rawInput.userAgent || null,
       fechaExpiracion: toDate(decoded.exp),
       fechaEmision: toDate(decoded.iat),
-      tipoToken: 'JWT',
+      tipoToken: 'JWT - Front',
       usuarioCreacion: usuario.id,
     });
 
