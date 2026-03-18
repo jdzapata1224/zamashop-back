@@ -17,13 +17,13 @@ class GoogleCallbackController {
       }
 
       const googleUser = await exchangeCodeForUser(code);
-        /*
+      
       const { token } = await this.loginGoogleUseCase.execute({
         email:     googleUser.email,
         verified:  googleUser.verified,
         ip:        req.ip || req.headers['x-forwarded-for'] || null,
         userAgent: req.headers['user-agent'] || null,
-      });*/
+      });
 
       return res.status(200).json({
         codigo:  200,

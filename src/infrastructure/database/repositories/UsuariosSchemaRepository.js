@@ -40,7 +40,7 @@ async findByCorreo(correo) {
   const docs = await UsuariosSchema.aggregate([
     {
       $match: {
-        usr_Correo: correo.trim().toLowerCase(),
+        usr_Correo: correo.trim(),
         usr_Estado: true,
         $or: [
           { usr_Fecha_Eliminacion: null },
