@@ -4,9 +4,9 @@ const { randomUUID } = require('crypto');
 class GoogleRedirectController {
   getUrl(req, res) {
      const url = getGoogleAuthUrl();
-     return res.status(200).json({
+     res.status(200).json({
        codigo:  200,
-       mensaje: 'URL generada',
+       mensaje: 'Consulta Ejecutada Satisfactoriamente',
        data:    url,
      });
    }
