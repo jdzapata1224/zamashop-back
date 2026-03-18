@@ -4,7 +4,7 @@ const TokensSchema = new mongoose.Schema(
   {
     tkn_Usr_Id:    { type: mongoose.Schema.Types.ObjectId, ref: 'Usuarios', required: true },
     tkn_Jti:       { type: String, required: true, unique: true },
-    tkn_Accion:    { type: String, enum: ['LOGIN', 'CAMBIO_CLAVE'], required: true },
+    tkn_Accion:    { type: String, enum: ['LOGIN - Front','LOGIN - Outlook','LOGIN - Google', 'CAMBIO_CLAVE'], required: true },
     tkn_Ip:        { type: String, default: null },
     tkn_Agente_Cliente: { type: String, default: null },
     tkn_Fecha_Expiracion: { type: Date, required: true },

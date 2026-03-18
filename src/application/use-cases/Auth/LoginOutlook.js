@@ -47,7 +47,7 @@ class LoginOutlook {
     await this.tokensRepository.create({
       usuarioId:       usuario.id,
       jti,
-      accion:          'LOGIN',
+      accion:          'LOGIN - Outlook',
       ip:              ip        || null,
       agenteCliente:   userAgent || null,
       fechaExpiracion: toDate(decoded.exp),

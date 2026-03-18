@@ -48,7 +48,7 @@ class LoginGoogle {
     await this.tokensRepository.create({
       usuarioId:       usuario.id,
       jti,
-      accion:          'LOGIN',
+      accion:          'LOGIN - Google',
       ip:              ip   || null,
       agenteCliente:   userAgent || null,
       fechaExpiracion: toDate(decoded.exp),

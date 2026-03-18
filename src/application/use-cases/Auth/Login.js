@@ -64,7 +64,7 @@ class Login {
     const respuesta=await this.tokensRepository.create({
       usuarioId: usuario.id,
       jti,
-      accion:    'LOGIN',
+      accion:    'LOGIN - Front',
       ip:        rawInput.ip        || null,
       agenteCliente: rawInput.userAgent || null,
       fechaExpiracion: toDate(decoded.exp),
