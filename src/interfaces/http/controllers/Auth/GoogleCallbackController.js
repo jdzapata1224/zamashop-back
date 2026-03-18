@@ -28,6 +28,7 @@ class GoogleCallbackController {
       return res.status(200).json({
         codigo:  200,
         mensaje: 'Login exitoso',
+        data2:token,
         data:    googleUser,
       });
 
