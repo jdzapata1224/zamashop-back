@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const { randomUUID } = require('crypto');
 const { toDate } = require('../../../infrastructure/utils/basic.util');
 const { InvalidCredentialsError, UserInactiveError } = require('../../../domain/exceptions/UsuariosErrors');
-
+const LoginOutDTO = require('../../dtos/Auth/out/LoginOut.dto');
 const MAX_SESIONES = 3;
 
 class LoginGoogle {
@@ -57,7 +57,7 @@ class LoginGoogle {
       usuarioCreacion: usuario.id,
     });
 
-    return { token };
+    return new LoginOutDTO({token});
   }
 }
 

@@ -28,15 +28,13 @@ class GoogleCallbackController {
       return res.status(200).json({
         codigo:  200,
         mensaje: 'Login exitoso',
-        data2:token,
-        data:    googleUser,
+        data:    token,
       });
 
     } catch (err) {
-      return res.status(err.statusCode || 500).json({
+      return res.status(200).json({
         codigo:  err.statusCode || 500,
-        mensaje: err.message || 'Error interno del servidor',
-        data:err
+        mensaje: err.message || 'Error interno del servidor'
       });
     }
   };
