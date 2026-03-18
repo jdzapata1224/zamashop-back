@@ -7,16 +7,15 @@ class GoogleCallbackController {
 
   callback = async (req, res) => {
     try {
-      const { code, error } = req.query;
+      const { code } = req.body;
 
-      // El usuario canceló o Google devolvió error
-      if (error || !code) {
-        return res.redirect(
-          `${process.env.FRONTEND_URL}/login?error=google_cancelado`
-        );
+      if (!code) {
+        return res.status(400).json({
+          codigo:  400,
+          mensaje: 'El parámetro code es requerido',
+        });
       }
 
-      // Intercambiar code por identidad del usuario en Google
       const googleUser = await exchangeCodeForUser(code);
 
       const { token } = await this.loginGoogleUseCase.execute({
@@ -26,16 +25,17 @@ class GoogleCallbackController {
         userAgent: req.headers['user-agent'] || null,
       });
 
-      // Redirigir al frontend con el token en query param
-      return res.redirect(
-        `${process.env.FRONTEND_URL}/auth/callback?token=${token}`
-      );
+      return res.status(200).json({
+        codigo:  200,
+        mensaje: 'Login exitoso',
+        data:    token,
+      });
 
     } catch (err) {
-      const msg = encodeURIComponent(err.message || 'Error de autenticación con Google');
-      return res.redirect(
-        `${process.env.FRONTEND_URL}/login?error=${msg}`
-      );
+      return res.status(err.statusCode || 500).json({
+        codigo:  err.statusCode || 500,
+        mensaje: err.message || 'Error interno del servidor',
+      });
     }
   };
 }
