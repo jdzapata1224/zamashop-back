@@ -42,11 +42,11 @@ async function exchangeCodeForUser(code) {
   const payload = ticket.getPayload();
 
   return {
-    googleId: payload.sub,
     email:    payload.email,
     nombre:   payload.name,
     verified: payload.email_verified,
   };
 }
+
 
 module.exports = { getGoogleAuthUrl, exchangeCodeForUser };

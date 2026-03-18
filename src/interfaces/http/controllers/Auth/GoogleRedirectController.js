@@ -2,14 +2,14 @@ const { getGoogleAuthUrl } = require('../../../../infrastructure/services/Google
 const { randomUUID } = require('crypto');
 
 class GoogleRedirectController {
-  redirect(req, res) {
-    // Generamos un state aleatorio para prevenir CSRF.
-    // En producción guárdalo en sesión o en una cookie firmada
-    // y valídalo en el callback.
-    const state = randomUUID();
-    const url   = getGoogleAuthUrl(state);
-    res.redirect(url);
-  }
+  getUrl(req, res) {
+     const url = getGoogleAuthUrl();
+     return res.status(200).json({
+       codigo:  200,
+       mensaje: 'URL generada',
+       data:    url,
+     });
+   }
 }
 
 module.exports = GoogleRedirectController;
