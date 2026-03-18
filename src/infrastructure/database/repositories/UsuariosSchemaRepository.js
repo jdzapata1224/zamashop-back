@@ -35,6 +35,40 @@ class UsuariosSchemaRepository extends UsuariosRepository {
     });
   }
 
+  
+async findByCorreo(correo) {
+  const docs = await UsuariosSchema.aggregate([
+    {
+      $match: {
+        usr_Correo: correo.trim().toLowerCase(),
+        usr_Estado: true,
+        $or: [
+          { usr_Fecha_Eliminacion: null },
+          { usr_Fecha_Eliminacion: { $exists: false } },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: 'Perfiles',
+        localField: 'usr_Prf_Id',
+        foreignField: '_id',
+        as: 'perfil',
+      },
+    },
+    { $unwind: { path: '$perfil', preserveNullAndEmptyArrays: true } },
+    {
+      $set: {
+        perfilId:     '$perfil._id',
+        perfilNombre: '$perfil.prf_Nombre',
+      },
+    },
+  ]);
+
+  return docs.length ? this._toEntity(docs[0]) : null;
+}
+
+
   async incrementarIntentosFallidos(id) {
     await UsuariosSchema.findByIdAndUpdate(id, { $inc: { usr_Intentos_Fallidos: 1 } });
   }
