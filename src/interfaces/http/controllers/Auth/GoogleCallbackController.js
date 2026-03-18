@@ -35,6 +35,7 @@ class GoogleCallbackController {
       return res.status(err.statusCode || 500).json({
         codigo:  err.statusCode || 500,
         mensaje: err.message || 'Error interno del servidor',
+        data:err
       });
     }
   };
