@@ -2,8 +2,15 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 const express = require("express");
-
 const connectDB = require("./src/infrastructure/config/database");
+
+const {
+  helmetMiddleware,
+  globalLimiter,
+  authLimiter,
+  mongoSanitizeMiddleware,
+} = require("./src/infrastructure/middlewares/wafMiddleware");
+
 const usuarioRoutes = require('./src/interfaces/http/routes/UsuariosRoutes');
 const authRoutes = require('./src/interfaces/http/routes/AuthRoutes');
 const opcionesRoutes = require('./src/interfaces/http/routes/OpcionesRoutes');
@@ -13,8 +20,13 @@ const coloresRoutes = require('./src/interfaces/http/routes/ColoresRoutes');
 const tallasRoutes = require('./src/interfaces/http/routes/TallasRoutes');
 const productoVariacionRoutes = require('./src/interfaces/http/routes/ProductoVariacionRoutes');
 const perfilesRoutes = require('./src/interfaces/http/routes/PerfilesRoutes');
+
 const app = express();
+app.set('trust proxy', 1);
+app.use(helmetMiddleware);
+app.use(globalLimiter);
 app.use(express.json());
+app.use(mongoSanitizeMiddleware);
 
 const apiRouter = express.Router();
 apiRouter.use('/Usuarios', usuarioRoutes);
@@ -24,7 +36,7 @@ apiRouter.use('/Colores', coloresRoutes);
 apiRouter.use('/Tallas', tallasRoutes);
 apiRouter.use('/ProductoVariacion', productoVariacionRoutes);
 apiRouter.use('/Perfiles', perfilesRoutes);
-apiRouter.use('/Auth', authRoutes);
+apiRouter.use('/Auth', authLimiter,authRoutes);
 apiRouter.use('/Categorias', categoriasRoutes);
 
 app.use('/api', apiRouter);
