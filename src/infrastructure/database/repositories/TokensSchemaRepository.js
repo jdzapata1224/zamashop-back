@@ -3,6 +3,8 @@ const { Types }    = require('mongoose');
 
 class TokensSchemaRepository {
 
+  
+
   async contarActivasPorUsuario(usuarioId) {
     return TokensSchema.countDocuments({
       tkn_Usr_Id:    new Types.ObjectId(usuarioId),
@@ -22,7 +24,7 @@ class TokensSchemaRepository {
   }
 
   async create(data) {
-    await TokensSchema.create({
+    const payload={
       tkn_Usr_Id:    data.usuarioId,
       tkn_Jti:       data.jti,
       tkn_Accion:    data.accion,
@@ -33,7 +35,15 @@ class TokensSchemaRepository {
       tkn_TipoToken: data.tipoToken,
       tkn_Fecha_Creacion:  new Date(),
       tkn_Usr_Creacion: data.usuarioCreacion
-    });
+    };
+    
+
+    const doc = new TokensSchema(payload);
+    const saved = await doc.save();
+            
+    if (!saved || !saved._id) throw new Error('No se pudo crear registro Login');
+    
+    return (saved);
   }
 
   async findActivoByUsuarioYAction(usuarioId, accion) {

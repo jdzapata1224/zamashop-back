@@ -11,7 +11,6 @@ class LoginController {
         userAgent: req.headers['user-agent'] || null,
       });
 
-
       return res.status(200).json({
         codigo:  200,
         mensaje: 'Login exitoso',

@@ -59,10 +59,9 @@ class Login {
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN || '8h',
     });
-
     const decoded = jwt.decode(token);
     
-    await this.tokensRepository.create({
+    const respuesta=await this.tokensRepository.create({
       usuarioId: usuario.id,
       jti,
       accion:    'LOGIN',
@@ -73,7 +72,7 @@ class Login {
       tipoToken: 'JWT',
       usuarioCreacion: usuario.id,
     });
-    return new LoginOutDTO(token);
+    return new LoginOutDTO({token});
     
   }
 }
