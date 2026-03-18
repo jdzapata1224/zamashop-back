@@ -7,7 +7,7 @@ class OutlookCallbackController {
 
   callback = async (req, res) => {
     try {
-      const { code } = req.params.code;
+      const { code } = req.body;
 
       if (!code) {
         return res.status(400).json({
