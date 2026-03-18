@@ -6,7 +6,7 @@ class OutlookRedirectController {
       const url = await getOutlookAuthUrl(); // async a diferencia de Google
       return res.status(200).json({
         codigo:  200,
-        mensaje: 'URL generada',
+         mensaje: 'Consulta Ejecutada Satisfactoriamente',
         data:    url,
       });
     } catch (err) {

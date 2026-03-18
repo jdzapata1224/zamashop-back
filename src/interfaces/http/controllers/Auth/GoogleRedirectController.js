@@ -3,12 +3,21 @@ const { randomUUID } = require('crypto');
 
 class GoogleRedirectController {
   getUrl(req, res) {
-     const url = getGoogleAuthUrl();
-     res.status(200).json({
-       codigo:  200,
-       mensaje: 'Consulta Ejecutada Satisfactoriamente',
-       data:    url,
-     });
+     
+    try {
+      const url = getGoogleAuthUrl();
+      return res.status(200).json({
+        codigo:  200,
+         mensaje: 'Consulta Ejecutada Satisfactoriamente',
+        data:    url,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        codigo:  500,
+        mensaje: err.message || 'Error al generar URL de Outlook',
+      });
+    }
+     
    }
 }
 
