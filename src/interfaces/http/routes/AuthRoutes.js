@@ -18,6 +18,10 @@ const LoginGoogleUseCase        = require('../../../application/use-cases/Auth/L
 const GoogleRedirectController  = require('../controllers/Auth/GoogleRedirectController');
 const GoogleCallbackController  = require('../controllers/Auth/GoogleCallbackController');
 
+const LoginOutlookUseCase       = require('../../../application/use-cases/Auth/LoginOutlook');
+const OutlookRedirectController      = require('../controllers/Auth/OutlookRedirectController');
+const OutlookCallbackController = require('../controllers/Auth/OutlookCallbackController');
+
 const userRepository   = new UsuariosSchemaRepository();
 const tokensRepository = new TokensSchemaRepository();
 
@@ -35,6 +39,10 @@ const loginGoogleUseCase       = new LoginGoogleUseCase(userRepository, tokensRe
 const googleRedirectController = new GoogleRedirectController();
 const googleCallbackController = new GoogleCallbackController(loginGoogleUseCase);
 
+const loginOutlookUseCase       = new LoginOutlookUseCase(userRepository, tokensRepository);
+const outlookRedirectController      = new OutlookRedirectController();
+const outlookCallbackController = new OutlookCallbackController(loginOutlookUseCase);
+
 const auth = authMiddleware(tokensRepository); // ← se crea una vez por archivo de rutas
 
 router.post('/Login', (req, res) => loginController.login(req, res));
@@ -42,4 +50,6 @@ router.post('/ValidarToken', (req, res) => validarTokenController.validarToken(r
 router.post('/Logout',   auth, (req, res) => logoutController.logout(req, res));
 router.get('/Google',          (req, res) => googleRedirectController.getUrl(req, res));
 router.get('/Google/Callback', (req, res) => googleCallbackController.callback(req, res));
+router.get('/Outlook/url',       (req, res) => outlookRedirectController.getUrl(req, res));
+router.post('/Outlook/Callback', (req, res) => outlookCallbackController.callback(req, res));
 module.exports = router;
