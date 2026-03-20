@@ -2,12 +2,12 @@ const { requireString }  = require('../../../../infrastructure/utils/validate.ut
 const { trimmedString }  = require('../../../../infrastructure/utils/basic.util');
 
 class LoginInDTO {
-  constructor({ usuario, password }) {
-    requireString(usuario, 'Nombre');
-    requireString(password, 'Password');
+  constructor({ usuario, clave }) {
+    requireString(usuario, 'Usuario');
+    requireString(clave, 'Password');
 
     this.usuario  = trimmedString(usuario);
-    this.password = trimmedString(password);
+    this.password = trimmedString(clave);
   }
 }
 
