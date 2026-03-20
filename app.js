@@ -20,8 +20,14 @@ const coloresRoutes = require('./src/interfaces/http/routes/ColoresRoutes');
 const tallasRoutes = require('./src/interfaces/http/routes/TallasRoutes');
 const productoVariacionRoutes = require('./src/interfaces/http/routes/ProductoVariacionRoutes');
 const perfilesRoutes = require('./src/interfaces/http/routes/PerfilesRoutes');
+const cors = require('cors');
 
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:4200',  // URL de tu Angular
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.set('trust proxy', 1);
 app.use(helmetMiddleware);
 app.use(globalLimiter);
