@@ -9,7 +9,7 @@ function createClient() {
     auth: {
       clientId:     process.env.OUTLOOK_CLIENT_ID,
       clientSecret: process.env.OUTLOOK_CLIENT_SECRET,
-      authority:    `https://login.microsoftonline.com/${process.env.OUTLOOK_TENANT_ID}`,
+      authority:    `https://login.microsoftonline.com/common`,
     },
   });
 }
