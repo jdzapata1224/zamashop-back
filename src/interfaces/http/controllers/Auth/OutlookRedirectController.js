@@ -10,7 +10,7 @@ class OutlookRedirectController {
         data:    url,
       });
     } catch (err) {
-      return res.status(500).json({
+      return res.status(200).json({
         codigo:  500,
         mensaje: err.message || 'Error al generar URL de Outlook',
       });

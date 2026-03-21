@@ -15,7 +15,7 @@ class ValidarTokenController {
         data:    output,
       });
     } catch (err) {
-      res.status(err.statusCode || 400).json({
+      res.status(200).json({
         codigo:  err.statusCode || 400,
         mensaje: err.message,
       });

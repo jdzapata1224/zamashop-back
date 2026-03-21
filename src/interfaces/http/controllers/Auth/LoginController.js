@@ -17,7 +17,7 @@ class LoginController {
         data:    output.token,
       });
     } catch (err) {
-      res.status(err.statusCode || 400).json({ codigo: err.statusCode || 400, mensaje: err.message });
+      res.status(200).json({ codigo: err.statusCode || 400, mensaje: err.message });
     }
   };
 }
